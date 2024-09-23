@@ -2,6 +2,8 @@
 
 namespace UtilLib.luaScriptLoader.entity;
 [Serializable]
+[XmlInclude(typeof(Script))]
+[XmlInclude(typeof(Folder))]
 public class ScriptUnit
 {
     [XmlAttribute("Name")]
