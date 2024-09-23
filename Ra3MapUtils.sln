@@ -1,0 +1,21 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilLib", "UtilLib\UtilLib.csproj", "{B0B99AF6-2977-4394-A7B4-0B1B1EFCF99E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{961DCE18-D53F-4557-B3CF-DEE6E15768EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{961DCE18-D53F-4557-B3CF-DEE6E15768EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{961DCE18-D53F-4557-B3CF-DEE6E15768EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{961DCE18-D53F-4557-B3CF-DEE6E15768EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0B99AF6-2977-4394-A7B4-0B1B1EFCF99E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0B99AF6-2977-4394-A7B4-0B1B1EFCF99E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0B99AF6-2977-4394-A7B4-0B1B1EFCF99E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0B99AF6-2977-4394-A7B4-0B1B1EFCF99E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

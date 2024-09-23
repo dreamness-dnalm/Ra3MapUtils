@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LuaScriptLoader MapParentPath="DEF" MapName="2333">
+    <Folders>
+        <Children>
+            <Script Name="test1">
+                <LuaScript Path="test1.lua" />
+            </Script>
+        </Children>
+
+    </Folders>
+</LuaScriptLoader>
