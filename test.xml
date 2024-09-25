@@ -1,12 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LuaScriptLoader MapParentPath="DEF" MapName="2333">
-    <Folders>
-        <Folder>
-            <Children>
-                <Script Name="test1">
-                    <LuaScript Path="test1.lua" />
-                </Script>
-            </Children>
-        </Folder>
-    </Folders>
+    <Folder Name="(nuatual)">
+        <Script Name="test1">
+            <LuaScript Path="test1.lua" />
+            <LuaScript Path="test2.lua" />
+        </Script>
+        <Script Name="test2">
+            <LuaScript Path="test1.lua" />
+            <LuaScript Path="test2.lua" />
+        </Script>
+    </Folder>
 </LuaScriptLoader>
+
+
+
+<!--<ScriptList-->
+<!--Name="">     &lt;!&ndash;        文件夹名字，不要增加或者修改&ndash;&gt;-->
+
+<!--&lt;!&ndash;        脚本，每个脚本必须有Name,其他属性可以不设置，有默认值，默认值和地编一样&ndash;&gt;-->
+<!--&lt;!&ndash;        Name 脚本名字 必须要有&ndash;&gt;-->
+<!--&lt;!&ndash;        Conmment 脚本注释  可选，默认空&ndash;&gt;-->
+<!--&lt;!&ndash;        ConditionComment 脚本条件注释  可选，默认空&ndash;&gt;-->
+<!--&lt;!&ndash;        ActionComment 脚本动作指注释  可选，默认空&ndash;&gt;-->
+<!--&lt;!&ndash;        IsSubroutine 是否子脚本  可选，默认否&ndash;&gt;-->
+<!--&lt;!&ndash;        DeactivateUponSuccess 执行完脚本之后是否停止执行  可选，默认是&ndash;&gt;-->
+<!--&lt;!&ndash;        isActive 是否启用脚本 可选，默认是&ndash;&gt;-->
+<!--&lt;!&ndash;        ActiveInEasy 是否在该ai简单度启用 默认是&ndash;&gt;-->
+<!--&lt;!&ndash;        ActiveInMedium 是否在该ai中等度启用 默认是&ndash;&gt;-->
+<!--&lt;!&ndash;        ActiveInHard 是否在该ai困难度启用 默认是&ndash;&gt;-->
+<!--&lt;!&ndash;        EvaluationInterval 循环次数，需要开启LoopActions才生效 默认0&ndash;&gt;-->
+<!--&lt;!&ndash;        LoopActions 是否循环脚本 默认否&ndash;&gt;-->
+<!--&lt;!&ndash;        ActionsFireSequentially 是否顺序脚本 默认否&ndash;&gt;-->
+<!--&lt;!&ndash;        LoopCount 顺序脚本执行次数 默认0&ndash;&gt;-->
+<!--&lt;!&ndash;        SequentialTargetName 脚顺序脚本目标名称 默认空&ndash;&gt;-->
+<!--<Script-->
+
+<!--        IsSubroutine="false"-->
+<!--        DeactivateUponSuccess="true"-->
+<!--        isActive="true"-->
+<!--        ActiveInEasy="true"-->
+<!--        ActiveInMedium="true"-->
+<!--        ActiveInHard="true"-->
+<!--        EvaluationInterval="0"-->
+<!--        LoopActions="false"-->
+<!--        ActionsFireSequentially="false"-->
+<!--        LoopCount="0"-->
+<!--        SequentialTargetName="">-->   

@@ -6,8 +6,7 @@ namespace UtilLib.luaScriptLoader.entity;
 [XmlInclude(typeof(Folder))]
 public class ScriptUnit
 {
-    [XmlAttribute("Name")]
-    public string Name { get; set; }
-    [XmlAttribute("Enabled")]
-    public bool Enabled { get; set; }
+    [XmlAttribute("Name")] public string Name { get; set; }
+
+    [XmlAttribute("Enabled")] public bool Enabled { get; set; } = true;
 }

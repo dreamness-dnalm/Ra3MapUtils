@@ -11,6 +11,7 @@ public class LuaScriptLoader
     [XmlAttribute("MapName")]
     public string MapName { set; get; }
     
+    [XmlElement("Folder")]
     public List<Folder> Folders { set; get; }
 
     public static LuaScriptLoader Load(string xmlStr)
