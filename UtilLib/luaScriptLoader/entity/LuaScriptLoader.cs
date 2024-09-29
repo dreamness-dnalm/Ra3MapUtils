@@ -1,21 +1,25 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Collections.Generic;
+using System.Xml.Serialization;
 
-namespace UtilLib.luaScriptLoader.entity;
-
-[Serializable]
-public class LuaScriptLoader
+namespace UtilLib.luaScriptLoader.entity
 {
-    [XmlAttribute("MapParentPath")]
-    public string MapParentPath { set; get; } = "DEFAULT";
-    
-    [XmlAttribute("MapName")]
-    public string MapName { set; get; }
-    
-    [XmlElement("Folder")]
-    public List<Folder> Folders { set; get; }
-
-    public static LuaScriptLoader Load(string xmlStr)
+    [Serializable]
+    public class LuaScriptLoader
     {
-        return null;
+        [XmlAttribute("MapParentPath")]
+        public string MapParentPath { set; get; } = "DEFAULT";
+    
+        [XmlAttribute("MapName")]
+        public string MapName { set; get; }
+    
+        [XmlElement("Folder")]
+        public List<Folder> Folders { set; get; }
+
+        public static LuaScriptLoader Load(string xmlStr)
+        {
+            return null;
+        }
     }
 }
+

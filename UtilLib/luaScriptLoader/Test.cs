@@ -1,22 +1,26 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.IO;
+using System.Xml.Serialization;
 using UtilLib.luaScriptLoader.entity;
 
-namespace UtilLib.luaScriptLoader;
-
-public class Test
+namespace UtilLib.luaScriptLoader
 {
-    public static void Main()
+    public class Test
     {
-        var path = "D:\\workspace\\mia\\Ra3MapUtils\\test.xml";
-        
-        
-        XmlSerializer serializer = new XmlSerializer(typeof(LuaScriptLoader));
-
-        // 打开文件并反序列化为对象
-        using (FileStream fileStream = new FileStream(path, FileMode.Open))
+        public static void Main()
         {
-            LuaScriptLoader person = (LuaScriptLoader)serializer.Deserialize(fileStream);
-            Console.WriteLine(person);
+            var path = "H:\\workspace\\dreamness_ra3_tools\\test.xml";
+        
+        
+            XmlSerializer serializer = new XmlSerializer(typeof(LuaScriptLoader));
+
+            // 打开文件并反序列化为对象
+            using (FileStream fileStream = new FileStream(path, FileMode.Open))
+            {
+                LuaScriptLoader person = (LuaScriptLoader)serializer.Deserialize(fileStream);
+                Console.WriteLine(person);
+            }
         }
     }
 }
+

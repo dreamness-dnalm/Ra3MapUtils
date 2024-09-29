@@ -1,9 +1,12 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 
-namespace UtilLib.luaScriptLoader.entity;
-[Serializable]
-public class LuaScript
+namespace UtilLib.luaScriptLoader.entity
 {
-    [XmlAttribute("Path")]
-    public string Path { get; set; }
+    [Serializable]
+    public class LuaScript
+    {
+        [XmlAttribute("Path")]
+        public string Path { get; set; }
+    }
 }

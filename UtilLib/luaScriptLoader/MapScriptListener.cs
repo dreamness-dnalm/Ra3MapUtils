@@ -1,45 +1,52 @@
-﻿using MapCoreLib.Core;
+﻿using System;
+using System.Collections.Generic;
+using MapCoreLib.Core;
 using MapCoreLib.Core.Asset;
 
-namespace UtilLib.luaScriptLoader;
-
-public class MapScriptListener: MapListener
+namespace UtilLib.luaScriptLoader
 {
-    public override List<string> interestedIn()
+    public class MapScriptListener: MapListener
     {
-        return new List<string>()
+        public override List<string> interestedIn()
         {
-            "PlayerScriptsList"
-        };
-    }
+            return new List<string>()
+            {
+                "PlayerScriptsList"
+            };
+        }
 
-    public override void visitScriptGroup(MapDataContext context, ScriptGroup scriptGroup)
-    {
-        base.visitScriptGroup(context, scriptGroup);
-    }
+        public override void visitScriptGroup(MapDataContext context, ScriptGroup scriptGroup)
+        {
+            Console.WriteLine("visitScriptGroup, " + scriptGroup.getAssetName());
+        }
 
-    public override void visitScript(MapDataContext context, Script script)
-    {
-        base.visitScript(context, script);
-    }
+        public override void visitScript(MapDataContext context, Script script)
+        {
+            Console.WriteLine("visitScript, " + script.Name);
+            
+        }
 
-    public override void visitScriptAction(MapDataContext context, ScriptAction scriptAction)
-    {
-        base.visitScriptAction(context, scriptAction);
-    }
+        public override void visitScriptAction(MapDataContext context, ScriptAction scriptAction)
+        {
+            Console.WriteLine("visitScriptAction," );
+        }
 
-    public override void visitScriptCondition(MapDataContext context, ScriptCondition scriptCondition)
-    {
-        base.visitScriptCondition(context, scriptCondition);
-    }
+        public override void visitScriptCondition(MapDataContext context, ScriptCondition scriptCondition)
+        {
+            Console.WriteLine("visitScriptCondition, " + scriptCondition.scriptContent.contentName);
+        }
 
-    public override void visitScriptList(MapDataContext context, ScriptList scriptList, int index)
-    {
-        base.visitScriptList(context, scriptList, index);
-    }
+        public override void visitScriptList(MapDataContext context, ScriptList scriptList, int index)
+        {
+            
+            // scriptList.scripts[0]  一个文件夹
+            Console.WriteLine("visitScriptList," + scriptList.scripts[index].Name);
+        }
 
-    public override void visitScriptActionFalse(MapDataContext context, ScriptAction scriptActionFalse)
-    {
-        base.visitScriptActionFalse(context, scriptActionFalse);
+        public override void visitScriptActionFalse(MapDataContext context, ScriptAction scriptActionFalse)
+        {
+            Console.WriteLine("visitScriptActionFalse," + scriptActionFalse.getAssetName());
+        }
     }
 }
+

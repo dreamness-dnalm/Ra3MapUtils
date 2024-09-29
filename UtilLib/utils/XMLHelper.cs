@@ -1,15 +1,18 @@
-﻿using System.Xml.Serialization;
+﻿using System.IO;
+using System.Xml.Serialization;
 
-namespace UtilLib.utils;
-
-public static class XMLHelper
+namespace UtilLib.utils
 {
-    public static T Deserialize<T>(string xml)
+    public static class XMLHelper
     {
-        var serializer = new XmlSerializer(typeof(T));
-        using (var reader = new StringReader(xml))
+        public static T Deserialize<T>(string xml)
         {
-            return (T)serializer.Deserialize(reader);
+            var serializer = new XmlSerializer(typeof(T));
+            using (var reader = new StringReader(xml))
+            {
+                return (T)serializer.Deserialize(reader);
+            }
         }
     }
 }
+

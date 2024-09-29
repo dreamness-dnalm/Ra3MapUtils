@@ -1,9 +1,13 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Collections.Generic;
+using System.Xml.Serialization;
 
-namespace UtilLib.luaScriptLoader.entity;
-[Serializable]
-public class Script: ScriptUnit
+namespace UtilLib.luaScriptLoader.entity
 {
-    [XmlElement("LuaScript")]
-    List<LuaScript> LuaScripts { get; set; } 
+    [Serializable]
+    public class Script: ScriptUnit
+    {
+        [XmlElement("LuaScript")]
+        List<LuaScript> LuaScripts { get; set; } 
+    }
 }

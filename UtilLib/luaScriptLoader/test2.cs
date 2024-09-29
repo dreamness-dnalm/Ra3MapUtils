@@ -1,33 +1,37 @@
-﻿using MapCoreLib.Core;
+﻿using System.IO;
+using MapCoreLib.Core;
 using MapCoreLib.Core.Asset;
+using MapCoreLib.Core.Util;
 
-namespace UtilLib.luaScriptLoader;
-
-public class test2
+namespace UtilLib.luaScriptLoader
 {
-    public static void Main()
+
+    public class test2
     {
-        string name = "name";
-        
-        
-        var m = new Ra3Map(name);
-        m.parse();
-
-        var visitImpl = m.mapVisitImpl;
-        
-        
-
-        var context = m.getContext();
-        m.visit(new MapListener());
-        
-        
-        // var scriptList = context.getAsset<ScriptList>("..");
-
-        var scriptList = new ScriptList();
-        scriptList.scriptGroups.Add(new ScriptGroup());
-        scriptList.scriptGroups[0].scripts.Add(new Script());
+        public static void Main()
+        {
+            string mapName = "AmazeTransferVehicle";
 
 
-        m.save("", name);
+            Ra3Map ra3Map = new Ra3Map(Path.Combine(PathUtil.RA3MapFolder, mapName, mapName + ".map"));
+            ra3Map.parse();
+
+            var visitImpl = ra3Map.mapVisitImpl;
+
+
+
+            var context = ra3Map.getContext();
+            ra3Map.visit(new MapScriptListener());
+
+
+            // var scriptList = context.getAsset<ScriptList>("..");
+
+            // var scriptList = new ScriptList();
+            // scriptList.scriptGroups.Add(new ScriptGroup());
+            // scriptList.scriptGroups[0].scripts.Add(new Script());
+            //
+            //
+            // ra3Map.doSaveMap(ra3Map.mapPath);
+        }
     }
 }
