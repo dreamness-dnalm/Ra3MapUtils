@@ -1,15 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<LuaScriptLoader MapParentPath="DEF" MapName="2333">
-    <Folder Name="(nuatual)">
-        <Script Name="test1">
-            <LuaScript Path="test1.lua" />
-            <LuaScript Path="test2.lua" />
-        </Script>
-        <Script Name="test2">
-            <LuaScript Path="test1.lua" />
-            <LuaScript Path="test2.lua" />
-        </Script>
+<LuaScriptLoader MapParentPath="DEFAULT" MapName="2333">
+    <Script Name="test1">
+        <LuaScript Path="test1.lua" />
+        <LuaScript Path="test2.lua" />
+    </Script>
+    <Script Name="test2">
+        <LuaScript Path="test1.lua" />
+        <LuaScript Path="test2.lua" />
+    </Script>
+    
+    <Folder Name="test_folder1">
+        <Folder Name="test_folder2">
+            <Script Name="test3">
+                <LuaScript Path="test1.lua" />
+                <LuaScript Path="test2.lua" />
+            </Script> 
+        </Folder>
     </Folder>
+    
 </LuaScriptLoader>
 
 
