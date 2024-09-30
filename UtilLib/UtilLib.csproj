@@ -10,4 +10,9 @@
       <PackageReference Include="Ra3Map" Version="1.0.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="cp\" />
+      <Folder Include="mv\" />
+    </ItemGroup>
+
 </Project>
