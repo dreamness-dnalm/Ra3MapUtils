@@ -12,27 +12,30 @@ namespace UtilLib.luaScriptLoader
     {
         public static void Main()
         {
-            string mapName = "AmazeTransferVehicle";
-
-
-            // Ra3Map ra3Map = new Ra3Map(Path.Combine(PathUtil.RA3MapFolder, mapName, mapName + ".map"));
-            Ra3Map ra3Map = new Ra3Map(Path.Combine("D:\\workspace\\mia\\Ra3MapUtils\\test_map", mapName, mapName + ".map"));
-            ra3Map.parse();
-
-            var visitImpl = ra3Map.mapVisitImpl;
-
-
-
-            var context = ra3Map.getContext();
-
-            var mapScriptGroupListener = new MapScriptGroupListener();
-            ra3Map.visit(mapScriptGroupListener);
-            var outScriptLists = mapScriptGroupListener.OutScriptLists;
-
-            Console.WriteLine(outScriptLists.Count());
-
-
-            var sl = outScriptLists[1];
+            // Console.WriteLine(PathUtil.RA3MapFolder);
+            
+            
+            // string mapName = "AmazeTransferVehicle";
+            //
+            //
+            // // Ra3Map ra3Map = new Ra3Map(Path.Combine(PathUtil.RA3MapFolder, mapName, mapName + ".map"));
+            // Ra3Map ra3Map = new Ra3Map(Path.Combine("D:\\workspace\\mia\\Ra3MapUtils\\test_map", mapName, mapName + ".map"));
+            // ra3Map.parse();
+            //
+            // var visitImpl = ra3Map.mapVisitImpl;
+            //
+            //
+            //
+            // var context = ra3Map.getContext();
+            //
+            // var mapScriptGroupListener = new MapScriptGroupListener();
+            // ra3Map.visit(mapScriptGroupListener);
+            // var outScriptLists = mapScriptGroupListener.OutScriptLists;
+            //
+            // Console.WriteLine(outScriptLists.Count());
+            //
+            //
+            // var sl = outScriptLists[1];
             // sl.scripts
             
 
