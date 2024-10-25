@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<LuaScriptLoader MapParentPath="DEFAULT" MapName="2333">
+<LuaScriptLoader  MapPath="H:\workspace\dreamness_ra3_tools\test_map\AmazeTransferVehicle">
     <Script Name="test1">
         <LuaScript Path="test1.lua" />
         <LuaScript Path="test2.lua" />

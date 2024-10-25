@@ -7,7 +7,7 @@ namespace UtilLib.luaScriptLoader.entity
     [Serializable]
     public class Script: ScriptUnit
     {
-        [XmlElement("LuaScript")]
-        List<LuaScript> LuaScripts { get; set; } 
+        [XmlElement(typeof(LuaScript), ElementName = "LuaScript")]
+        public List<LuaScript> LuaScripts { get; set; } 
     }
 }

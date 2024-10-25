@@ -46,6 +46,7 @@
     <ItemGroup>
         <Compile Include="functions\CopyFunction.cs" />
         <Compile Include="functions\LoadLuaFunction.cs" />
+        <Compile Include="functions\LsFunction.cs" />
         <Compile Include="functions\MoveFunction.cs" />
         <Compile Include="functions\RemoveFunction.cs" />
         <Compile Include="functions\VersionFunction.cs" />

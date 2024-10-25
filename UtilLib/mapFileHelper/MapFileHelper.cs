@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using MapCoreLib.Core.Util;
 
 namespace UtilLib.mapFileHelper
@@ -15,9 +17,22 @@ namespace UtilLib.mapFileHelper
                 retPath = Path.Combine(PathUtil.RA3MapFolder, mapPath);
             }
 
-            var pathSplits = mapPath.Split('\\');
+            var pathSplits = retPath.Split('\\');
             var mapName = pathSplits[pathSplits.Length - 1];
             return (retPath, mapName);
+        }
+        
+        public static bool IsMap(string mapPath)
+        {
+            string mapName;
+            (mapPath, mapName) = TranslateMapPath(mapPath);
+            if (!Directory.Exists(mapPath))
+            {
+                return false;
+            }
+
+            var coreFilePath = Path.Combine(mapPath, mapName + ".map");
+            return File.Exists(coreFilePath);
         }
         
         
@@ -30,6 +45,11 @@ namespace UtilLib.mapFileHelper
             if(!Directory.Exists(sourceDir))
             {
                 throw new Exception("Source directory does not exist: " + sourceDir);
+            }
+
+            if (!IsMap(sourceDir))
+            {
+                throw new Exception("Source directory is not a map: " + sourceDir);
             }
             
             // 检查目标文件夹是否存在，如果不存在则创建
@@ -53,7 +73,7 @@ namespace UtilLib.mapFileHelper
                 }
 
                 string destinationFilePath = Path.Combine(destinationDir, fileName);
-
+                Console.WriteLine("Copying " + filePath + " to " + destinationFilePath);
                 // 复制文件并覆盖
                 File.Copy(filePath, destinationFilePath, true);
             }
@@ -69,6 +89,11 @@ namespace UtilLib.mapFileHelper
                 throw new Exception("Directory does not exist: " + dir);
             }
             
+            if (!IsMap(dir))
+            {
+                throw new Exception("Source directory is not a map: " + dir);
+            }
+            Console.WriteLine("Deleting " + dir);
             Directory.Delete(dir, true);
         }
         
@@ -76,6 +101,64 @@ namespace UtilLib.mapFileHelper
         {
             Copy(sourceDir, destinationDir);
             Del(sourceDir);
+        }
+        
+        public static List<String> Ls(string dir)
+        {
+            if(dir == null)
+            {
+                dir = PathUtil.RA3MapFolder;
+            }
+            
+            Console.WriteLine("Maps in " + dir + ":");
+            List<String> mapNames = new List<string>();
+            
+            foreach (string dirPath in Directory.GetDirectories(dir))
+            {
+                if (IsMap(dirPath))
+                {
+                    var mapName = Path.GetFileName(dirPath);
+                    mapNames.Add(mapName);
+                    Console.WriteLine(mapName);
+                }
+            }
+
+            return mapNames;
+        }
+
+        public static string Compress(string dir, string targetDir,string method)
+        {
+            string mapName;
+            (dir, mapName) = TranslateMapPath(dir);
+            
+            if (!Directory.Exists(dir))
+            {
+                throw new Exception("Directory does not exist: " + dir);
+            }
+            
+            if (!IsMap(dir))
+            {
+                throw new Exception("Source directory is not a map: " + dir);
+            }
+            
+            if(!Directory.Exists(targetDir))
+            {
+                throw new Exception("Target directory does not exist: " + targetDir);
+            }
+
+            if (method == "zip")
+            {
+                var zipFilePath = Path.Combine(targetDir, mapName + ".zip");
+                ZipFile.CreateFromDirectory(dir, zipFilePath, CompressionLevel.Optimal, true);
+                return zipFilePath;
+            }
+            else
+            {
+                throw new Exception("Unsupported compression method: " + method);
+            }
+
+            return null;
+
         }
     }
 }

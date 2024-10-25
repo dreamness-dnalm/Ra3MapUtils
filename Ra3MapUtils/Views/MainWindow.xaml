@@ -1,0 +1,68 @@
+﻿<Window x:Class="Ra3MapUtils.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Ra3MapUtils"
+        xmlns:vm="clr-namespace:Ra3MapUtils.ViewModels"
+        d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=True}"
+        mc:Ignorable="d"
+        Title="Ra3MapUtils" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.Row="1" Grid.Column="0" Height="Auto">
+            <StackPanel Orientation="Horizontal">
+                <Label>地图列表</Label>
+                <Button Content="刷新" Command="{Binding RefreshMapListCommand}"/>
+                <Button Content="打开地图文件夹" Command="{Binding OpenMapFolderCommand}"/>
+            </StackPanel>
+            <!-- <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"> -->
+                    <ListBox ItemsSource="{Binding MapList}" 
+                             ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                             Height="300"
+                             SelectedValue="{Binding SelectedMap}"
+                             >
+                
+                    </ListBox>
+            <!-- </ScrollViewer> -->
+
+        </StackPanel>
+        
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Row="0" Grid.Column="1" >
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="已选中: "/>
+                    <Label Content="{Binding SelectedMap}"/>
+                </StackPanel>
+                
+                <Button Content="重命名" Command="{Binding RenameMapCommand}"/>
+                <Button Content="另存为" Command="{Binding CloneMapCommand}"/>
+                <Button Content="删除" Command="{Binding DeleteMapCommand}"/>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="压缩为: " Command="{Binding CompressMapCommand}"/>
+                    <RadioButton Content="zip" IsChecked="{Binding CompressMethodUseZip}"/>
+                    <!-- <RadioButton Content="7z"/> -->
+                </StackPanel>
+                <Button Content="lua管理" Command="{Binding ManageLuaCommand}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

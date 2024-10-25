@@ -21,7 +21,7 @@ namespace Ra3MapUtilConsole.functions
         }
     }
     
-    [Verb("mv", HelpText = "删除地图文件")]
+    [Verb("rm", HelpText = "删除地图文件")]
     public class RemoveOptions
     {
         [Value(0, MetaName = "source path", Required = true, HelpText = "地图路径(若只写名字则在默认路径寻找)")]

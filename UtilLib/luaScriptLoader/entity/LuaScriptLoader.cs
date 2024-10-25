@@ -5,21 +5,10 @@ using System.Xml.Serialization;
 namespace UtilLib.luaScriptLoader.entity
 {
     [Serializable]
-    public class LuaScriptLoader
+    public class LuaScriptLoader: Folder
     {
-        [XmlAttribute("MapParentPath")]
-        public string MapParentPath { set; get; } = "DEFAULT";
-    
-        [XmlAttribute("MapName")]
-        public string MapName { set; get; }
-    
-        [XmlElement("Folder")]
-        public List<Folder> Folders { set; get; }
-
-        public static LuaScriptLoader Load(string xmlStr)
-        {
-            return null;
-        }
+        [XmlAttribute("MapPath")]
+        public string MapPath { set; get; }
     }
 }
 

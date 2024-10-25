@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilLib", "UtilLib\UtilLib.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ra3MapUtilConsole", "Ra3MapUtilConsole\Ra3MapUtilConsole.csproj", "{24E561F9-128A-4613-AB59-EF71C8153EF8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ra3MapUtils", "Ra3MapUtils\Ra3MapUtils.csproj", "{C2D2FE89-9210-46B1-8A61-F488917F4EB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,5 +25,9 @@ Global
 		{24E561F9-128A-4613-AB59-EF71C8153EF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24E561F9-128A-4613-AB59-EF71C8153EF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24E561F9-128A-4613-AB59-EF71C8153EF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2D2FE89-9210-46B1-8A61-F488917F4EB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2D2FE89-9210-46B1-8A61-F488917F4EB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2D2FE89-9210-46B1-8A61-F488917F4EB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2D2FE89-9210-46B1-8A61-F488917F4EB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

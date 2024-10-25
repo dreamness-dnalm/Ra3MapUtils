@@ -18,7 +18,14 @@ namespace Ra3MapUtilConsole
                 config.AutoVersion = false;
                 config.AutoHelp = false;
             });
-            var parserResult = parser.ParseArguments<MoveOptions, CopyOptions, RemoveOptions,LoadLuaOptions, VersionOptions>(args);
+            var parserResult = parser.ParseArguments<
+                MoveOptions, 
+                CopyOptions, 
+                RemoveOptions,
+                LoadLuaOptions, 
+                VersionOptions,
+                LsOptions
+            >(args);
             parserResult
                 .MapResult(
                     (MoveOptions opts) => MoveFunction.DoAction(opts),
@@ -26,6 +33,7 @@ namespace Ra3MapUtilConsole
                     (RemoveOptions opts) => RemoveFunction.DoAction(opts),
                     (LoadLuaOptions opts) => LoadLuaFunction.DoAction(opts),
                     (VersionOptions opts) => VersionFunction.DoAction(opts),
+                    (LsOptions opts) => LsFunction.DoAction(opts),
                     errs => HandleParseError(errs, parserResult, parser)
                 );
         }
