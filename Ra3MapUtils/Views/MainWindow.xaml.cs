@@ -10,6 +10,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Extensions.DependencyInjection;
 using Ra3MapUtils.ViewModels;
+using Ra3MapUtils.Views.MainWindowPages;
 
 namespace Ra3MapUtils;
 
@@ -19,11 +20,11 @@ namespace Ra3MapUtils;
 public partial class MainWindow : Window
 {
     public MainWindowViewModel _mainWindowViewModel { get => (MainWindowViewModel)DataContext; }
-    
+
     public MainWindow()
     {
         DataContext = App.Current.Services.GetRequiredService<MainWindowViewModel>();
         InitializeComponent();
-        _mainWindowViewModel.RefreshMapListCommand.Execute(null);
+        Loaded += (_, _) => MainNavigationView.Navigate("HomePage");
     }
 }

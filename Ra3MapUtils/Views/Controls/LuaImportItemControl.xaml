@@ -1,0 +1,28 @@
+<UserControl x:Class="Ra3MapUtils.Services.Controls.LuaImportItemControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Ra3MapUtils.Services.Controls"
+             xmlns:vm="clr-namespace:Ra3MapUtils.ViewModels.Controls"
+             d:DataContext="{d:DesignInstance Type=vm:LuaImportItemControlViewModel, IsDesignTimeCreatable=True}"
+
+             mc:Ignorable="d"
+             d:DesignHeight="50" d:DesignWidth="350"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+             ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+             Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+             >
+    <StackPanel Orientation="Horizontal">
+        <ui:TextBlock Text="{Binding Model.ShowingName}"/>
+        <ui:HyperlinkButton Content="导入" Command="{Binding DoImportCommand}"/>
+        <ui:HyperlinkButton Icon="{ui:SymbolIcon Rename20}" ToolTip="重命名" Command="{Binding RenameCommand}"/>
+        <ui:HyperlinkButton Icon="{ui:SymbolIcon Delete20}" ToolTip="删除" Command="{Binding DeleteCommand}"/>
+        <ui:HyperlinkButton Icon="{ui:SymbolIcon Folder20}" ToolTip="指定目录" Command="{Binding ChangePathCommand}"/>
+        <ui:HyperlinkButton Icon="{ui:SymbolIcon ArrowUp20}" ToolTip="向上移动" Command="{Binding UpPosCommand}"/>
+        <ui:HyperlinkButton Icon="{ui:SymbolIcon ArrowDown20}" ToolTip="向下移动" Command="{Binding DownPosCommand}"/>
+        <ui:HyperlinkButton Content="预览" Command="{Binding PreviewCommand}"/>
+        <!-- <ui:TextBlock Text="{Binding Model.LibPath}" Foreground="Gray"/> -->
+    </StackPanel>
+</UserControl>

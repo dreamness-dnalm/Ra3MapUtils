@@ -6,63 +6,79 @@
         xmlns:local="clr-namespace:Ra3MapUtils"
         xmlns:vm="clr-namespace:Ra3MapUtils.ViewModels"
         d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=True}"
+        xmlns:mainWindowPages="clr-namespace:Ra3MapUtils.Views.MainWindowPages"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        d:DesignHeight="1650"
+        d:DesignWidth="1000"
+        ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+        ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+        Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+        xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="Ra3MapUtils" Height="450" Width="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="10"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        
-        <StackPanel Grid.Row="1" Grid.Column="0" Height="Auto">
-            <StackPanel Orientation="Horizontal">
-                <Label>地图列表</Label>
-                <Button Content="刷新" Command="{Binding RefreshMapListCommand}"/>
-                <Button Content="打开地图文件夹" Command="{Binding OpenMapFolderCommand}"/>
-            </StackPanel>
-            <!-- <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"> -->
-                    <ListBox ItemsSource="{Binding MapList}" 
-                             ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                             Height="300"
-                             SelectedValue="{Binding SelectedMap}"
-                             >
-                
-                    </ListBox>
-            <!-- </ScrollViewer> -->
+        Title="红警3地图工具" Height="450" Width="800"
+        >
+    
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="Closing" >
+            <behaviors:InvokeCommandAction Command="{Binding CloseWindowCommand }"  PassEventArgsToCommand="False"/>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+    
+    <StackPanel Margin="0,0,0,24">
+        <ui:NavigationView
+            x:Name="MainNavigationView"
+                MinHeight="300"
+                Margin="0"
+                IsBackButtonVisible="Auto"
+                IsPaneToggleVisible="True"
+                PaneDisplayMode="Left"
+                PaneTitle="">
+                <ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem
+                        Content="首页"
+                        TargetPageTag="HomePage"
+                        Icon="{ui:SymbolIcon Home24}"
+                        TargetPageType="{x:Type mainWindowPages:HomePage}"
+                        />
+                    <ui:NavigationViewItem
+                        Content="地图管理"
+                        Icon="{ui:SymbolIcon Library24}"
+                        TargetPageTag="MapManagePage"
+                        TargetPageType="{x:Type mainWindowPages:MapManagePage}"
+                        />
+                    <ui:NavigationViewItem
+                        Content="工具箱"
+                        Icon="{ui:SymbolIcon Briefcase20}"
+                        TargetPageTag="ToolBoxPage"
+                        TargetPageType="{x:Type mainWindowPages:ToolBoxPage}"
+                    />
+                    <ui:NavigationViewItem
+                        Content="设置"
+                        Icon="{ui:SymbolIcon Settings24}"
+                        TargetPageTag="SettingPage"
+                        TargetPageType="{x:Type mainWindowPages:SettingPage}"
+                    />
+                    <ui:NavigationViewItem
+                        Content="关于"
+                        Icon="{ui:SymbolIcon Info12}"
+                        TargetPageTag="AboutPage"
+                        TargetPageType="{x:Type mainWindowPages:AboutPage}"
+                    />
+                </ui:NavigationView.MenuItems>
+                <ui:NavigationView.Header>
+                    <Border
+                        Margin="8"
+                        CornerRadius="4">
+                        <TextBlock
+                            Margin="24"
+                            VerticalAlignment="Center"
+                            FontWeight="Medium"
+                            Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                            Text="红警3地图工具" />
+                    </Border>
+                </ui:NavigationView.Header>
 
-        </StackPanel>
-        
-        <Grid Grid.Row="1" Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            
-            <StackPanel Grid.Row="0" Grid.Column="1" >
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="已选中: "/>
-                    <Label Content="{Binding SelectedMap}"/>
-                </StackPanel>
-                
-                <Button Content="重命名" Command="{Binding RenameMapCommand}"/>
-                <Button Content="另存为" Command="{Binding CloneMapCommand}"/>
-                <Button Content="删除" Command="{Binding DeleteMapCommand}"/>
-                <StackPanel Orientation="Horizontal">
-                    <Button Content="压缩为: " Command="{Binding CompressMapCommand}"/>
-                    <RadioButton Content="zip" IsChecked="{Binding CompressMethodUseZip}"/>
-                    <!-- <RadioButton Content="7z"/> -->
-                </StackPanel>
-                <Button Content="lua管理" Command="{Binding ManageLuaCommand}"/>
-            </StackPanel>
-        </Grid>
-    </Grid>
+
+            </ui:NavigationView>
+    </StackPanel>
 </Window>

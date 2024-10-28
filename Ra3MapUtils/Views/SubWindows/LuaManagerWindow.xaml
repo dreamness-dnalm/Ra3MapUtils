@@ -1,0 +1,173 @@
+<Window x:Class="Ra3MapUtils.Views.LuaManagerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Ra3MapUtils.Views"
+        xmlns:vm="clr-namespace:Ra3MapUtils.ViewModels"
+        d:DataContext="{d:DesignInstance Type=vm:LuaManagerWindowViewModel, IsDesignTimeCreatable=True}"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        d:DesignHeight="1650"
+        d:DesignWidth="1000"
+        ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+        ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+        Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+        xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:controls="clr-namespace:Ra3MapUtils.Services.Controls"
+        xmlns:models="clr-namespace:Ra3MapUtils.Models"
+        mc:Ignorable="d"
+        Title="{Binding WindowTitle}" Height="450" Width="800">
+    
+   
+    
+        <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="15"/>
+        </Grid.RowDefinitions>
+        <ui:HyperlinkButton Grid.Row="0" Content="使用文档" NavigateUri="xxxx" Icon="{ui:SymbolIcon Document20}"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" >
+            <!-- 库管理 -->
+            <StackPanel Orientation="Vertical">
+                <Menu>
+                    <ui:MenuItem
+                        ToolTip="新增"
+                        Icon="{ui:SymbolIcon Add20}"
+                        Command="{Binding AddLuaLibConfigCommand}"
+                    />
+                    <ui:MenuItem
+                        Header="导入"
+                        Command="{Binding ImportLuaCommand}"
+                    />
+                    <ui:MenuItem
+                        ToolTip="指定目录"
+                        Icon="{ui:SymbolIcon Folder20}"
+                        Command="{Binding ChangePathLuaLibConfigCommand}"
+                    />
+                    <ui:MenuItem
+                        ToolTip="重命名"
+                        Icon="{ui:SymbolIcon Rename20}"
+                        Command="{Binding RenameLuaLibConfigCommand}"
+                    />
+                    <ui:MenuItem
+                        ToolTip="删除"
+                        Icon="{ui:SymbolIcon Delete20}"
+                        Command="{Binding DeleteLuaLibConfigCommand}"
+                    />
+                    <ui:MenuItem
+                        ToolTip="向上移动"
+                        Icon="{ui:SymbolIcon ArrowUp20}"
+                        Command="{Binding UpPositionLuaLibConfigCommand}"
+                    />
+                    <ui:MenuItem
+                        ToolTip="向下移动"
+                        Icon="{ui:SymbolIcon ArrowDown20}"
+                        Command="{Binding DownPositionLuaLibConfigCommand}"
+                    />
+                </Menu>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ui:ListView ItemsSource="{Binding LuaLibConfigs}" SelectedValue="{Binding SelectedLuaLibConfig}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate DataType="{x:Type models:LuaLibConfigModel}">
+                                <StackPanel Orientation="Horizontal" ToolTip="{Binding LibPath}">
+                                    <ui:TextBlock Text="{Binding ShowingName}" />
+                                    <ui:TextBlock Text="     "/>
+                                    <ui:TextBlock Text="{Binding LibPath}" Foreground="Gray"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ui:ListView>
+                </ScrollViewer>
+            </StackPanel>
+            
+            <Separator Width="5" FontWeight="Heavy"/>
+            
+            <!-- 库目录结构预览-->
+            <StackPanel Orientation="Vertical">
+                <Menu>
+                    <ui:MenuItem
+                        ToolTip="刷新"
+                        Icon="{ui:SymbolIcon ArrowSync20}"
+                        Command="{Binding ReloadLibPreviewCommand}"
+                    />
+                    <ui:MenuItem
+                        ToolTip="新增lua文件"
+                        Icon="{ui:SymbolIcon ReceiptAdd20}"
+                        Command="{Binding AddLuaLibConfigCommand}"
+                    />
+                    <ui:MenuItem
+                        Icon="{ui:SymbolIcon FolderAdd20}"
+                        ToolTip="新建文件夹"
+                        Command="{Binding ImportLuaCommand}"
+                    />
+                    <ui:MenuItem
+                        ToolTip="重命名"
+                        Icon="{ui:SymbolIcon Rename20}"
+                        Command="{Binding RenameLuaLibConfigCommand}"
+                    />
+                    <ui:MenuItem
+                        ToolTip="删除"
+                        Icon="{ui:SymbolIcon Delete20}"
+                        Command="{Binding DeleteLuaLibConfigCommand}"
+                    />
+                    <ui:MenuItem
+                        ToolTip="向上移动"
+                        Icon="{ui:SymbolIcon ArrowUp20}"
+                        Command="{Binding UpPositionLuaLibConfigCommand}"
+                    />
+                    <ui:MenuItem
+                        ToolTip="向下移动"
+                        Icon="{ui:SymbolIcon ArrowDown20}"
+                        Command="{Binding DownPositionLuaLibConfigCommand}"
+                    />
+                </Menu>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <TreeView ItemsSource="{Binding SelectPreviewLibFileModels}">
+                        <behaviors:Interaction.Triggers>
+                            <behaviors:EventTrigger EventName="SelectedItemChanged">
+                                <behaviors:InvokeCommandAction Command="{Binding LibPreviewItemSelectedChangedCommand}" PassEventArgsToCommand="True"/>
+                            </behaviors:EventTrigger>
+                        </behaviors:Interaction.Triggers>
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                <StackPanel Orientation="Horizontal">
+                                    <!-- <ui:IconElement Icon/> -->
+                                    <!-- <ui:TextBlock Text="{Binding LibPath}" Foreground="Gray"/> -->
+                                    <ui:TextBlock Text="{Binding FileName}"/>
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                </ScrollViewer>
+            </StackPanel>
+            <Separator Width="5" FontWeight="Heavy"/>
+            <!-- Lua文件管理 -->
+            <StackPanel Visibility="{Binding PreviewSelectedScriptVisibility}">
+                <ui:TextBlock Text="脚本信息"/>
+                <StackPanel Orientation="Horizontal">
+                    <ui:TextBlock Text="文件名: "/>
+                    <ui:TextBlock Text="{Binding SelectedLibFileModel.FileName}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <ui:TextBlock Text="文件类型: "/>
+                    <ui:TextBlock Text="{Binding SelectedLibFileModel.FileType}"/>
+                </StackPanel>
+                <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.IsIncluded}" Content="包含到库中" Command="{Binding PreviewChangedCommand}"/>
+                <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.IsEnabled}" Content="启用"  Command="{Binding PreviewChangedCommand}"/>
+                <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.RunOnce}" Content="只运行一次" Visibility="{Binding PreviewSelectedScriptRunOnceVisibility}"  Command="{Binding PreviewChangedCommand}"/>
+                   
+                <ui:Button Appearance="Primary" Content="预览/编辑"/>
+            </StackPanel>
+            
+        </StackPanel>
+        
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <ui:TextBlock Text="  已选中: "/>
+            <ui:TextBlock Text="{Binding SelectedLuaLibConfig.ShowingName}"/>
+            <ui:TextBlock Text="  路径: "/>
+            <ui:TextBlock Text="{Binding SelectedLuaLibConfig.LibPath}"/>
+        </StackPanel>
+       
+    </Grid>
+</Window>

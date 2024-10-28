@@ -119,7 +119,7 @@ namespace UtilLib.mapFileHelper
                 {
                     var mapName = Path.GetFileName(dirPath);
                     mapNames.Add(mapName);
-                    Console.WriteLine(mapName);
+                    // Console.WriteLine(mapName);
                 }
             }
 
@@ -160,5 +160,29 @@ namespace UtilLib.mapFileHelper
             return null;
 
         }
+
+        public static List<String> LsMapFiles(string dir)
+        {
+            string mapName;
+            (dir, mapName) = TranslateMapPath(dir);
+            
+            if (!Directory.Exists(dir))
+            {
+                throw new Exception("Directory does not exist: " + dir);
+            }
+            
+            
+            List<String> fileNames = new List<string>();
+            
+            foreach (string file in Directory.GetFiles(dir))
+            {
+                    var fileName = Path.GetFileName(file);
+                    fileNames.Add(fileName);
+            }
+
+            return fileNames;
+        }
+        
+        
     }
 }
