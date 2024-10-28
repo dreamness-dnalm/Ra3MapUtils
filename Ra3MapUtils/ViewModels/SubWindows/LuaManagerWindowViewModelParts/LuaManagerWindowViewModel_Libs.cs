@@ -1,8 +1,11 @@
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows.Forms;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using Ra3MapUtils.Models;
+using Ra3MapUtils.Services.Interface;
 
 namespace Ra3MapUtils.ViewModels;
 
@@ -11,7 +14,7 @@ public partial class LuaManagerWindowViewModel
         [ObservableProperty] private ObservableCollection<LuaLibConfigModel> _luaLibConfigs = new ObservableCollection<LuaLibConfigModel>();
     
     [ObservableProperty] private LuaLibConfigModel _selectedLuaLibConfig;
-
+    
     partial void OnSelectedLuaLibConfigChanged(LuaLibConfigModel value)
     {
         ReloadLibPreview();
@@ -138,5 +141,25 @@ public partial class LuaManagerWindowViewModel
     [RelayCommand]
     private void ImportLua()
     {
+        if(SelectedLuaLibConfig != null && SelectedLuaLibConfig.LibPath != "")
+        {
+            var scriptGroupXElement = LibFileModel.Load(SelectedLuaLibConfig.LibPath).Export();
+            var indexOfSelected = LuaLibConfigs.IndexOf(SelectedLuaLibConfig);
+            var behindScriptGroupName = "";
+            try
+            {
+                if (indexOfSelected > 0)
+                {
+                    var behindLibPath = LuaLibConfigs[indexOfSelected - 1].LibPath;
+                    behindScriptGroupName = Path.GetFileName(behindLibPath);
+                }
+            }
+            catch (Exception e)
+            {
+                
+            }
+            
+            _luaImportService.UpsertScriptGroup(MapName, scriptGroupXElement, behindScriptGroupName);
+        }
     }
 }

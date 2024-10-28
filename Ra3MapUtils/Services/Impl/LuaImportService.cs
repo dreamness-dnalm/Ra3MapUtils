@@ -1,6 +1,10 @@
+using System.IO;
+using System.Xml.Linq;
+using MapCoreLib.Core.Util;
 using Ra3MapUtils.Models;
 using Ra3MapUtils.Services.Interface;
 using Ra3MapUtils.Utils;
+using UtilLib.mapXmlOperator;
 
 namespace Ra3MapUtils.Services.Impl;
 
@@ -51,6 +55,15 @@ public class LuaImportService: ILuaImportService
         return SqliteDBUtil.Query("""
                    select * from lua_import_config where MapName = @mapName order by OrderNum
                """, new Dictionary<string, object> { { "@mapName", mapName } }, RowMapper);
+    }
+
+    public void UpsertScriptGroup(string mapName, XElement scriptGroupXElement, string behindScriptGroupName)
+    {
+        var xmlPath = Path.Combine(PathUtil.RA3MapFolder, mapName, mapName + ".edit.xml");
+        var xmlOperator = MapXmlOperator.Load(xmlPath);
+        xmlOperator.RemoveScriptGroup(scriptGroupXElement.Attribute("Name").Value);
+        xmlOperator.AddScriptGroup(scriptGroupXElement, behindScriptGroupName);
+        xmlOperator.Save(xmlPath);
     }
 
     private LuaLibConfigModel RowMapper(Dictionary<string, object> row)

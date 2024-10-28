@@ -5,9 +5,17 @@ namespace UtilLib.mapXmlOperator
 {
     public static class MapXmlHelper
     {
-        public static XElement MakeScript(string name, List<string> luaContents)
+        public static XElement MakeScript(string name, List<string> luaContents, bool isEnabled, bool isInclude, bool runOnce)
         {
-            var script = new XElement("Script", new XAttribute("Name", name));
+            if (! isInclude)
+            {
+                return null;
+            }
+            
+            var script = new XElement("Script", 
+                new XAttribute("Name", name), 
+                new XAttribute("isActive", isEnabled?"true":"false"), 
+                new XAttribute("DeactivateUponSuccess", runOnce?"true":"false"));
 
             var ifEle = new XElement("If");
             script.Add(ifEle);
@@ -27,6 +35,27 @@ namespace UtilLib.mapXmlOperator
             script.Add(new XElement("Else"));
 
             return script;
+        }
+        
+        public static XElement MakeScriptGroup(string name, List<XElement> subScripts, List<XElement> subScriptGroups, bool isEnabled, bool isInclude)
+        {
+            if (!isInclude)
+            {
+                return null;
+            }
+            
+            var scriptGroup = new XElement(XName.Get("ScriptGroup", "uri:wu.com:ra3map"), new XAttribute("Name", name), new XAttribute("IsActive", isEnabled?"true":"false"));
+            foreach (var subScript in subScripts)
+            {
+                scriptGroup.Add(subScript);
+            }
+
+            foreach (var subScriptGroup in subScriptGroups)
+            {
+                scriptGroup.Add(subScriptGroup);
+            }
+
+            return scriptGroup;
         }
     }
 }

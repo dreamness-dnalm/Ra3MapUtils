@@ -1,7 +1,9 @@
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Xml.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
+using UtilLib.mapXmlOperator;
 
 namespace Ra3MapUtils.Models;
 
@@ -129,5 +131,57 @@ public partial class LibFileModel: ObservableObject
             // todo mod
             _parent.Children.Remove(this);
         }
+    }
+
+    private (XElement, int) _export()
+    {
+        // var splits = FilePath.Split("\\").ToList();
+        // var path = Path.Combine(_libPath, string.Join("/", splits.Slice(1, splits.Count - 1)));
+        var path = Path.Combine(_libPath, FileName);
+        if (_fileType == "lua")
+        {
+            return (MapXmlHelper.MakeScript(FileName,
+                new List<string>() { File.ReadAllText(path) },
+                IsEnabled,
+                IsIncluded,
+                RunOnce), OrderNum);
+        }
+        else if(_fileType == "dir")
+        {
+            var childScriptList = new List<(XElement, int)>();
+            
+            var childScriptGroupList = new List<(XElement, int)>();
+            
+            foreach (var child in Children)
+            {
+                var t = child._export();
+                if (t.Item1 != null)
+                {
+                    if (child.FileType == "lua")
+                    {
+                        childScriptList.Add((t.Item1, t.Item2));
+                    }else if (child.FileType == "lua")
+                    {
+                        childScriptGroupList.Add((t.Item1,t.Item2));
+                    }
+                }
+
+            }
+
+            var group = MapXmlHelper.MakeScriptGroup(
+                FileName, 
+                childScriptList.OrderBy(t => t.Item2).Select(t => t.Item1).ToList(), 
+                childScriptGroupList.OrderBy(t => t.Item2).Select(t => t.Item1).ToList(), 
+                IsEnabled, 
+                IsIncluded);
+            return (group, OrderNum);
+        }
+
+        return (null, 99);
+    }
+
+    public XElement Export()
+    {
+        return _export().Item1;
     }
 }
