@@ -10,6 +10,23 @@
                 <ui:ThemesDictionary Theme="Light" />
                 <ui:ControlsDictionary />
             </ResourceDictionary.MergedDictionaries>
+            
+            <VisualBrush x:Key="HelpBrush" TileMode="None" Opacity="0.5" Stretch="None" AlignmentX="Left">
+                <VisualBrush.Visual>
+                    <TextBlock FontStyle="Italic" Text="搜索"/>
+                </VisualBrush.Visual>
+            </VisualBrush>
+            
+            <Style TargetType="TextBox" x:Key="WatermarkTextBox">
+                <Style.Triggers>
+                    <Trigger Property="Text" Value="{x:Null}">
+                        <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
+                    </Trigger>
+                    <Trigger Property="Text" Value="">
+                        <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

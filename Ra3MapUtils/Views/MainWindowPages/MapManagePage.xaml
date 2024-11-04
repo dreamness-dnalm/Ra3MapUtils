@@ -7,6 +7,7 @@
       xmlns:vm="clr-namespace:Ra3MapUtils.ViewModels.MainWindowPages"
       d:DataContext="{d:DesignInstance Type=vm:MapManagePageViewModel, IsDesignTimeCreatable=True}"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
       d:DesignHeight="1650"
       d:DesignWidth="1000"
       ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
@@ -26,14 +27,24 @@
             <ui:MenuItem Icon="{ui:SymbolIcon PeopleEdit20}" ToolTip="修改地图名称"/>
             <ui:MenuItem Icon="{ui:SymbolIcon CodeBlock20}" ToolTip="Lua导入工具" Command="{Binding ManageLuaCommand}"/>
         </Menu>
+            
         <StackPanel Orientation="Horizontal" Margin="5,5,5,5" Height="450">
-                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                        <ui:ListView ItemsSource="{Binding MapList}" SelectedValue="{Binding SelectedMap}"
-                                     Height="450"
-                        >
-                
-                        </ui:ListView>
-                    </ScrollViewer>
+            <StackPanel Orientation="Vertical">
+                <TextBox Style="{StaticResource WatermarkTextBox}" HorizontalAlignment="Stretch" Text="{Binding SearchingKeyword}">
+                    <behaviors:Interaction.Triggers>
+                        <behaviors:EventTrigger EventName="TextChanged">
+                            <behaviors:InvokeCommandAction Command="{Binding SearchCommand}"  PassEventArgsToCommand="False"/>
+                        </behaviors:EventTrigger>
+                    </behaviors:Interaction.Triggers>
+                </TextBox>
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <ui:ListView ItemsSource="{Binding MapList}" SelectedValue="{Binding SelectedMap}"
+                                 Height="450" MinWidth="200"
+                    >
+                    </ui:ListView>
+                </ScrollViewer>
+            </StackPanel>
+
             
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                 <StackPanel Orientation="Vertical" Width="500" Margin="5,10">

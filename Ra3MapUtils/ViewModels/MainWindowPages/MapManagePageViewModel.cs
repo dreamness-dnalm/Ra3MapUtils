@@ -27,6 +27,10 @@ public partial class MapManagePageViewModel: ObservableObject
 
         [ObservableProperty] private ObservableCollection<string> _mapFileList = new();
         
+        private List<string> _actualMapFiles = new();
+        
+        [ObservableProperty] private string _searchingKeyword = "";
+        
         partial void OnSelectedMapChanged(string value)
         {
             if(value == "")
@@ -97,11 +101,12 @@ public partial class MapManagePageViewModel: ObservableObject
             try
             {
                 var list = MapFileHelper.Ls(null);
-                _mapList.Clear();
+                _actualMapFiles.Clear();
                 foreach (var map in list)
                 {
-                    _mapList.Add(map);
+                    _actualMapFiles.Add(map);
                 }
+                Search();
             }
             catch(Exception e)
             {
@@ -289,5 +294,14 @@ public partial class MapManagePageViewModel: ObservableObject
             
             luaManagerWindow._luaManagerWindowViewModel.MapName = _selectedMap;
             luaManagerWindow.Show();
+        }
+
+        [RelayCommand]
+        private void Search()
+        {
+            _mapList.Clear();
+            _actualMapFiles.Where(i => _searchingKeyword == "" || i.Contains(_searchingKeyword))
+                .ToList()
+                .ForEach(i => _mapList.Add(i));
         }
 }
