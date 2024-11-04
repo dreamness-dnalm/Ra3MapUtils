@@ -12,6 +12,8 @@ public partial class MapInfoModel: ObservableObject
 
     [ObservableProperty] private string _playerCnt = "未知";
 
+    [ObservableProperty] private string _comment = "";
+
     
     partial void OnMapNameChanged(string value)
     {
@@ -22,6 +24,7 @@ public partial class MapInfoModel: ObservableObject
             var mapInfoJsonModel = MapInfoJsonHelper.ReadMapInfoJson(value);
             var mapWidth = mapInfoJsonModel.mapWidth;
             var mapHeight = mapInfoJsonModel.mapHeight;
+
             if (mapWidth > -1 && mapHeight > -1)
             {
                 MapSize = $"{mapWidth}x{mapHeight}";

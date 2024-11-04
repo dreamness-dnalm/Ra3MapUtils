@@ -8,14 +8,15 @@
         d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=True}"
         xmlns:mainWindowPages="clr-namespace:Ra3MapUtils.Views.MainWindowPages"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-        d:DesignHeight="1650"
-        d:DesignWidth="1000"
+        d:DesignHeight="650"
+        d:DesignWidth="800"
         ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
         ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
         Foreground="{DynamicResource TextFillColorPrimaryBrush}"
         xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="红警3地图工具" Height="450" Width="800"
+        Title="红警3地图工具" Height="650" Width="800"
+        ResizeMode="NoResize"
         >
     
     <behaviors:Interaction.Triggers>
@@ -24,14 +25,15 @@
         </behaviors:EventTrigger>
     </behaviors:Interaction.Triggers>
     
-    <StackPanel Margin="0,0,0,24">
         <ui:NavigationView
             x:Name="MainNavigationView"
-                MinHeight="300"
+               VerticalAlignment="Stretch"
+            HorizontalAlignment="Stretch"
                 Margin="0"
                 IsBackButtonVisible="Auto"
                 IsPaneToggleVisible="True"
-                PaneDisplayMode="Left"
+                PaneDisplayMode="LeftFluent"
+            OpenPaneLength="60"
                 PaneTitle="">
                 <ui:NavigationView.MenuItems>
                     <ui:NavigationViewItem
@@ -41,8 +43,8 @@
                         TargetPageType="{x:Type mainWindowPages:HomePage}"
                         />
                     <ui:NavigationViewItem
-                        Content="地图管理"
-                        Icon="{ui:SymbolIcon Library24}"
+                        Content="地图"
+                        Icon="{ui:SymbolIcon Map20}"
                         TargetPageTag="MapManagePage"
                         TargetPageType="{x:Type mainWindowPages:MapManagePage}"
                         />
@@ -52,25 +54,30 @@
                         TargetPageTag="ToolBoxPage"
                         TargetPageType="{x:Type mainWindowPages:ToolBoxPage}"
                     />
-                    <ui:NavigationViewItem
-                        Content="设置"
-                        Icon="{ui:SymbolIcon Settings24}"
-                        TargetPageTag="SettingPage"
-                        TargetPageType="{x:Type mainWindowPages:SettingPage}"
-                    />
-                    <ui:NavigationViewItem
-                        Content="关于"
-                        Icon="{ui:SymbolIcon Info12}"
-                        TargetPageTag="AboutPage"
-                        TargetPageType="{x:Type mainWindowPages:AboutPage}"
-                    />
+            
                 </ui:NavigationView.MenuItems>
+            
+            <ui:NavigationView.FooterMenuItems>
+                <ui:NavigationViewItem
+                    Content="设置"
+                    Icon="{ui:SymbolIcon Settings24}"
+                    TargetPageTag="SettingPage"
+                    TargetPageType="{x:Type mainWindowPages:SettingPage}"
+                />
+                <ui:NavigationViewItem
+                    Content="关于"
+                    Icon="{ui:SymbolIcon Info12}"
+                    TargetPageTag="AboutPage"
+                    TargetPageType="{x:Type mainWindowPages:AboutPage}"
+                />
+            </ui:NavigationView.FooterMenuItems>
+            
                 <ui:NavigationView.Header>
                     <Border
                         Margin="8"
                         CornerRadius="4">
                         <TextBlock
-                            Margin="24"
+                            Margin="10"
                             VerticalAlignment="Center"
                             FontWeight="Medium"
                             Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
@@ -78,7 +85,5 @@
                     </Border>
                 </ui:NavigationView.Header>
 
-
             </ui:NavigationView>
-    </StackPanel>
 </Window>

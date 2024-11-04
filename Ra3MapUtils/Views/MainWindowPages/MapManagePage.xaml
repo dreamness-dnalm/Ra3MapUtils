@@ -14,9 +14,14 @@
       ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       mc:Ignorable="d"
-      Title="MapManagePage" Height="450" Width="Auto">
-    <StackPanel Orientation="Vertical">
-        <Menu>
+      Title="MapManagePage" Height="550" Width="Auto">
+    <Grid VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
             <ui:MenuItem Icon="{ui:SymbolIcon ArrowSync20}" ToolTip="刷新列表" Command="{Binding RefreshMapListCommand}"/>
             <ui:MenuItem Icon="{ui:SymbolIcon FolderOpen20}" ToolTip="打开文件夹" Command="{Binding OpenMapFolderCommand}"/>
             <ui:MenuItem Icon="{ui:SymbolIcon Rename20}" ToolTip="重命名" Command="{Binding RenameMapCommand}"/>
@@ -27,29 +32,38 @@
             <ui:MenuItem Icon="{ui:SymbolIcon PeopleEdit20}" ToolTip="修改地图名称"/>
             <ui:MenuItem Icon="{ui:SymbolIcon CodeBlock20}" ToolTip="Lua导入工具" Command="{Binding ManageLuaCommand}"/>
         </Menu>
-            
-        <StackPanel Orientation="Horizontal" Margin="5,5,5,5" Height="450">
-            <StackPanel Orientation="Vertical">
-                <TextBox Style="{StaticResource WatermarkTextBox}" HorizontalAlignment="Stretch" Text="{Binding SearchingKeyword}">
-                    <behaviors:Interaction.Triggers>
-                        <behaviors:EventTrigger EventName="TextChanged">
-                            <behaviors:InvokeCommandAction Command="{Binding SearchCommand}"  PassEventArgsToCommand="False"/>
-                        </behaviors:EventTrigger>
-                    </behaviors:Interaction.Triggers>
-                </TextBox>
-                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+
+        <Grid Margin="5,5,5,5" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <ui:TextBox Grid.Column="0" Grid.Row="0" Style="{StaticResource WatermarkTextBox}">
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="TextChanged">
+                        <behaviors:InvokeCommandAction Command="{Binding SearchTextChangedCommand}"  PassEventArgsToCommand="True"/>
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </ui:TextBox>
+
+                <ScrollViewer Grid.Column="0" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Stretch">
                     <ui:ListView ItemsSource="{Binding MapList}" SelectedValue="{Binding SelectedMap}"
-                                 Height="450" MinWidth="200"
+                                 Height="410" MinWidth="200" VerticalAlignment="Stretch"
                     >
                     </ui:ListView>
                 </ScrollViewer>
-            </StackPanel>
 
             
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                <StackPanel Orientation="Vertical" Width="500" Margin="5,10">
-                    <StackPanel Orientation="Vertical" Margin="10, 10">
-                        <ui:TextBlock Text="基本信息" FontWeight="Heavy" FontSize="15" Margin="0, 5"/>
+            <ScrollViewer Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <StackPanel Orientation="Vertical"  Margin="5, 5,10, 10">
+                    <StackPanel Orientation="Vertical" Margin="0, 0, 5, 0">
+                        <ui:TextBlock Text="基本信息" FontWeight="Heavy" FontSize="15" Margin="5, 2"/>
                         <StackPanel Orientation="Horizontal" Margin="5, 2">
                             <ui:TextBlock Text="尺寸: " FontSize="10" Foreground="Gray"/>
                             <ui:TextBlock Text="{Binding SelectedMapInfo.MapSize}"  FontSize="10" Foreground="Gray"/>
@@ -69,7 +83,7 @@
                         <ui:TextBlock Text="地图文件预览" FontWeight="Heavy" FontSize="15" Margin="0, 5"/>
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                             <ui:ListView ItemsSource="{Binding MapFileList}" IsEnabled="False"
-                                         Height="450"
+                                         
                             >
                 
                             </ui:ListView>
@@ -79,8 +93,11 @@
                     
                 </StackPanel>
             </ScrollViewer>
+        </Grid>
+        <StackPanel Orientation="Horizontal" Height="20" Grid.Row="2" VerticalAlignment="Top">
+            <TextBlock Text="   已选中: " FontSize="13"/>
+            <TextBlock Text="{Binding SelectedMap}"  FontSize="13"/>
         </StackPanel>
-
-    </StackPanel>
+    </Grid>
  
 </Page>

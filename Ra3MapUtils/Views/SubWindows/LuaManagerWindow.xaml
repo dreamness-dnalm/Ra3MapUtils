@@ -16,7 +16,7 @@
         xmlns:controls="clr-namespace:Ra3MapUtils.Services.Controls"
         xmlns:models="clr-namespace:Ra3MapUtils.Models"
         mc:Ignorable="d"
-        Title="{Binding WindowTitle}" Height="450" Width="800">
+        Title="{Binding WindowTitle}" Height="450" Width="900" ResizeMode="NoResize">
     
    
     
@@ -123,7 +123,7 @@
                     />
                 </Menu>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <TreeView ItemsSource="{Binding SelectPreviewLibFileModels}">
+                    <TreeView ItemsSource="{Binding SelectPreviewLibFileModels}" Height="340">
                         <behaviors:Interaction.Triggers>
                             <behaviors:EventTrigger EventName="SelectedItemChanged">
                                 <behaviors:InvokeCommandAction Command="{Binding LibPreviewItemSelectedChangedCommand}" PassEventArgsToCommand="True"/>

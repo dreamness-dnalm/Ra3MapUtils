@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -12,6 +13,7 @@ using Ra3MapUtils.Models;
 using Ra3MapUtils.Utils;
 using Ra3MapUtils.Views;
 using UtilLib.mapFileHelper;
+using TextBox = System.Windows.Controls.TextBox;
 
 namespace Ra3MapUtils.ViewModels.MainWindowPages;
 
@@ -29,7 +31,8 @@ public partial class MapManagePageViewModel: ObservableObject
         
         private List<string> _actualMapFiles = new();
         
-        [ObservableProperty] private string _searchingKeyword = "";
+        private string _searchingKeyword = "";
+        
         
         partial void OnSelectedMapChanged(string value)
         {
@@ -295,8 +298,14 @@ public partial class MapManagePageViewModel: ObservableObject
             luaManagerWindow._luaManagerWindowViewModel.MapName = _selectedMap;
             luaManagerWindow.Show();
         }
-
+        
         [RelayCommand]
+        private void SearchTextChanged(TextChangedEventArgs arg)
+        {
+            _searchingKeyword = ((TextBox)arg.Source).Text;
+            Search();
+        }
+        
         private void Search()
         {
             _mapList.Clear();
