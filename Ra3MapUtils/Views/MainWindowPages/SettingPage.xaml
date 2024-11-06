@@ -13,8 +13,24 @@
       ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       mc:Ignorable="d"
-      Title="SettingPage" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+      Title="SettingPage" Height="550" Width="Auto">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
+            <ui:CardControl Margin="0, 0, 0, 5">
+                <ui:CardControl.Header><TextBlock Text="打包时排除额外信息"/></ui:CardControl.Header>
+                <ui:ToggleSwitch/>
+            </ui:CardControl>
+            <ui:CardControl Margin="0, 0, 0, 5">
+                <ui:CardControl.Header><TextBlock Text="Lua导入方式"/></ui:CardControl.Header>
+                <ComboBox>
+                    <ComboBox.Items>
+                        <ComboBoxItem Content="XML" IsSelected="True"/>
+                        <ComboBoxItem Content="直接写入"/>
+                    </ComboBox.Items>
+                </ComboBox>
+            </ui:CardControl>
+            <ui:Button Command="{Binding ShowSnackbarCommand}"/>
+            
+        </StackPanel>
+    </ScrollViewer>
 </Page>

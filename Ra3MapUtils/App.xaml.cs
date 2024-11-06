@@ -9,6 +9,7 @@ using Ra3MapUtils.ViewModels;
 using Ra3MapUtils.ViewModels.MainWindowPages;
 using Ra3MapUtils.Views;
 using Ra3MapUtils.Views.MainWindowPages;
+using Wpf.Ui;
 
 namespace Ra3MapUtils;
 
@@ -51,6 +52,8 @@ public partial class App : Application
 
         services.AddSingleton<ILuaImportService, LuaImportService>();
         services.AddSingleton<ISettingService, SettingService>();
+
+        services.AddSingleton<ISnackbarService, SnackbarService>();
         
         return services.BuildServiceProvider();
     }
