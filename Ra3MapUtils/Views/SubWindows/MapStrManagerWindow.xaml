@@ -4,9 +4,54 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:Ra3MapUtils.Views.SubWindows"
+        xmlns:vm="clr-namespace:Ra3MapUtils.ViewModels"
+        d:DataContext="{d:DesignInstance Type=vm:MapStrManagerWindowViewModel, IsDesignTimeCreatable=True}"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+        d:DesignHeight="1650"
+        d:DesignWidth="1000"
+        ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+        ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+        Foreground="{DynamicResource TextFillColorPrimaryBrush}"
         mc:Ignorable="d"
-        Title="MapStrManagerWindow" Height="450" Width="800">
+        Title="map.set管理工具" Height="450" Width="900" ResizeMode="NoResize">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Menu Grid.Row="0">
+            <ui:MenuItem ToolTip="新增" Icon="{ui:SymbolIcon Add20}"/>
+            <ui:MenuItem ToolTip="删除" Icon="{ui:SymbolIcon Delete20}"/>
+            <ui:MenuItem ToolTip="刷新(放弃更改并重新读取文件)" Icon="{ui:SymbolIcon ArrowSync20}"/>
+            <ui:MenuItem ToolTip="保存" Icon="{ui:SymbolIcon Save20}"/>
+        </Menu>
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Stretch">
+            <ComboBox>
+                
+            </ComboBox>
+            <ui:TextBox Style="{StaticResource WatermarkTextBox}" HorizontalAlignment="Stretch">
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="TextChanged">
+                        <behaviors:InvokeCommandAction Command="{Binding}" PassEventArgsToCommand="True"/>
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </ui:TextBox>
+        </StackPanel>
+        
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            
+            
+        </Grid>
+        
         
     </Grid>
 </Window>

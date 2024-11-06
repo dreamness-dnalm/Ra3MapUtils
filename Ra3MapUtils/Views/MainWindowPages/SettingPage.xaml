@@ -14,10 +14,14 @@
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       mc:Ignorable="d"
       Title="SettingPage" Height="550" Width="Auto">
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" IsEnabled="False">
         <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
             <ui:CardControl Margin="0, 0, 0, 5">
                 <ui:CardControl.Header><TextBlock Text="打包时排除额外信息"/></ui:CardControl.Header>
+                <ui:ToggleSwitch/>
+            </ui:CardControl>
+            <ui:CardControl Margin="0, 0, 0, 5">
+                <ui:CardControl.Header><TextBlock Text="打包时添加未加密警告"/></ui:CardControl.Header>
                 <ui:ToggleSwitch/>
             </ui:CardControl>
             <ui:CardControl Margin="0, 0, 0, 5">
@@ -29,7 +33,7 @@
                     </ComboBox.Items>
                 </ComboBox>
             </ui:CardControl>
-            <ui:Button Command="{Binding ShowSnackbarCommand}"/>
+
             
         </StackPanel>
     </ScrollViewer>
