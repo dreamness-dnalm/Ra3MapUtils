@@ -11,28 +11,26 @@ namespace UtilLib.mapXmlOperator
         private XElement _mapScript;
         private XElement _firstScriptList;
         
-        public static readonly string NAMESPACE = "uri:wu.com:ra3map";
-        
         private MapXmlOperator(string xmlPath)
         {
             _document = XElement.Load(xmlPath);
-            _mapScript = _document.Element(XName.Get("MapScript", NAMESPACE));
+            _mapScript = _document.Element(MapXmlHelper.GetXName("MapScript"));
             if(_mapScript == null)
             {
-                _document.Add(new XElement("MapScript"));
-                _mapScript = _document.Element(XName.Get("MapScript", NAMESPACE));
+                _document.Add(new XElement(MapXmlHelper.GetXName("MapScript")));
+                _mapScript = _document.Element(MapXmlHelper.GetXName("MapScript"));
             }
-            _firstScriptList = _mapScript.Element(XName.Get("ScriptList", NAMESPACE));
+            _firstScriptList = _mapScript.Element(MapXmlHelper.GetXName("ScriptList"));
             if(_firstScriptList == null)
             {
-                _mapScript.Add(new XElement("ScriptList"));
-                _firstScriptList = _mapScript.Element(XName.Get("ScriptList", NAMESPACE));
+                _mapScript.Add(new XElement(MapXmlHelper.GetXName("ScriptList")));
+                _firstScriptList = _mapScript.Element(MapXmlHelper.GetXName("ScriptList"));
             }
         }
         
         public void RemoveScriptGroup(string scriptGroupName)
         {
-            var xElements = _firstScriptList.Elements(XName.Get("ScriptGroup", NAMESPACE))
+            var xElements = _firstScriptList.Elements(MapXmlHelper.GetXName("ScriptGroup"))
                 .Where(x => x.Attribute("Name").Value == scriptGroupName);
 
             foreach (var xElement in xElements)
@@ -43,7 +41,7 @@ namespace UtilLib.mapXmlOperator
         
         public void AddScriptGroup(XElement scriptGroupXElement, string behindScriptGroupName)
         {
-            var scriptXElements = _firstScriptList.Elements(XName.Get("Script", NAMESPACE)).ToList();
+            var scriptXElements = _firstScriptList.Elements(MapXmlHelper.GetXName("Script")).ToList();
             XElement lastScriptXElement = null;
             if (scriptXElements.Count > 0)
             {
@@ -62,8 +60,8 @@ namespace UtilLib.mapXmlOperator
             }
             else
             {
-                var behindScriptGroup = _firstScriptList.Elements(XName.Get("ScriptGroup", NAMESPACE))
-                    .Where(x => x.Attribute("Name").ToString() == behindScriptGroupName).FirstOrDefault();
+                var behindScriptGroup = _firstScriptList.Elements(MapXmlHelper.GetXName("ScriptGroup"))
+                    .Where(x => x.Attribute("Name").Value == behindScriptGroupName).FirstOrDefault();
                 if (behindScriptGroup == null)
                 {
                     if (lastScriptXElement != null)
@@ -82,8 +80,6 @@ namespace UtilLib.mapXmlOperator
                 
             }
         }
-        
-        
         
         public static MapXmlOperator Load(string xmlPath)
         {

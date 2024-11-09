@@ -1,9 +1,11 @@
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Windows.Documents;
 using System.Xml.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using UtilLib.mapXmlOperator;
+using Ra3MapUtils.Utils;
 
 namespace Ra3MapUtils.Models;
 
@@ -54,6 +56,7 @@ public partial class LibFileModel: ObservableObject
                 dirModelChild.IsEnabled = metaModelChild.IsEnabled;
                 dirModelChild.IsIncluded = metaModelChild.IsIncluded;
                 dirModelChild.RunOnce = metaModelChild.RunOnce;
+                dirModelChild.OrderNum = metaModelChild.OrderNum;
 
                 if (fileType == "dir")
                 {
@@ -61,7 +64,7 @@ public partial class LibFileModel: ObservableObject
                 }
             }
         }
-        dirModel.Children.OrderBy(m => m.OrderNum);
+        dirModel.Children.SortBy(m => m.OrderNum);
         for (int i = 0; i < dirModel.Children.Count; i++)
         {
             dirModel.Children[i].OrderNum = i;
@@ -87,7 +90,7 @@ public partial class LibFileModel: ObservableObject
         subDirectories.ForEach(d =>
         {
             var path = Path.Combine(libPath, d);
-            model.Children.Add(LoadFromPath(path, rootParentPath, parent));
+            model.Children.Add(LoadFromPath(path, rootParentPath, model));
         });
 
         var subFiles = Directory.GetFiles(libPath).Where(f => f.EndsWith(".lua")).ToList();
@@ -98,7 +101,7 @@ public partial class LibFileModel: ObservableObject
             subFileModel._fileType = "lua";
             subFileModel._fileName = Path.GetFileName(f);
             subFileModel._filePath = f.Replace(rootParentPath, "");
-            subFileModel._parent = parent;
+            subFileModel._parent = model;
             subFileModel._libPath = libPath;
             model.Children.Add(subFileModel);
         });
@@ -133,13 +136,52 @@ public partial class LibFileModel: ObservableObject
         }
     }
 
+    public void UpPos()
+    {
+        if (_parent is null)
+        {
+            return;
+        }
+
+        var brothers = _parent.Children;
+        var index = brothers.IndexOf(this);
+        if (index == 0)
+        {
+            return;
+        }
+        brothers.Exchange(index, index - 1);
+        
+        for (int i = 0; i < brothers.Count; i++)
+        {
+            brothers[i].OrderNum = i;
+        }
+    }
+
+    public void DownPos()
+    {
+        if (_parent is null)
+        {
+            return;
+        }
+        var brothers = _parent.Children;
+        var index = brothers.IndexOf(this);
+        if (index == brothers.Count - 1)
+        {
+            return;
+        }
+        brothers.Exchange(index, index + 1);
+        
+        for (int i = 0; i < brothers.Count; i++)
+        {
+            brothers[i].OrderNum = i;
+        }
+    }
+
     private (XElement, int) _export()
     {
-        // var splits = FilePath.Split("\\").ToList();
-        // var path = Path.Combine(_libPath, string.Join("/", splits.Slice(1, splits.Count - 1)));
-        var path = Path.Combine(_libPath, FileName);
         if (_fileType == "lua")
         {
+            var path = Path.Combine(_libPath, FileName);
             return (MapXmlHelper.MakeScript(FileName,
                 new List<string>() { File.ReadAllText(path) },
                 IsEnabled,
@@ -160,7 +202,7 @@ public partial class LibFileModel: ObservableObject
                     if (child.FileType == "lua")
                     {
                         childScriptList.Add((t.Item1, t.Item2));
-                    }else if (child.FileType == "lua")
+                    }else if (child.FileType == "dir")
                     {
                         childScriptGroupList.Add((t.Item1,t.Item2));
                     }

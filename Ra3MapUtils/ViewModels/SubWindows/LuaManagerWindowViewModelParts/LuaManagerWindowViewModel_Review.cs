@@ -78,6 +78,11 @@ public partial class LuaManagerWindowViewModel
     [RelayCommand]
     private void PreviewChanged()
     {
+        Save();
+    }
+
+    private void Save()
+    {
         if(_selectPreviewLibFileModels.Count == 0)
         {
             return;
@@ -124,8 +129,9 @@ public partial class LuaManagerWindowViewModel
         {
             return;
         }
-
+        var tmp = _selectPreviewLibFileModels[0];
         SelectedLibFileModel.Delete();
+        Save();
     }
     
     [RelayCommand]
@@ -135,6 +141,10 @@ public partial class LuaManagerWindowViewModel
         {
             return;
         }
+        var tmp = _selectedLibFileModel;
+        _selectedLibFileModel.UpPos();
+        SelectedLibFileModel = tmp;
+        Save();
     }
     [RelayCommand]
     private void PreviewDownPosition()
@@ -143,5 +153,9 @@ public partial class LuaManagerWindowViewModel
         {
             return;
         }
+        var tmp = _selectedLibFileModel;
+        _selectedLibFileModel.DownPos();
+        SelectedLibFileModel = tmp;
+        Save();
     }
 }

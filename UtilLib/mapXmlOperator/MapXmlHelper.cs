@@ -5,6 +5,13 @@ namespace UtilLib.mapXmlOperator
 {
     public static class MapXmlHelper
     {
+        public static readonly string NAMESPACE = "uri:wu.com:ra3map";
+
+        public static XName GetXName(string name)
+        {
+            return XName.Get(name, NAMESPACE);
+        }
+        
         public static XElement MakeScript(string name, List<string> luaContents, bool isEnabled, bool isInclude, bool runOnce)
         {
             if (! isInclude)
@@ -12,27 +19,27 @@ namespace UtilLib.mapXmlOperator
                 return null;
             }
             
-            var script = new XElement("Script", 
+            var script = new XElement(GetXName("Script"), 
                 new XAttribute("Name", name), 
                 new XAttribute("isActive", isEnabled?"true":"false"), 
                 new XAttribute("DeactivateUponSuccess", runOnce?"true":"false"));
 
-            var ifEle = new XElement("If");
+            var ifEle = new XElement(GetXName("If"));
             script.Add(ifEle);
-            var orCondition = new XElement("OrCondition");
+            var orCondition = new XElement(GetXName("OrCondition"));
             ifEle.Add(orCondition);
-            orCondition.Add(new XElement("CONDITION_TRUE"));
+            orCondition.Add(new XElement(GetXName("CONDITION_TRUE")));
 
-            var then = new XElement("Then");
+            var then = new XElement(GetXName("Then"));
             script.Add(then);
             foreach(var content in luaContents)
             {
-                var debugMessageBox = new XElement("DEBUG_MESSAGE_BOX");
+                var debugMessageBox = new XElement(GetXName("DEBUG_MESSAGE_BOX"));
                 then.Add(debugMessageBox);
-                debugMessageBox.Add(new XElement("Text_0", new XAttribute("value", "#!ra3luabridge\n\r" + content)));
+                debugMessageBox.Add(new XElement(GetXName("Text_0"), new XAttribute("value", "#!ra3luabridge\n\r" + content)));
             }
             
-            script.Add(new XElement("Else"));
+            script.Add(new XElement(GetXName("Else")));
 
             return script;
         }

@@ -94,32 +94,36 @@
                     <ui:MenuItem
                         ToolTip="新增lua文件"
                         Icon="{ui:SymbolIcon ReceiptAdd20}"
-                        Command="{Binding AddLuaLibConfigCommand}"
+                        Command="{Binding PreviewAddLuaCommand}"
+                        IsEnabled="False"
                     />
                     <ui:MenuItem
                         Icon="{ui:SymbolIcon FolderAdd20}"
                         ToolTip="新建文件夹"
-                        Command="{Binding ImportLuaCommand}"
+                        Command="{Binding PreviewAddFolderCommand}"
+                        IsEnabled="False"
                     />
                     <ui:MenuItem
                         ToolTip="重命名"
                         Icon="{ui:SymbolIcon Rename20}"
-                        Command="{Binding RenameLuaLibConfigCommand}"
+                        Command="{Binding PreviewRenameCommand}"
+                        IsEnabled="False"
                     />
                     <ui:MenuItem
                         ToolTip="删除"
                         Icon="{ui:SymbolIcon Delete20}"
-                        Command="{Binding DeleteLuaLibConfigCommand}"
+                        Command="{Binding PreviewDeleteCommand}"
+                        IsEnabled="False"
                     />
                     <ui:MenuItem
                         ToolTip="向上移动"
                         Icon="{ui:SymbolIcon ArrowUp20}"
-                        Command="{Binding UpPositionLuaLibConfigCommand}"
+                        Command="{Binding PreviewUpPositionCommand}"
                     />
                     <ui:MenuItem
                         ToolTip="向下移动"
                         Icon="{ui:SymbolIcon ArrowDown20}"
-                        Command="{Binding DownPositionLuaLibConfigCommand}"
+                        Command="{Binding PreviewDownPositionCommand}"
                     />
                 </Menu>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -157,7 +161,7 @@
                 <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.IsEnabled}" Content="启用"  Command="{Binding PreviewChangedCommand}"/>
                 <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.RunOnce}" Content="只运行一次" Visibility="{Binding PreviewSelectedScriptRunOnceVisibility}"  Command="{Binding PreviewChangedCommand}"/>
                    
-                <ui:Button Appearance="Primary" Content="预览/编辑"/>
+                <ui:Button Appearance="Primary" Content="预览/编辑" IsEnabled="False"/>
             </StackPanel>
             
         </StackPanel>

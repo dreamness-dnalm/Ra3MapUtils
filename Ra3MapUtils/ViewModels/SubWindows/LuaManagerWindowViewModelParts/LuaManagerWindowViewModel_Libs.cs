@@ -143,23 +143,29 @@ public partial class LuaManagerWindowViewModel
     {
         if(SelectedLuaLibConfig != null && SelectedLuaLibConfig.LibPath != "")
         {
-            var scriptGroupXElement = LibFileModel.Load(SelectedLuaLibConfig.LibPath).Export();
-            var indexOfSelected = LuaLibConfigs.IndexOf(SelectedLuaLibConfig);
-            var behindScriptGroupName = "";
-            try
+            var libFileModel = LibFileModel.Load(SelectedLuaLibConfig.LibPath);
+            //todo xml/直接导入
+            if (true)
             {
-                if (indexOfSelected > 0)
+                var scriptGroupXElement = libFileModel.Export();
+                var indexOfSelected = LuaLibConfigs.IndexOf(SelectedLuaLibConfig);
+                var behindScriptGroupName = "";
+                try
                 {
-                    var behindLibPath = LuaLibConfigs[indexOfSelected - 1].LibPath;
-                    behindScriptGroupName = Path.GetFileName(behindLibPath);
+                    if (indexOfSelected > 0)
+                    {
+                        var behindLibPath = LuaLibConfigs[indexOfSelected - 1].LibPath;
+                        behindScriptGroupName = Path.GetFileName(behindLibPath);
+                    }
                 }
-            }
-            catch (Exception e)
-            {
+                catch (Exception e)
+                {
                 
+                }
+            
+                _luaImportService.UpsertScriptGroup(MapName, scriptGroupXElement, behindScriptGroupName);
             }
             
-            _luaImportService.UpsertScriptGroup(MapName, scriptGroupXElement, behindScriptGroupName);
         }
     }
 }
