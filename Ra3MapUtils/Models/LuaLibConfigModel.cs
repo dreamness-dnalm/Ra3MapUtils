@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualBasic.FileIO;
 using Ra3MapUtils.Services.Interface;
+using SharedFunctionLib.Models;
 
 namespace Ra3MapUtils.Models;
 
@@ -41,4 +42,10 @@ public partial class LuaLibConfigModel: ObservableObject
     {
         _luaImportService.SaveMapLuaLibConfig(this);
     }
+
+    public static LuaLibConfigModel FromSimple(SimpleLuaLibConfigModel model)
+    {
+        return new LuaLibConfigModel(model.MapName, model.ShowingName, model.LibPath, model.OrderNum);
+    }
+    
 }

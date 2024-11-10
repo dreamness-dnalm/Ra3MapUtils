@@ -285,13 +285,19 @@ public partial class MapManagePageViewModel: ObservableObject
             {
                 return;
             }
-            
-            var xmlFilePath = Path.Combine(PathUtil.RA3MapFolder, _selectedMap, _selectedMap + ".edit.xml");
-            if (!File.Exists(xmlFilePath))
+
+            if (GlobalVarsModel.LuaManagerWindowOpened)
             {
-                MessageBox.Show("xml不存在, 请先导出xml脚本: " + xmlFilePath);
+                MessageBox.Show("Lua导入工具已经打开");
                 return;
             }
+            
+            // var xmlFilePath = Path.Combine(PathUtil.RA3MapFolder, _selectedMap, _selectedMap + ".edit.xml");
+            // if (!File.Exists(xmlFilePath))
+            // {
+            //     MessageBox.Show("xml不存在, 请先导出xml脚本: " + xmlFilePath);
+            //     return;
+            // }
             
             var luaManagerWindow = App.Current.Services.GetRequiredService<LuaManagerWindow>();
             

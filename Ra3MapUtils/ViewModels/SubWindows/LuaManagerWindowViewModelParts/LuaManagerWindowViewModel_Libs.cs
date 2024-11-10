@@ -54,8 +54,37 @@ public partial class LuaManagerWindowViewModel
         {
             return;
         }
-        // todo: 弹窗输入新名字
-        _selectedLuaLibConfig.Rename(_selectedLuaLibConfig.ShowingName);
+       
+        var inputDialog = new Ookii.Dialogs.WinForms.InputDialog();
+        inputDialog.MainInstruction = "请输入新名字";
+        inputDialog.Content = "请输入新名字";
+        inputDialog.WindowTitle = "重命名";
+        
+        if (inputDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+        {
+            return;
+        }
+        if(inputDialog.Input == "")
+        {
+            MessageBox.Show("名字不能为空");
+            return;
+        }
+
+        if (_luaLibConfigs.Where(i => i.ShowingName == inputDialog.Input).ToList().Count > 0)
+        {
+            MessageBox.Show("名字不能重复");
+            return;
+        }
+        
+        try
+        {
+            _selectedLuaLibConfig.Rename(inputDialog.Input);
+            _selectedLuaLibConfig.ShowingName = inputDialog.Input;
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show("重命名失败, 详细错误: " + e.Message);
+        }
     }
     [RelayCommand]
     private void ChangePathLuaLibConfig()
@@ -138,34 +167,34 @@ public partial class LuaManagerWindowViewModel
         _luaLibConfigs.Move(index, index + 1);
     }
 
-    [RelayCommand]
-    private void ImportLua()
-    {
-        if(SelectedLuaLibConfig != null && SelectedLuaLibConfig.LibPath != "")
-        {
-            var libFileModel = LibFileModel.Load(SelectedLuaLibConfig.LibPath);
-            //todo xml/直接导入
-            if (true)
-            {
-                var scriptGroupXElement = libFileModel.Export();
-                var indexOfSelected = LuaLibConfigs.IndexOf(SelectedLuaLibConfig);
-                var behindScriptGroupName = "";
-                try
-                {
-                    if (indexOfSelected > 0)
-                    {
-                        var behindLibPath = LuaLibConfigs[indexOfSelected - 1].LibPath;
-                        behindScriptGroupName = Path.GetFileName(behindLibPath);
-                    }
-                }
-                catch (Exception e)
-                {
-                
-                }
-            
-                _luaImportService.UpsertScriptGroup(MapName, scriptGroupXElement, behindScriptGroupName);
-            }
-            
-        }
-    }
+    // [RelayCommand]
+    // private void ImportLua()
+    // {
+    //     if(SelectedLuaLibConfig != null && SelectedLuaLibConfig.LibPath != "")
+    //     {
+    //         var libFileModel = LibFileModel.Load(SelectedLuaLibConfig.LibPath);
+    //         //todo xml/直接导入
+    //         if (true)
+    //         {
+    //             var scriptGroupXElement = libFileModel.Export();
+    //             var indexOfSelected = LuaLibConfigs.IndexOf(SelectedLuaLibConfig);
+    //             var behindScriptGroupName = "";
+    //             try
+    //             {
+    //                 if (indexOfSelected > 0)
+    //                 {
+    //                     var behindLibPath = LuaLibConfigs[indexOfSelected - 1].LibPath;
+    //                     behindScriptGroupName = Path.GetFileName(behindLibPath);
+    //                 }
+    //             }
+    //             catch (Exception e)
+    //             {
+    //             
+    //             }
+    //         
+    //             _luaImportService.UpsertScriptGroup(MapName, scriptGroupXElement, behindScriptGroupName);
+    //         }
+    //         
+    //     }
+    // }
 }

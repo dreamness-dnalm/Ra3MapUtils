@@ -26,4 +26,17 @@ public partial class LuaManagerWindowViewModel: ObservableObject
         _luaImportService.LoadMapLuaLibConfig(value)
             .ForEach(o => _luaLibConfigs.Add(o));
     }
+
+    [RelayCommand]
+    private void Closed()
+    {
+        GlobalVarsModel.LuaManagerWindowOpened = false;
+    }
+    
+    // [RelayCommand]
+    // private void Initialize()
+    // {
+    //     GlobalVarsModel.LuaManagerWindowOpened = true;
+    //     MessageBox.Show(MapName);
+    // }
 }

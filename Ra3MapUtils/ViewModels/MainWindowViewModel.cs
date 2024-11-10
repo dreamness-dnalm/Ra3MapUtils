@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
-using MapCoreLib.Core.Util;
 using Microsoft.Extensions.DependencyInjection;
 using Ra3MapUtils.Utils;
 using Ra3MapUtils.Views;

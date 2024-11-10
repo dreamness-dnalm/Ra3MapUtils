@@ -1,0 +1,109 @@
+using MapCoreLib.Core;
+using MapCoreLib.Core.Asset;
+using MapCoreLib.Core.Util;
+using UtilLib.mapFileHelper;
+
+namespace UtilCoreLib.mapScriptHelper;
+
+public static class MapScriptHelper
+{
+    public static Script MakeScript(MapDataContext context, string name, List<string> luaContents, bool isEnable, bool isInclude, bool runOnce)
+    {
+        if (!isInclude)
+        {
+            return null;
+        }
+        
+        var script = new Script()
+        {
+            Name = name,
+            scriptOrConditions = MakeConditionTrue(context),
+            ScriptActionOnTrue = new List<ScriptAction>(),
+            isActive = isEnable,
+            DeactivateUponSuccess = runOnce
+        };
+        
+        foreach (var luaContent in luaContents)
+        {
+            script.ScriptActionOnTrue.Add(ScriptAction.of(context, "DEBUG_MESSAGE_BOX", new List<object>{(object)luaContent}));
+        }
+
+        return script;
+    }
+    
+    public static ScriptGroup MakeScriptGroup(MapDataContext context, string name, List<Script> subScripts, List<ScriptGroup> subScriptGroups, bool isEnable, bool isInclude)
+    {
+        if (!isInclude)
+        {
+            return null;
+        }
+
+        var scriptGroup = new ScriptGroup
+        {
+            Name = name,
+            IsActive = isEnable
+        };
+
+        foreach (var subScript in subScripts)
+        {
+            scriptGroup.scripts.Add(subScript);
+        }
+
+        foreach (var subScriptGroup in subScriptGroups)
+        {
+            scriptGroup.scriptGroups.Add(subScriptGroup);
+        }
+
+        return scriptGroup;
+    }
+
+    public static List<OrCondition> MakeConditionTrue(MapDataContext context)
+    {
+        return new List<OrCondition>()
+        {
+            new OrCondition()
+            {
+                conditions = new List<ScriptCondition>()
+                {
+                    ScriptCondition.of(context, "CONDITION_TRUE")
+                }
+            }
+        };
+    }
+
+    public static void test()
+    {
+        var mapName = "NewMap17";
+        var mapDir = Path.Combine(PathUtil.RA3MapFolder, mapName);
+
+        var ra3Map = new Ra3Map(Path.Combine(mapDir, mapName + ".map"));
+        ra3Map.parse();
+        var context = ra3Map.getContext();
+        
+        // context.getAsset<PlayerScriptsList>("PlayerScriptsList").scriptLists[0]
+        // var mapScriptListener = new MapScriptListener();
+        // ra3Map.visit(mapScriptListener);
+        //
+        // var scriptList = mapScriptListener.Value;
+        //
+        // var script = MakeScript(context, "ttttt", new List<string>{"aaaa"}, true, true, true);
+        //
+        // var scriptGroup = MakeScriptGroup(context, "g1", new List<Script>{script}, new List<ScriptGroup>(), true, true);
+        //
+        // MapScriptOperator.AddScriptGroup(context, scriptList, scriptGroup, null);
+        // ra3Map.doSaveMap(ra3Map.mapPath);
+    }
+
+    public static void test2(MapDataContext context)
+    {
+        var scriptList = context.getAsset<PlayerScriptsList>("PlayerScriptsList").scriptLists[0];
+        var script = MakeScript(context, "ttttt", new List<string>{"aaaa"}, true, true, true);
+        
+        var scriptGroup = MakeScriptGroup(context, "g2", new List<Script>{script}, new List<ScriptGroup>(), true, true);
+            
+        MapScriptOperator.AddScriptGroup(context, scriptList, scriptGroup, null);
+        
+        
+        
+    }
+}

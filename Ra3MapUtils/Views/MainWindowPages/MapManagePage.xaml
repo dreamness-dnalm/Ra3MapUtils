@@ -28,8 +28,8 @@
             <ui:MenuItem Icon="{ui:SymbolIcon Copy20}" ToolTip="另存为" Command="{Binding CloneMapCommand}"/>
             <ui:MenuItem Icon="{ui:SymbolIcon Delete20}" ToolTip="删除" Command="{Binding DeleteMapCommand}"/>
             <ui:MenuItem Icon="{ui:SymbolIcon FolderZip20}" ToolTip="压缩" Command="{Binding CompressMapCommand}"/>
-            <ui:MenuItem Icon="{ui:SymbolIcon BookCompass20}" ToolTip="map.str管理"/>
-            <ui:MenuItem Icon="{ui:SymbolIcon PeopleEdit20}" ToolTip="修改地图名称"/>
+            <ui:MenuItem Icon="{ui:SymbolIcon BookCompass20}" ToolTip="map.str管理" IsEnabled="False"/>
+            <ui:MenuItem Icon="{ui:SymbolIcon PeopleEdit20}" ToolTip="修改地图名称" IsEnabled="False"/>
             <ui:MenuItem Icon="{ui:SymbolIcon CodeBlock20}" ToolTip="Lua导入工具" Command="{Binding ManageLuaCommand}"/>
         </Menu>
 

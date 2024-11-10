@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Ra3MapUtils.Services.Controls;
@@ -9,6 +10,7 @@ using Ra3MapUtils.ViewModels;
 using Ra3MapUtils.ViewModels.MainWindowPages;
 using Ra3MapUtils.Views;
 using Ra3MapUtils.Views.MainWindowPages;
+using SharedFunctionLib.Utils;
 using Wpf.Ui;
 
 namespace Ra3MapUtils;
@@ -62,5 +64,7 @@ public partial class App : Application
     {
         Services = ConfigureServices();
         InitializeComponent();
+
+        Directory.CreateDirectory(Ra3MapUtilsPathUtil.UserDataPath);
     }
 }

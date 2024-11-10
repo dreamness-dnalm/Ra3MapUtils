@@ -13,5 +13,5 @@ public interface ILuaImportService
     
     public List<LuaLibConfigModel> LoadMapLuaLibConfig(string mapName);
     
-    public void UpsertScriptGroup(string mapName, XElement scriptGroupXElement, string behindScriptGroupName);
+    // public void UpsertScriptGroup(string mapName, XElement scriptGroupXElement, string behindScriptGroupName);
 }

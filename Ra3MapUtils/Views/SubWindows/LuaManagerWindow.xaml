@@ -16,9 +16,17 @@
         xmlns:controls="clr-namespace:Ra3MapUtils.Services.Controls"
         xmlns:models="clr-namespace:Ra3MapUtils.Models"
         mc:Ignorable="d"
-        Title="{Binding WindowTitle}" Height="450" Width="900" ResizeMode="NoResize">
-    
-   
+        Title="{Binding WindowTitle}" Height="450" Width="900" ResizeMode="NoResize"
+         
+        >
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="Closed">
+            <behaviors:InvokeCommandAction Command="{Binding ClosedCommand}" PassEventArgsToCommand="False"/>
+        </behaviors:EventTrigger>
+        <!-- <behaviors:EventTrigger EventName="Initialized"> -->
+        <!--     <behaviors:InvokeCommandAction Command="{Binding InitializeCommand}" PassEventArgsToCommand="False"/> -->
+        <!-- </behaviors:EventTrigger> -->
+    </behaviors:Interaction.Triggers>
     
         <Grid>
         <Grid.RowDefinitions>
@@ -36,10 +44,10 @@
                         Icon="{ui:SymbolIcon Add20}"
                         Command="{Binding AddLuaLibConfigCommand}"
                     />
-                    <ui:MenuItem
-                        Header="导入"
-                        Command="{Binding ImportLuaCommand}"
-                    />
+                    <!-- <ui:MenuItem -->
+                    <!--     Header="导入" -->
+                    <!--     Command="{Binding ImportLuaCommand}" -->
+                    <!-- /> -->
                     <ui:MenuItem
                         ToolTip="指定目录"
                         Icon="{ui:SymbolIcon Folder20}"
