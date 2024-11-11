@@ -13,7 +13,6 @@ public partial class LuaManagerWindow : Window
     
     public LuaManagerWindow()
     {
-        GlobalVarsModel.LuaManagerWindowOpened = true;
         DataContext = App.Current.Services.GetRequiredService<LuaManagerWindowViewModel>();
         InitializeComponent();
     }

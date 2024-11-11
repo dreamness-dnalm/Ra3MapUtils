@@ -30,7 +30,7 @@ public partial class LuaManagerWindowViewModel: ObservableObject
     [RelayCommand]
     private void Closed()
     {
-        GlobalVarsModel.LuaManagerWindowOpened = false;
+        GlobalVarsModel.SetLuaManagerWindowOpenedMapName(null);
     }
     
     // [RelayCommand]

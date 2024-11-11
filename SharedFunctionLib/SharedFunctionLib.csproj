@@ -45,8 +45,8 @@
         <Reference Include="linq2db, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e41013125f9e410a, processorArchitecture=MSIL">
           <HintPath>..\packages\linq2db.5.4.1\lib\net45\linq2db.dll</HintPath>
         </Reference>
-        <Reference Include="MapCoreLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-          <HintPath>..\packages\Ra3Map.1.0.1\lib\net45\MapCoreLib.dll</HintPath>
+        <Reference Include="MapCoreLib">
+          <HintPath>..\..\..\Program Files (x86)\Red Alert 3(Incomplete)\CoronaLauncher_Test_3.11.9028.39760\CoronaResources\NewWorldBuilder\bin\MapCoreLib.dll</HintPath>
         </Reference>
         <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
           <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -64,6 +64,9 @@
         <Reference Include="System.Data.SQLite.Linq, Version=1.0.119.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
           <HintPath>..\packages\System.Data.SQLite.Linq.1.0.119.0\lib\net45\System.Data.SQLite.Linq.dll</HintPath>
         </Reference>
+        <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+        </Reference>
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
@@ -71,6 +74,7 @@
         <Compile Include="Class1.cs" />
         <Compile Include="DAO\LuaLibConfigDAO.cs" />
         <Compile Include="DAO\SettingsDAO.cs" />
+        <Compile Include="Models\SimpleLibFileModel.cs" />
         <Compile Include="Models\SimpleLuaLibConfigModel.cs" />
         <Compile Include="Models\SimpleSettingModel.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />

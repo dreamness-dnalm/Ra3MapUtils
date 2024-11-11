@@ -9,7 +9,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Ra3Map" Version="1.0.1" />
+      <Reference Include="MapCoreLib">
+        <HintPath>..\..\..\Program Files (x86)\Red Alert 3(Incomplete)\CoronaLauncher_Test_3.11.9028.39760\CoronaResources\NewWorldBuilder\bin\MapCoreLib.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

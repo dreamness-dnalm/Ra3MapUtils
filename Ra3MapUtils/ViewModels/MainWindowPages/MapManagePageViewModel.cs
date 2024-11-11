@@ -303,6 +303,7 @@ public partial class MapManagePageViewModel: ObservableObject
             
             luaManagerWindow._luaManagerWindowViewModel.MapName = _selectedMap;
             luaManagerWindow.Show();
+            GlobalVarsModel.SetLuaManagerWindowOpenedMapName(_selectedMap);
         }
         
         [RelayCommand]

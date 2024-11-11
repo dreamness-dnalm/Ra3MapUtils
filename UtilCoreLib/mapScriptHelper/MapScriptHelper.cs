@@ -1,7 +1,9 @@
 using MapCoreLib.Core;
 using MapCoreLib.Core.Asset;
 using MapCoreLib.Core.Util;
+using MapCoreLib.Util;
 using UtilLib.mapFileHelper;
+using UtilLib.utils;
 
 namespace UtilCoreLib.mapScriptHelper;
 
@@ -9,23 +11,25 @@ public static class MapScriptHelper
 {
     public static Script MakeScript(MapDataContext context, string name, List<string> luaContents, bool isEnable, bool isInclude, bool runOnce)
     {
+        Logger.WriteLog("start make script.. name=" + name);
         if (!isInclude)
         {
             return null;
         }
+        Logger.WriteLog("start make script");
+        var script = new Script();
+        script.Name = name;
+        script.scriptOrConditions = MakeConditionTrue(context);
+        script.ScriptActionOnTrue = new List<ScriptAction>();
+        script.isActive = isEnable;
+        script.DeactivateUponSuccess = runOnce;
         
-        var script = new Script()
-        {
-            Name = name,
-            scriptOrConditions = MakeConditionTrue(context),
-            ScriptActionOnTrue = new List<ScriptAction>(),
-            isActive = isEnable,
-            DeactivateUponSuccess = runOnce
-        };
+        Logger.WriteLog("script create success!");
         
         foreach (var luaContent in luaContents)
         {
-            script.ScriptActionOnTrue.Add(ScriptAction.of(context, "DEBUG_MESSAGE_BOX", new List<object>{(object)luaContent}));
+            var content = "#!ra3luabridge\n\r" + luaContent;
+            script.ScriptActionOnTrue.Add(ScriptAction.of(context, "DEBUG_MESSAGE_BOX", new List<object>{(object)content}));
         }
 
         return script;
@@ -37,13 +41,13 @@ public static class MapScriptHelper
         {
             return null;
         }
-
+        Logger.WriteLog("start make script group");
         var scriptGroup = new ScriptGroup
         {
             Name = name,
             IsActive = isEnable
         };
-
+        Logger.WriteLog("script group create success!");
         foreach (var subScript in subScripts)
         {
             scriptGroup.scripts.Add(subScript);
@@ -102,8 +106,6 @@ public static class MapScriptHelper
         var scriptGroup = MakeScriptGroup(context, "g2", new List<Script>{script}, new List<ScriptGroup>(), true, true);
             
         MapScriptOperator.AddScriptGroup(context, scriptList, scriptGroup, null);
-        
-        
         
     }
 }

@@ -32,7 +32,13 @@ public static class SettingsDAO
         else
         {
             setting.SettingValue = value;
-            db.Update(setting);
+            db.Execute(@"
+        update program_settings set SettingValue = @value where SettingKey = @key
+", new DataParameter[]
+            {
+                new DataParameter("key", key),
+                new DataParameter("value", value)
+            });
         }
     }
     

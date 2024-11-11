@@ -177,53 +177,53 @@ public partial class LibFileModel: ObservableObject
         }
     }
 
-    private (XElement, int) _export()
-    {
-        if (_fileType == "lua")
-        {
-            var path = Path.Combine(_libPath, FileName);
-            return (MapXmlHelper.MakeScript(FileName,
-                new List<string>() { File.ReadAllText(path) },
-                IsEnabled,
-                IsIncluded,
-                RunOnce), OrderNum);
-        }
-        else if(_fileType == "dir")
-        {
-            var childScriptList = new List<(XElement, int)>();
-            
-            var childScriptGroupList = new List<(XElement, int)>();
-            
-            foreach (var child in Children)
-            {
-                var t = child._export();
-                if (t.Item1 != null)
-                {
-                    if (child.FileType == "lua")
-                    {
-                        childScriptList.Add((t.Item1, t.Item2));
-                    }else if (child.FileType == "dir")
-                    {
-                        childScriptGroupList.Add((t.Item1,t.Item2));
-                    }
-                }
-
-            }
-
-            var group = MapXmlHelper.MakeScriptGroup(
-                FileName, 
-                childScriptList.OrderBy(t => t.Item2).Select(t => t.Item1).ToList(), 
-                childScriptGroupList.OrderBy(t => t.Item2).Select(t => t.Item1).ToList(), 
-                IsEnabled, 
-                IsIncluded);
-            return (group, OrderNum);
-        }
-
-        return (null, 99);
-    }
-
-    public XElement Export()
-    {
-        return _export().Item1;
-    }
+    // private (XElement, int) _export()
+    // {
+    //     if (_fileType == "lua")
+    //     {
+    //         var path = Path.Combine(_libPath, FileName);
+    //         return (MapXmlHelper.MakeScript(FileName,
+    //             new List<string>() { File.ReadAllText(path) },
+    //             IsEnabled,
+    //             IsIncluded,
+    //             RunOnce), OrderNum);
+    //     }
+    //     else if(_fileType == "dir")
+    //     {
+    //         var childScriptList = new List<(XElement, int)>();
+    //         
+    //         var childScriptGroupList = new List<(XElement, int)>();
+    //         
+    //         foreach (var child in Children)
+    //         {
+    //             var t = child._export();
+    //             if (t.Item1 != null)
+    //             {
+    //                 if (child.FileType == "lua")
+    //                 {
+    //                     childScriptList.Add((t.Item1, t.Item2));
+    //                 }else if (child.FileType == "dir")
+    //                 {
+    //                     childScriptGroupList.Add((t.Item1,t.Item2));
+    //                 }
+    //             }
+    //
+    //         }
+    //
+    //         var group = MapXmlHelper.MakeScriptGroup(
+    //             FileName, 
+    //             childScriptList.OrderBy(t => t.Item2).Select(t => t.Item1).ToList(), 
+    //             childScriptGroupList.OrderBy(t => t.Item2).Select(t => t.Item1).ToList(), 
+    //             IsEnabled, 
+    //             IsIncluded);
+    //         return (group, OrderNum);
+    //     }
+    //
+    //     return (null, 99);
+    // }
+    //
+    // public XElement Export()
+    // {
+    //     return _export().Item1;
+    // }
 }
