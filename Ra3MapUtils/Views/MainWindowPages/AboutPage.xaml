@@ -85,6 +85,14 @@
                         </StackPanel>
                     </ui:CardControl.Header>
                 </ui:CardControl>
+                <ui:CardControl Margin="4" Padding="20,10,20,10">
+                    <ui:CardControl.Header>
+                        <StackPanel HorizontalAlignment="Left">
+                            <ui:HyperlinkButton Content="AvalonEdit" NavigateUri="https://github.com/icsharpcode/AvalonEdit" HorizontalAlignment="Center" />
+                            <ui:TextBlock Margin="0" Text="代码编辑器" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                </ui:CardControl>
        </WrapPanel>
         </StackPanel>
         

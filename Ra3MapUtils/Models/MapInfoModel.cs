@@ -11,9 +11,6 @@ public partial class MapInfoModel: ObservableObject
     [ObservableProperty] private string _mapSize = "未知";
 
     [ObservableProperty] private string _playerCnt = "未知";
-
-    [ObservableProperty] private string _comment = "";
-
     
     partial void OnMapNameChanged(string value)
     {

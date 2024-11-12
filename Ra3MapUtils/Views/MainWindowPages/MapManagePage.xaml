@@ -65,13 +65,20 @@
                 <StackPanel Orientation="Vertical"  Margin="5, 5,10, 10">
                     <StackPanel Orientation="Vertical" Margin="0, 0, 5, 0">
                         <ui:TextBlock Text="基本信息" FontWeight="Heavy" FontSize="15" Margin="5, 2"/>
-                        <StackPanel Orientation="Horizontal" Margin="5, 2">
+                        <StackPanel Orientation="Horizontal" Margin="5, 4">
                             <ui:TextBlock Text="尺寸: " FontSize="10" Foreground="Gray"/>
                             <ui:TextBlock Text="{Binding SelectedMapInfo.MapSize}"  FontSize="10" Foreground="Gray"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="5, 2">
                             <ui:TextBlock Text="玩家数: " FontSize="10" Foreground="Gray"/>
                             <ui:TextBlock Text="{Binding SelectedMapInfo.PlayerCnt}" FontSize="10" Foreground="Gray"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="5, 0">
+                            <StackPanel Orientation="Horizontal">
+                                    <ui:TextBlock TextAlignment="Center" Text="备注" FontSize="10" Foreground="Gray" VerticalAlignment="Center"/>
+                                    <ui:HyperlinkButton Icon="{ui:SymbolIcon CodeTextEdit20}" Command="{Binding EditMapCommentCommand}" />
+                            </StackPanel>
+                            <ui:TextBlock Text="{Binding SelectedMapFile.Comment}" TextWrapping="Wrap" Width="100" HorizontalAlignment="Left" MaxWidth="200"/>
                         </StackPanel>
                     </StackPanel>
                     
