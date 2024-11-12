@@ -13,5 +13,6 @@ public partial class MapManagePage : Page
         DataContext = App.Current.Services.GetRequiredService<MapManagePageViewModel>();
         InitializeComponent();
         _mapManagePageViewModel.RefreshMapListCommand.Execute(null);
+        
     }
 }

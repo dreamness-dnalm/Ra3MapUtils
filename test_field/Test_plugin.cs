@@ -30,6 +30,14 @@ public class Test_plugin
         // method.Invoke(null, new object[] { context });
         
         // ra3Map.doSaveMap(ra3Map.mapPath);
+        try
+        {
+
+        }
+        catch (TargetInvocationException e)
+        {
+
+        }
 
     }
 

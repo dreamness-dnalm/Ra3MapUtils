@@ -16,4 +16,14 @@ public class SimpleLuaLibConfigModel
         public string LibPath;
         [Column(Name="OrderNum")]
         public int OrderNum;
+
+        public override string ToString()
+        {
+                return "SimpleLuaLibConfigModel{" +
+                       "MapName='" + MapName + '\'' +
+                       ", ShowingName='" + ShowingName + '\'' +
+                       ", LibPath='" + LibPath + '\'' +
+                       ", OrderNum=" + OrderNum +
+                       '}';
+        }
 }

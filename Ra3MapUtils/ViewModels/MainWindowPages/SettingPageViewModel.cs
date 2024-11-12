@@ -1,24 +1,31 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using Ra3MapUtils.Models;
 using Wpf.Ui;
 using Wpf.Ui.Controls;
 using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace Ra3MapUtils.ViewModels.MainWindowPages;
 
-public partial class SettingPageViewModel(ISnackbarService snackbarService): ObservableObject
+public partial class SettingPageViewModel: ObservableObject
 {
-    // private readonly ISnackbarService _snackbarService = App.Current.Services.GetRequiredService<ISnackbarService>();
-    
-    [RelayCommand]
-    private void ShowSnackbar()
+    [ObservableProperty] private SettingModel _settingModel = new SettingModel();
+
+    [ObservableProperty] private int _luaRedundancyFactor;
+
+    public SettingPageViewModel()
     {
-        // MessageBox.Show("d");
-        // var snackbar = new Snackbar(new SnackbarPresenter());
-        // snackbar.SetCurrentValue(Snackbar.TitleProperty, "aaaaaaaaaaa");
-        // snackbar.Show();
-        // snackbarService.SetSnackbarPresenter(new SnackbarPresenter());
-        snackbarService.Show("aa", "bb", ControlAppearance.Danger, null, TimeSpan.FromSeconds(5));
+        _luaRedundancyFactor = SettingModel.LuaRedundancyFactor;
+    }
+
+    [RelayCommand]
+    private void SaveLuaRedundancyFactor()
+    {
+        if (_luaRedundancyFactor < 100 || _luaRedundancyFactor > 3000)
+        {
+            MessageBox.Show("Lua冗余系数应在100-3000之间");
+        }
+        SettingModel.LuaRedundancyFactor = LuaRedundancyFactor;
     }
 }

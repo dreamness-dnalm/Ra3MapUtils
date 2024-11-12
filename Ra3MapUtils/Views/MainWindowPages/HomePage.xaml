@@ -16,6 +16,6 @@
       Title="HomePage" Height="450" Width="800"
       >
     <Grid>
-        <Label Content="aaaaaaaaaaa"></Label>
+        <Label Content="todo 欢迎页"></Label>
     </Grid>
 </Page>

@@ -34,7 +34,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="15"/>
         </Grid.RowDefinitions>
-        <ui:HyperlinkButton Grid.Row="0" Content="使用文档" NavigateUri="xxxx" Icon="{ui:SymbolIcon Document20}"/>
+        <ui:HyperlinkButton Grid.Row="0" Content="使用文档" NavigateUri="https://www.yuque.com/muzeqaq/ra3mapwiki/ofa6ufyd9pmwwgnm" Icon="{ui:SymbolIcon Document20}"/>
         <StackPanel Grid.Row="1" Orientation="Horizontal" >
             <!-- 库管理 -->
             <StackPanel Orientation="Vertical">
@@ -135,7 +135,7 @@
                     />
                 </Menu>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <TreeView ItemsSource="{Binding SelectPreviewLibFileModels}" Height="340">
+                    <TreeView ItemsSource="{Binding SelectPreviewLibFileModels}" Height="320">
                         <behaviors:Interaction.Triggers>
                             <behaviors:EventTrigger EventName="SelectedItemChanged">
                                 <behaviors:InvokeCommandAction Command="{Binding LibPreviewItemSelectedChangedCommand}" PassEventArgsToCommand="True"/>

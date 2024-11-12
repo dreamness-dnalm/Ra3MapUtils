@@ -22,11 +22,26 @@ public class SimpleLibFileModel
     public int OrderNum = 99;
     public List<SimpleLibFileModel> Children = new List<SimpleLibFileModel>();
 
-    private string _libPath;
+    public string LibPath;
     private SimpleLibFileModel _parent;
-    
-    
-        public static SimpleLibFileModel Load(string libPath)
+
+    public override string ToString()
+    {
+        return "SimpleLibFileModel{" +
+               "FileName='" + FileName + '\'' +
+               ", FilePath='" + FilePath + '\'' +
+               ", FileType='" + FileType + '\'' +
+               ", IsEnabled=" + IsEnabled +
+               ", IsIncluded=" + IsIncluded +
+               ", RunOnce=" + RunOnce +
+               ", OrderNum=" + OrderNum +
+               ", Children=" + Children +
+               ", LibPath='" + LibPath + '\'' +
+               '}';
+    }
+
+
+    public static SimpleLibFileModel Load(string libPath)
     {
         var rootModel = LoadFromPath(libPath, Directory.GetParent(libPath).FullName, null);
         var metaModel = LoadFromMeta(libPath);
@@ -92,7 +107,7 @@ public class SimpleLibFileModel
         model.FilePath = libPath.Replace(rootParentPath, "");
         model._parent = parent;
         model.FileType = "dir";
-        model._libPath = libPath;
+        model.LibPath = libPath;
         
         var subDirectories = Directory.GetDirectories(libPath).ToList();
 
@@ -111,7 +126,7 @@ public class SimpleLibFileModel
             subFileModel.FileName = Path.GetFileName(f);
             subFileModel.FilePath = f.Replace(rootParentPath, "");
             subFileModel._parent = model;
-            subFileModel._libPath = libPath;
+            subFileModel.LibPath = libPath;
             model.Children.Add(subFileModel);
         });
 
@@ -140,7 +155,7 @@ public class SimpleLibFileModel
         if (FileType == "lua")
         {
             
-            var path = Path.Combine(_libPath, FileName);
+            var path = Path.Combine(LibPath, FileName);
             Logger.WriteLog("a lua: " + path);
             return new Tuple2(MapScriptHelper.MakeScript(
                 context, 

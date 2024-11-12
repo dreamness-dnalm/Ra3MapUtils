@@ -15,7 +15,7 @@
         Foreground="{DynamicResource TextFillColorPrimaryBrush}"
         xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="红警3地图工具" Height="650" Width="800"
+        Title="RA3地编伴侣 v0.1.alpha内部测试版" Height="650" Width="800"
         ResizeMode="NoResize"
         >
     
@@ -81,7 +81,7 @@
                             VerticalAlignment="Center"
                             FontWeight="Medium"
                             Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                            Text="红警3地图工具" />
+                            Text="RA3地编伴侣 v0.1.alpha内部测试版" />
                     </Border>
                 </ui:NavigationView.Header>
 

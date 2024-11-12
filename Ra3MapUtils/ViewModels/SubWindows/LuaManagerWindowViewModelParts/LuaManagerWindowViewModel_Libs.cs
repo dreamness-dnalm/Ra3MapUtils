@@ -32,6 +32,7 @@ public partial class LuaManagerWindowViewModel
         var model = new LuaLibConfigModel(_mapName, "lib_" + (_luaLibConfigs.Count + 1), "", orderNum);
         _luaImportService.SaveMapLuaLibConfig(model);
         LuaLibConfigs.Add(model);
+        SelectedLuaLibConfig = model;
     }
     
     [RelayCommand]
@@ -45,6 +46,7 @@ public partial class LuaManagerWindowViewModel
         var tmpModel = _selectedLuaLibConfig;
         _luaLibConfigs.Remove(tmpModel);
         tmpModel.Delete();
+        SelectedLuaLibConfig = null;
     }
     
     [RelayCommand]
@@ -106,8 +108,9 @@ public partial class LuaManagerWindowViewModel
             
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                _selectedLuaLibConfig.LibPath = dialog.SelectedPath;
-                _selectedLuaLibConfig.Upsert();
+                SelectedLuaLibConfig.LibPath = dialog.SelectedPath;
+                SelectedLuaLibConfig.Upsert();
+                ReloadLibPreview();
             }
         }
         

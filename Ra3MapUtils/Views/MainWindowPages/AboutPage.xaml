@@ -19,14 +19,14 @@
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"  Height="{Binding _aboutPage.Height}">
             <StackPanel>
         <Label Content="本软件完全免费开源" FontSize="15" FontWeight="Bold"/>
-        <ui:HyperlinkButton Content="github: xxxxxx" Icon="{ui:SymbolIcon Code16}" NavigateUri="https://github.com/xxxxxxxx" />
+        <ui:HyperlinkButton Content="github: xxxxxx待上传" Icon="{ui:SymbolIcon Code16}" NavigateUri="https://github.com/xxxxxxxx" />
         <StackPanel Orientation="Horizontal">
             <ui:TextBlock Text="本软件使用" VerticalAlignment="Center"/>
             <ui:HyperlinkButton Content="Apache2.0" NavigateUri="https://www.apache.org/licenses/LICENSE-2.0.txt"  VerticalAlignment="Center"/>
             <ui:TextBlock Text="开源协议" VerticalAlignment="Center"/>
         </StackPanel>
         
-        <ui:TextBlock Text="欢迎提PR, 提ISSUE, 也欢迎通过QQ群(513118543)沟通/反馈."/>
+        <ui:TextBlock Text="欢迎提PR, 提ISSUE, 也欢迎通过QQ群(xxxx)沟通/反馈."/>
         
         <StackPanel>
             <Label Content="贡献者" FontSize="15" FontWeight="Bold"/>
@@ -74,6 +74,14 @@
                         <StackPanel HorizontalAlignment="Left">
                             <ui:HyperlinkButton Content="Magick.NET" NavigateUri="https://github.com/dlemstra/Magick.NET" HorizontalAlignment="Center" />
                             <ui:TextBlock Margin="0" Text="强大的图片库" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                </ui:CardControl>
+                <ui:CardControl Margin="4" Padding="20,10,20,10">
+                    <ui:CardControl.Header>
+                        <StackPanel HorizontalAlignment="Left">
+                            <ui:HyperlinkButton Content="linq2db" NavigateUri="https://github.com/linq2db/linq2db" HorizontalAlignment="Center" />
+                            <ui:TextBlock Margin="0" Text="micro-ORM" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
                         </StackPanel>
                     </ui:CardControl.Header>
                 </ui:CardControl>

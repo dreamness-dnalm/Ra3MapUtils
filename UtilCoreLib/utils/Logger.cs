@@ -10,7 +10,7 @@ public class Logger
     {
         using (StreamWriter writer = new StreamWriter(logPath, true))
         {
-            writer.WriteLine(log);
+            writer.WriteLine($"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff")}] {log}");
         }
     }
 }

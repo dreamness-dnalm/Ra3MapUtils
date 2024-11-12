@@ -33,55 +33,35 @@ public static class LuaImporterBusiness
             
         }
     }
+    
+    public static int LuaRedundancyFactor
+    {
+        get
+        {
+            var redundancyFactor = SettingsDAO.GetSetting("LuaImporter_LuaRedundancyFactor");
+            if (redundancyFactor == null)
+            {
+                LuaRedundancyFactor = 100;
+                return 100;
+            }
+            return int.Parse(redundancyFactor);
+        }
+        set => SettingsDAO.SetSetting("LuaImporter_LuaRedundancyFactor", value.ToString());
+    }
 
     public static List<SimpleLuaLibConfigModel> LoadLuaLibConfigModels()
     {
-        Logger.WriteLog("start ImportActiveMapLua");
-        // var mapName = ActiveMapName;
-        // if (mapName == null)
-        // {
-        //     throw new Exception("No Map Is Active In LuaImporter. Are you sure you have open then LuaImporter Window?");
-        // }
-        var mapName = "NewMap19";
-        
-        var luaLibConfigModels = Load(mapName)
-            .Where(i => i.LibPath != null && i.LibPath != "")
-            .OrderBy(i => i.OrderNum).ToList();
-        Logger.WriteLog("got lua lib config models");
-        return luaLibConfigModels;
-    }
-
-    public static void ImportActiveMapLua(MapDataContext context)
-    {
-        Logger.WriteLog("start ImportActiveMapLua");
-        // var mapName = ActiveMapName;
-        // if (mapName == null)
-        // {
-        //     throw new Exception("No Map Is Active In LuaImporter. Are you sure you have open then LuaImporter Window?");
-        // }
-        var mapName = "NewMap19";
-        
-        var scriptList = context.getAsset<PlayerScriptsList>("PlayerScriptsList").scriptLists[0];
-        Logger.WriteLog("got script list");
-        var luaLibConfigModels = Load(mapName)
-            .Where(i => i.LibPath != null && i.LibPath != "")
-            .OrderBy(i => i.OrderNum).ToList();
-        Logger.WriteLog("got lua lib config models");
-        string lastScriptGroupName = null;
-        for (int i = 0; i < luaLibConfigModels.Count; i++)
+        var mapName = ActiveMapName;
+        if (mapName == null)
         {
-            var currModel = luaLibConfigModels[0];
-
-            var fileModel = SimpleLibFileModel.Load(currModel.LibPath);
-            Logger.WriteLog("fileModel loaded");
-            var scriptGroup = fileModel.Translate(context).Item1;
-            Logger.WriteLog("translate finished");
-            if (scriptGroup != null)
-            {
-                MapScriptOperator.AddScriptGroup(context, scriptList, (ScriptGroup)scriptGroup, lastScriptGroupName);
-                lastScriptGroupName = Path.GetFileName(currModel.LibPath);
-            }
+            throw new Exception("No Map Is Active In LuaImporter. Are you sure you have open then LuaImporter Window?");
         }
+        Logger.WriteLog("ActiveMapName: " + mapName);
+        var luaLibConfigModels = Load(mapName)
+            .Where(i => i.LibPath != null && i.LibPath != "")
+            .OrderBy(i => i.OrderNum).ToList();
+        Logger.WriteLog("LoadLuaLibConfigModels Finished.");
+        return luaLibConfigModels;
     }
     
     public static void Save(string mapName, string showingName, string libPath, int orderNum)
@@ -109,21 +89,5 @@ public static class LuaImporterBusiness
     public static List<SimpleLuaLibConfigModel> Load(string mapName)
     {
         return LuaLibConfigDAO.Load(mapName);
-    }
-    
-    public static void Main()
-    {
-        var mapName = "NewMap19";
-        var mapDir = Path.Combine(PathUtil.RA3MapFolder, mapName);
-
-        var ra3Map = new Ra3Map(Path.Combine(mapDir, mapName + ".map"));
-        ra3Map.modifyMap();
-        ra3Map.parse();
-        
-        var context = ra3Map.getContext();
-        
-        ImportActiveMapLua(context);
-        
-        ra3Map.doSaveMap(ra3Map.mapPath);
     }
 }
