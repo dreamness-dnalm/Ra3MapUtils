@@ -10,6 +10,7 @@ using Ra3MapUtils.ViewModels;
 using Ra3MapUtils.ViewModels.MainWindowPages;
 using Ra3MapUtils.Views;
 using Ra3MapUtils.Views.MainWindowPages;
+using Ra3MapUtils.Views.SubWindows;
 using SharedFunctionLib.Utils;
 using Wpf.Ui;
 
@@ -52,6 +53,9 @@ public partial class App : Application
         services.AddTransient<LuaImportItemControl>();
         services.AddTransient<LuaManagerWindowViewModel>();
 
+        services.AddTransient<CodeEditorWindow>();
+        services.AddTransient<CodeEditorWindowViewModel>();
+
         services.AddSingleton<ILuaImportService, LuaImportService>();
         services.AddSingleton<ISettingService, SettingService>();
 
@@ -66,5 +70,6 @@ public partial class App : Application
         InitializeComponent();
 
         Directory.CreateDirectory(Ra3MapUtilsPathUtil.UserDataPath);
+        System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
     }
 }

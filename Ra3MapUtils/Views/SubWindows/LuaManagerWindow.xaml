@@ -16,7 +16,7 @@
         xmlns:controls="clr-namespace:Ra3MapUtils.Services.Controls"
         xmlns:models="clr-namespace:Ra3MapUtils.Models"
         mc:Ignorable="d"
-        Title="{Binding WindowTitle}" Height="450" Width="900" ResizeMode="NoResize"
+        Title="{Binding WindowTitle}" Height="450" Width="900" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
          
         >
     <behaviors:Interaction.Triggers>
@@ -169,7 +169,7 @@
                 <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.IsEnabled}" Content="启用"  Command="{Binding PreviewChangedCommand}"/>
                 <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.RunOnce}" Content="只运行一次" Visibility="{Binding PreviewSelectedScriptRunOnceVisibility}"  Command="{Binding PreviewChangedCommand}"/>
                    
-                <ui:Button Appearance="Primary" Content="预览/编辑" IsEnabled="False"/>
+                <ui:Button Appearance="Primary" Content="预览" Command="{Binding PreviewShowCodeCommand}" Margin="0, 10, 0, 10" Visibility="{Binding PreviewSelectedScriptRunOnceVisibility}"/>
                 <StackPanel Orientation="Horizontal">
                     <ui:TextBlock Text="备注" TextAlignment="Center" VerticalAlignment="Center"/>
                     <ui:HyperlinkButton Icon="{ui:SymbolIcon CodeTextEdit20}"/>

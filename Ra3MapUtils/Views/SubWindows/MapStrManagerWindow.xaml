@@ -14,7 +14,7 @@
         ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
         Foreground="{DynamicResource TextFillColorPrimaryBrush}"
         mc:Ignorable="d"
-        Title="map.set管理工具" Height="450" Width="900" ResizeMode="NoResize">
+        Title="map.set管理工具" Height="450" Width="900" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

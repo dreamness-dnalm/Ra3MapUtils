@@ -1,8 +1,11 @@
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using Ra3MapUtils.Models;
+using Ra3MapUtils.Views.SubWindows;
 
 namespace Ra3MapUtils.ViewModels;
 
@@ -157,5 +160,29 @@ public partial class LuaManagerWindowViewModel
         _selectedLibFileModel.DownPos();
         SelectedLibFileModel = tmp;
         Save();
+    }
+
+    [RelayCommand]
+    private void PreviewShowCode()
+    {
+        var filePath = "??";
+        try
+        {
+            filePath = new DirectoryInfo(_selectedLuaLibConfig.LibPath).Parent.FullName + "\\" + _selectedLibFileModel.FilePath;
+        }
+        catch (Exception e)
+        {
+        }
+        
+        var codeEditorWindow = App.Current.Services.GetRequiredService<CodeEditorWindow>();
+        
+        codeEditorWindow._codeEditorWindowViewModel.FilePath = filePath;
+        codeEditorWindow.Show();
+    }
+    
+    [RelayCommand]
+    private void PreviewEditComment()
+    {
+        // todo 
     }
 }

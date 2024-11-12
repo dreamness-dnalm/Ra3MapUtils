@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="AvalonEdit" Version="6.3.0.90" />
       <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
       <PackageReference Include="linq2db" Version="5.4.1" />
       <PackageReference Include="linq2db.SQLite" Version="5.4.1" />
@@ -16,6 +17,7 @@
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
       <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
       <PackageReference Include="Ookii.Dialogs.WinForms" Version="4.0.0" />
+      <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
       <PackageReference Include="WPF-UI" Version="3.0.5" />
     </ItemGroup>
 
@@ -40,6 +42,12 @@
       <ProjectReference Include="..\SharedFunctionLib\SharedFunctionLib.csproj" />
     
       <ProjectReference Include="..\UtilCoreLib\UtilCoreLib.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="lua4.xshd">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

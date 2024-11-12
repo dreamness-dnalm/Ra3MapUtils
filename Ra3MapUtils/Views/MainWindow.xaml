@@ -16,7 +16,7 @@
         xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="RA3地编伴侣 v0.1.alpha内部测试版" Height="650" Width="800"
-        ResizeMode="NoResize"
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
         >
     
     <behaviors:Interaction.Triggers>
