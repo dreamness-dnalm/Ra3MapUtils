@@ -170,6 +170,11 @@
                 <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.RunOnce}" Content="只运行一次" Visibility="{Binding PreviewSelectedScriptRunOnceVisibility}"  Command="{Binding PreviewChangedCommand}"/>
                    
                 <ui:Button Appearance="Primary" Content="预览/编辑" IsEnabled="False"/>
+                <StackPanel Orientation="Horizontal">
+                    <ui:TextBlock Text="备注" TextAlignment="Center" VerticalAlignment="Center"/>
+                    <ui:HyperlinkButton Icon="{ui:SymbolIcon CodeTextEdit20}"/>
+                </StackPanel>
+                <ui:TextBlock TextWrapping="Wrap"/>
             </StackPanel>
             
         </StackPanel>
