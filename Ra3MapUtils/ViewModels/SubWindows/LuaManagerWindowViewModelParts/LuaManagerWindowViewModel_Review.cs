@@ -132,7 +132,6 @@ public partial class LuaManagerWindowViewModel
         {
             return;
         }
-        var tmp = _selectPreviewLibFileModels[0];
         SelectedLibFileModel.Delete();
         Save();
     }
@@ -183,6 +182,25 @@ public partial class LuaManagerWindowViewModel
     [RelayCommand]
     private void PreviewEditComment()
     {
-        // todo 
+        if(SelectPreviewLibFileModels.Count == 0)
+        {
+            return;
+        }
+        if(SelectedLibFileModel == null && SelectedLibFileModel.FilePath != "")
+        {
+            return;
+        }
+        
+        var inputDialog = new Ookii.Dialogs.WinForms.InputDialog();
+        inputDialog.MainInstruction = "请输入备注";
+        inputDialog.Content = "请输入备注";
+        inputDialog.WindowTitle = "备注";
+        inputDialog.Input = SelectedLibFileModel.Comment;
+        
+        if (inputDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+        {
+            SelectedLibFileModel.Comment = inputDialog.Input;
+            Save();
+        }
     }
 }

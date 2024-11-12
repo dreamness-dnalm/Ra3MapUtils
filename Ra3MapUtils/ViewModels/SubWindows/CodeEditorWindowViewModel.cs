@@ -20,6 +20,8 @@ public partial class CodeEditorWindowViewModel: ObservableObject
 
     [ObservableProperty] private string _filePath;
 
+    [ObservableProperty] private string _caretInfo;
+
     private Dictionary<string, Encoding> _encodings = new Dictionary<string, Encoding> 
         {
             {"UTF-8", Encoding.UTF8},
@@ -81,5 +83,10 @@ public partial class CodeEditorWindowViewModel: ObservableObject
         }
 
         _textEditor.Text = Code;
+    }
+    
+    public void ReloadCaretInfo()
+    {
+        CaretInfo = $"行: {_textEditor.TextArea.Caret.Line}, 列: {_textEditor.TextArea.Caret.Column}, 位置: {_textEditor.TextArea.Caret.Offset}";
     }
 }

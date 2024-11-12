@@ -21,7 +21,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
         <Menu Grid.Row="0">
@@ -41,8 +41,15 @@
             LineNumbersForeground="Black" 
             ShowLineNumbers="True"
             IsReadOnly="True"
-            >
-        </avalonEdit:TextEditor>
+            />
         
-    </Grid>
+        <Grid Grid.Row="2" Height="15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <ui:TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{Binding CaretInfo}" Margin="5, 0, 5, 0"/>
+        </Grid>
+        
+        </Grid>
 </Window>

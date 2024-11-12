@@ -13,5 +13,10 @@ public partial class CodeEditorWindow : Window
         DataContext = App.Current.Services.GetRequiredService<CodeEditorWindowViewModel>();
         InitializeComponent();
         _codeEditorWindowViewModel._textEditor = CodeEditor;
+        
+        CodeEditor.TextArea.Caret.PositionChanged += (sender, args) =>
+        {
+            _codeEditorWindowViewModel.ReloadCaretInfo();
+        };
     }
 }

@@ -19,7 +19,8 @@ public partial class LibFileModel: ObservableObject
     [ObservableProperty] private bool _runOnce = true;
     [ObservableProperty] private int _orderNum = 99;
     [ObservableProperty] private ObservableCollection<LibFileModel> _children = new ObservableCollection<LibFileModel>();
-
+    [ObservableProperty] private string _comment = "";
+    
     private string _libPath;
     private LibFileModel _parent;
     // [ObservableProperty] private LibFileModel _parent;
@@ -34,6 +35,7 @@ public partial class LibFileModel: ObservableObject
         rootModel.IsEnabled = metaModel.IsEnabled;
         rootModel.IsIncluded = metaModel.IsIncluded;
         rootModel.RunOnce = metaModel.RunOnce;
+        rootModel.Comment = metaModel.Comment;
         
         // 递归套用配置
         ApplyMeta(rootModel, metaModel);
@@ -57,6 +59,7 @@ public partial class LibFileModel: ObservableObject
                 dirModelChild.IsIncluded = metaModelChild.IsIncluded;
                 dirModelChild.RunOnce = metaModelChild.RunOnce;
                 dirModelChild.OrderNum = metaModelChild.OrderNum;
+                dirModelChild.Comment = metaModelChild.Comment;
 
                 if (fileType == "dir")
                 {

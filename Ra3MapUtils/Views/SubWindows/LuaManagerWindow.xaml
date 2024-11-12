@@ -35,9 +35,17 @@
             <RowDefinition Height="15"/>
         </Grid.RowDefinitions>
         <ui:HyperlinkButton Grid.Row="0" Content="使用文档" NavigateUri="https://www.yuque.com/muzeqaq/ra3mapwiki/ofa6ufyd9pmwwgnm" Icon="{ui:SymbolIcon Document20}"/>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" >
+        <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
             <!-- 库管理 -->
-            <StackPanel Orientation="Vertical">
+            <StackPanel Grid.Column="0" Orientation="Vertical" Margin="5, 0, 5, 0">
                 <Menu>
                     <ui:MenuItem
                         ToolTip="新增"
@@ -89,40 +97,40 @@
                 </ScrollViewer>
             </StackPanel>
             
-            <Separator Width="5" FontWeight="Heavy"/>
+            <Separator Grid.Column="1" Width="5" FontWeight="Heavy"/>
             
             <!-- 库目录结构预览-->
-            <StackPanel Orientation="Vertical">
+            <StackPanel Grid.Column="2" Orientation="Vertical" Margin="5, 0, 5, 0">
                 <Menu>
                     <ui:MenuItem
                         ToolTip="刷新"
                         Icon="{ui:SymbolIcon ArrowSync20}"
                         Command="{Binding ReloadLibPreviewCommand}"
                     />
-                    <ui:MenuItem
-                        ToolTip="新增lua文件"
-                        Icon="{ui:SymbolIcon ReceiptAdd20}"
-                        Command="{Binding PreviewAddLuaCommand}"
-                        IsEnabled="False"
-                    />
-                    <ui:MenuItem
-                        Icon="{ui:SymbolIcon FolderAdd20}"
-                        ToolTip="新建文件夹"
-                        Command="{Binding PreviewAddFolderCommand}"
-                        IsEnabled="False"
-                    />
-                    <ui:MenuItem
-                        ToolTip="重命名"
-                        Icon="{ui:SymbolIcon Rename20}"
-                        Command="{Binding PreviewRenameCommand}"
-                        IsEnabled="False"
-                    />
-                    <ui:MenuItem
-                        ToolTip="删除"
-                        Icon="{ui:SymbolIcon Delete20}"
-                        Command="{Binding PreviewDeleteCommand}"
-                        IsEnabled="False"
-                    />
+                    <!-- <ui:MenuItem -->
+                    <!--     ToolTip="新增lua文件" -->
+                    <!--     Icon="{ui:SymbolIcon ReceiptAdd20}" -->
+                    <!--     Command="{Binding PreviewAddLuaCommand}" -->
+                    <!--     IsEnabled="False" -->
+                    <!-- /> -->
+                    <!-- <ui:MenuItem -->
+                    <!--     Icon="{ui:SymbolIcon FolderAdd20}" -->
+                    <!--     ToolTip="新建文件夹" -->
+                    <!--     Command="{Binding PreviewAddFolderCommand}" -->
+                    <!--     IsEnabled="False" -->
+                    <!-- /> -->
+                    <!-- <ui:MenuItem -->
+                    <!--     ToolTip="重命名" -->
+                    <!--     Icon="{ui:SymbolIcon Rename20}" -->
+                    <!--     Command="{Binding PreviewRenameCommand}" -->
+                    <!--     IsEnabled="False" -->
+                    <!-- /> -->
+                    <!-- <ui:MenuItem -->
+                    <!--     ToolTip="删除" -->
+                    <!--     Icon="{ui:SymbolIcon Delete20}" -->
+                    <!--     Command="{Binding PreviewDeleteCommand}" -->
+                    <!--     IsEnabled="False" -->
+                    <!-- /> -->
                     <ui:MenuItem
                         ToolTip="向上移动"
                         Icon="{ui:SymbolIcon ArrowUp20}"
@@ -153,9 +161,9 @@
                     </TreeView>
                 </ScrollViewer>
             </StackPanel>
-            <Separator Width="5" FontWeight="Heavy"/>
+            <Separator Grid.Column="3" Width="5" FontWeight="Heavy"/>
             <!-- Lua文件管理 -->
-            <StackPanel Visibility="{Binding PreviewSelectedScriptVisibility}">
+            <StackPanel Grid.Column="4" Visibility="{Binding PreviewSelectedScriptVisibility}" Margin="5, 0, 5, 0">
                 <ui:TextBlock Text="脚本信息"/>
                 <StackPanel Orientation="Horizontal">
                     <ui:TextBlock Text="文件名: "/>
@@ -172,12 +180,12 @@
                 <ui:Button Appearance="Primary" Content="预览" Command="{Binding PreviewShowCodeCommand}" Margin="0, 10, 0, 10" Visibility="{Binding PreviewSelectedScriptRunOnceVisibility}"/>
                 <StackPanel Orientation="Horizontal">
                     <ui:TextBlock Text="备注" TextAlignment="Center" VerticalAlignment="Center"/>
-                    <ui:HyperlinkButton Icon="{ui:SymbolIcon CodeTextEdit20}"/>
+                    <ui:HyperlinkButton Icon="{ui:SymbolIcon CodeTextEdit20}" Command="{Binding PreviewEditCommentCommand}"/>
                 </StackPanel>
-                <ui:TextBlock TextWrapping="Wrap"/>
+                <ui:TextBlock TextWrapping="Wrap" Text="{Binding SelectedLibFileModel.Comment}"/>
             </StackPanel>
             
-        </StackPanel>
+        </Grid>
         
         <StackPanel Grid.Row="2" Orientation="Horizontal">
             <ui:TextBlock Text="  已选中: "/>
