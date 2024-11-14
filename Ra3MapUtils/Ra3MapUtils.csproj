@@ -8,6 +8,10 @@
         <UseWPF>true</UseWPF>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <PlatformTarget>x64</PlatformTarget>
+    </PropertyGroup>
+
     <ItemGroup>
       <PackageReference Include="AvalonEdit" Version="6.3.0.90" />
       <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
@@ -19,6 +23,7 @@
       <PackageReference Include="Ookii.Dialogs.WinForms" Version="4.0.0" />
       <PackageReference Include="SemanticVersion" Version="2.1.0" />
       <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
+      <PackageReference Include="Velopack" Version="0.0.869" />
       <PackageReference Include="WPF-UI" Version="3.0.5" />
     </ItemGroup>
 
@@ -38,7 +43,7 @@
       </Page>
     </ItemGroup>
 
-    <ItemGroup><!--      <ProjectReference Include="..\UtilLib\UtilLib.csproj" />-->
+    <ItemGroup>
     
       <ProjectReference Include="..\SharedFunctionLib\SharedFunctionLib.csproj" />
     

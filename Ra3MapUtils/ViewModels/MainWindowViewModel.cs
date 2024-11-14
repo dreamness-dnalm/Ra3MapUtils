@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 using Microsoft.Extensions.DependencyInjection;
+using Ra3MapUtils.Models;
 using Ra3MapUtils.Utils;
 using Ra3MapUtils.Views;
 using UtilLib.mapFileHelper;
@@ -15,7 +16,7 @@ namespace Ra3MapUtils.ViewModels
 {
     public partial class MainWindowViewModel: ObservableObject
     {
-        
+        [ObservableProperty ]public string _windowTitle = $"{GlobalVarsModel.ProgramName} {GlobalVarsModel.VersionStr}";
         
         [RelayCommand]
         private void CloseWindow()

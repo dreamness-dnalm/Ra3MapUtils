@@ -19,7 +19,7 @@
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"  Height="{Binding _aboutPage.Height}">
             <StackPanel>
         <Label Content="本软件完全免费开源" FontSize="15" FontWeight="Bold"/>
-        <ui:HyperlinkButton Content="github: xxxxxx待上传" Icon="{ui:SymbolIcon Code16}" NavigateUri="https://github.com/xxxxxxxx" />
+        <ui:HyperlinkButton Content="https://github.com/dreamness-dnalm/Ra3MapUtils" Icon="{ui:SymbolIcon Code20}" NavigateUri="https://github.com/dreamness-dnalm/Ra3MapUtils" />
         <StackPanel Orientation="Horizontal">
             <ui:TextBlock Text="本软件使用" VerticalAlignment="Center"/>
             <ui:HyperlinkButton Content="Apache2.0" NavigateUri="https://www.apache.org/licenses/LICENSE-2.0.txt"  VerticalAlignment="Center"/>

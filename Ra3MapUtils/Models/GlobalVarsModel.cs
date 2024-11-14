@@ -14,7 +14,9 @@ public static class GlobalVarsModel
         LuaImporterBusiness.ActiveMapName = mapName;
     }
 
-    public static string VersionStr = "0.1.0.0-alpha";
+    public static string ProgramName = "RA3地编伴侣";
+
+    public static string VersionStr = "v0.1.0.0-alpha";
 
     public static SemanticVersion Version => SemanticVersion.Parse(VersionStr);
 }

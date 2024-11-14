@@ -15,7 +15,7 @@
         Foreground="{DynamicResource TextFillColorPrimaryBrush}"
         xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="RA3地编伴侣 v0.1.alpha内部测试版" Height="650" Width="800"
+        Title="{Binding WindowTitle}" Height="650" Width="800"
         ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
         >
     
@@ -81,7 +81,7 @@
                             VerticalAlignment="Center"
                             FontWeight="Medium"
                             Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                            Text="RA3地编伴侣 v0.1.alpha内部测试版" />
+                            Text="{Binding WindowTitle}" />
                     </Border>
                 </ui:NavigationView.Header>
 

@@ -12,6 +12,7 @@ using Ra3MapUtils.Views;
 using Ra3MapUtils.Views.MainWindowPages;
 using Ra3MapUtils.Views.SubWindows;
 using SharedFunctionLib.Utils;
+using Velopack;
 using Wpf.Ui;
 
 namespace Ra3MapUtils;
@@ -66,6 +67,8 @@ public partial class App : Application
     
     public App()
     {
+        VelopackApp.Build()
+            .Run();
         Services = ConfigureServices();
         InitializeComponent();
 
