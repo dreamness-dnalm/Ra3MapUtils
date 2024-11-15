@@ -67,7 +67,14 @@ public partial class App : Application
     
     public App()
     {
-        VelopackApp.Build()
+        VelopackApp
+            .Build()
+            .WithFirstRun(i => MessageBox.Show("first run"))
+            .WithRestarted(i => MessageBox.Show("restarted"))
+            .WithAfterInstallFastCallback(i => MessageBox.Show("after install fast"))
+            .WithAfterUpdateFastCallback(i => MessageBox.Show("after update fast"))
+            .WithBeforeUninstallFastCallback(i => MessageBox.Show("before uninstall fast"))
+            .WithBeforeUpdateFastCallback(i => MessageBox.Show("before update fast"))
             .Run();
         Services = ConfigureServices();
         InitializeComponent();
