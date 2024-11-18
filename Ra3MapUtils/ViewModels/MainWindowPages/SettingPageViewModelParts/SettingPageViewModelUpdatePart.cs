@@ -45,7 +45,6 @@ public partial class SettingPageViewModel: ObservableObject, IObserver, INotify
     {
         if (UpdateReleaseNotesViewer != null && UpdateModel.ReleaseNotesHtml != null)
         {
-            // Thread.Sleep(5000);
             UpdateReleaseNotesViewer.NavigateToString("<head><meta charset=\"utf-8\"></head>" + UpdateModel.ReleaseNotesHtml);
         }
     }
