@@ -12,5 +12,8 @@ public partial class SettingPage : Page
     {
         DataContext = App.Current.Services.GetRequiredService<SettingPageViewModel>();
         InitializeComponent();
+        _settingPageViewModel.UpdateReleaseNotesViewer = UpdateReleaseNotesViewer;
+        _settingPageViewModel.ReflushUpdateReleaseNotesViewer();
+        // _settingPageViewModel.OnLoadUpdatePart();
     }
 }

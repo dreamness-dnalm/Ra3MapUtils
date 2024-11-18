@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using hospital_pc_client.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Ra3MapUtils.ViewModels;
 using Ra3MapUtils.Views.MainWindowPages;
@@ -26,5 +27,6 @@ public partial class MainWindow : Window
         DataContext = App.Current.Services.GetRequiredService<MainWindowViewModel>();
         InitializeComponent();
         Loaded += (_, _) => MainNavigationView.Navigate("HomePage");
+        ObservableUtil.Subscribe(_mainWindowViewModel._settingPageViewModel, _mainWindowViewModel);
     }
 }

@@ -17,28 +17,105 @@
       Title="SettingPage" Height="550" Width="700">
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" Width="680">
-            <ui:CardControl Margin="0, 0, 0, 5" IsEnabled="False">
-                <ui:CardControl.Header><TextBlock Text="打包时排除额外信息"/></ui:CardControl.Header>
-                <ui:ToggleSwitch/>
-            </ui:CardControl>
-            <ui:CardControl Margin="0, 0, 0, 5" IsEnabled="False">
-                <ui:CardControl.Header><TextBlock Text="打包时添加未加密警告"/></ui:CardControl.Header>
-                <ui:ToggleSwitch/>
+            <ui:CardExpander IsExpanded="True" Margin="0, 5, 0, 5">
+                <ui:CardExpander.Header><ui:TextBlock Text="更新"/></ui:CardExpander.Header>
+                <StackPanel Orientation="Vertical">
+                                <ui:CardControl Margin="0, 0, 0, 5">
+                <ui:CardControl.Header>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="自动更新"/>
+                        <TextBlock Text="程序初始化时会尝试自动更新,建议开启" FontSize="10" Foreground="LightGray"/>
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:ToggleSwitch IsChecked="{Binding SettingModel.IsAutoUpdate}"/>
             </ui:CardControl>
             <ui:CardControl Margin="0, 0, 0, 5">
                 <ui:CardControl.Header>
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="Lua导入 - 冗余字符因子"/>
-                        <TextBlock Text="因某种原因, 导入的lua脚本会吞字符. 程序会自动在脚本末尾添加冗余字符避免错误. 该参数控制冗余字符长度. 如果lua脚本过长, 可考虑提升该值." FontSize="10" Foreground="LightGray" TextWrapping="Wrap"/>
-                    </StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        
+                      <Grid Grid.Column="0" Width="70" HorizontalAlignment="Left">
+                          <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="*"/>
+                              <ColumnDefinition Width="15"/>
+                          </Grid.ColumnDefinitions>
+                          <TextBlock Grid.Column="0" Text="检查更新" VerticalAlignment="Center" />
+                          <ui:InfoBadge Grid.Column="1" Severity="Critical" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{DynamicResource DotInfoBadgeStyle}" Visibility="{Binding UpdateNowVisibility}"/>
+                          
+                      </Grid>
+                           
+              
+                        
+                        <StackPanel Grid.Column="1" Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="当前版本: " FontSize="10" Foreground="LightGray"/>
+                                <TextBlock Text="{Binding VersionStr }" FontSize="10" Foreground="LightGray"/>
+                            </StackPanel>
+                            <TextBlock  FontSize="10" Text="{Binding UpdateHint}" Foreground="{Binding UpdateHintColor}"/>
+                            
+                        </StackPanel>
+                        
+                    </Grid>
                     
                 </ui:CardControl.Header>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox Text="{Binding LuaRedundancyFactor}" Width="100" Margin="0, 0, 15, 0"/>
-                    <ui:Button Content="应用" Command="{Binding SaveLuaRedundancyFactorCommand}"/>
+                    <ui:Button  Visibility="{Binding UpdateNowVisibility}" Margin="0, 0, 5, 0" IsEnabled="{Binding UpdateNowEnabled}" Command="{Binding DownloadUpdateCommand}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="15"/>
+                            </Grid.ColumnDefinitions>
+                            <ui:TextBlock Grid.Column="0" Grid.ColumnSpan="2" Text="立即更新"/>
+                            <ui:InfoBadge Grid.Column="1" Severity="Critical"   Visibility="{Binding UpdateNowVisibility}" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{DynamicResource DotInfoBadgeStyle}" />
+                        </Grid>
+                        
+                    </ui:Button>
+                    <ui:Button Content="检查更新" Margin="5, 0, 0, 0" Command="{Binding CheckUpdateCommand}" />
                 </StackPanel>
             </ui:CardControl>
+                    <ui:CardControl Visibility="{Binding UpdateNowVisibility}">
+                        <ui:CardControl.Header>
+                            <WebBrowser x:Name="UpdateReleaseNotesViewer"/>
+                        </ui:CardControl.Header>
+                    </ui:CardControl>
+                </StackPanel>
+            </ui:CardExpander>
 
+            <ui:CardExpander IsExpanded="False"  Margin="0, 5, 0, 5">
+                <ui:CardExpander.Header><ui:TextBlock Text="地图管理"/></ui:CardExpander.Header>
+                <StackPanel Orientation="Vertical">
+                    <ui:CardControl Margin="0, 0, 0, 5" IsEnabled="False">
+                        <ui:CardControl.Header><TextBlock Text="打包时排除额外信息"/></ui:CardControl.Header>
+                        <ui:ToggleSwitch/>
+                    </ui:CardControl>
+                    <ui:CardControl Margin="0, 0, 0, 5" IsEnabled="False">
+                        <ui:CardControl.Header><TextBlock Text="打包时添加未加密警告"/></ui:CardControl.Header>
+                        <ui:ToggleSwitch/>
+                    </ui:CardControl>
+                </StackPanel>
+            </ui:CardExpander>
+            
+            <ui:CardExpander IsExpanded="False"  Margin="0, 5, 0, 5">
+                <ui:CardExpander.Header><ui:TextBlock Text="Lua导入工具"/></ui:CardExpander.Header>
+                <StackPanel Orientation="Vertical">
+                    <ui:CardControl Margin="0, 0, 0, 5">
+                        <ui:CardControl.Header>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Lua导入 - 冗余字符因子"/>
+                                <TextBlock Text="因某种原因, 导入的lua脚本会吞字符. 程序会自动在脚本末尾添加冗余字符避免错误. 该参数控制冗余字符长度. 如果lua脚本过长, 可考虑提升该值." FontSize="10" Foreground="LightGray" TextWrapping="Wrap"/>
+                            </StackPanel>
+                    
+                        </ui:CardControl.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding LuaRedundancyFactor}" Width="100" Margin="0, 0, 15, 0"/>
+                            <ui:Button Content="应用" Command="{Binding SaveLuaRedundancyFactorCommand}"/>
+                        </StackPanel>
+                    </ui:CardControl>
+                </StackPanel>
+            </ui:CardExpander>
             
         </StackPanel>
     </ScrollViewer>

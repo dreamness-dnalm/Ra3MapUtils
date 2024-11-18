@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+using Ra3MapUtils.Utils;
 
 namespace Ra3MapUtils.ViewModels;
 
@@ -58,7 +59,7 @@ public partial class CodeEditorWindowViewModel: ObservableObject
                 EncodingNames.Add(encodeName);
             }
             
-            using (FileStream fs = File.OpenRead("lua4.xshd"))
+            using (Stream fs = EmbeddedResourcesUtil.GetEmbeddedResourceStream("Ra3MapUtils.lua4.xshd"))
             {
                 using (XmlReader reader = new XmlTextReader(fs))
                 {

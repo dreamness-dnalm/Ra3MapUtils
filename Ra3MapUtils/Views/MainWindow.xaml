@@ -32,8 +32,8 @@
                 Margin="0"
                 IsBackButtonVisible="Auto"
                 IsPaneToggleVisible="True"
-                PaneDisplayMode="LeftFluent"
-            OpenPaneLength="60"
+                PaneDisplayMode="Left"
+            OpenPaneLength="100"
                 PaneTitle="">
                 <ui:NavigationView.MenuItems>
                     <ui:NavigationViewItem
@@ -63,7 +63,11 @@
                     Icon="{ui:SymbolIcon Settings24}"
                     TargetPageTag="SettingPage"
                     TargetPageType="{x:Type mainWindowPages:SettingPage}"
-                />
+                >
+                    <ui:NavigationViewItem.InfoBadge>
+                        <ui:InfoBadge Severity="Critical" Visibility="{Binding SettingPageInfoBadgeVisibility}"/>
+                    </ui:NavigationViewItem.InfoBadge>
+                </ui:NavigationViewItem>
                 <ui:NavigationViewItem
                     Content="关于"
                     Icon="{ui:SymbolIcon Info12}"

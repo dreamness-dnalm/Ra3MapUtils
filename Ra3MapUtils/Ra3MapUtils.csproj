@@ -6,6 +6,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UseWPF>true</UseWPF>
+        <LangVersion>preview</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -19,7 +20,9 @@
       <PackageReference Include="linq2db.SQLite" Version="5.4.1" />
       <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="14.0.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+      <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1" />
       <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+      <PackageReference Include="NLog" Version="5.3.4" />
       <PackageReference Include="Ookii.Dialogs.WinForms" Version="4.0.0" />
       <PackageReference Include="SemanticVersion" Version="2.1.0" />
       <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
@@ -51,9 +54,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="lua4.xshd">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+      <None Remove="VERSION" />
+      <EmbeddedResource Include="VERSION" />
+      <None Remove="lua4.xshd" />
+      <EmbeddedResource Include="lua4.xshd" />
     </ItemGroup>
 
 </Project>

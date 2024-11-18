@@ -1,4 +1,5 @@
 using System.IO;
+using Ra3MapUtils.Utils;
 using Ra3MapUtils.Views;
 using SemVersion;
 using SharedFunctionLib.Business;
@@ -16,7 +17,20 @@ public static class GlobalVarsModel
 
     public static string ProgramName = "RA3地编伴侣";
 
-    public static string VersionStr = "v0.1.0.0-alpha";
+    private static string _versionStr;
 
-    public static SemanticVersion Version => SemanticVersion.Parse(VersionStr);
+    public static string VersionStr
+    {
+        get
+        {
+            if (_versionStr == null)
+            {
+                _versionStr = "v" + EmbeddedResourcesUtil.GetEmbeddedResourceContent("Ra3MapUtils.VERSION");
+            }
+
+            return _versionStr;
+        }
+    }
+
+    public static NuGet.Versioning.SemanticVersion Version => NuGet.Versioning.SemanticVersion.Parse(VersionStr);
 }

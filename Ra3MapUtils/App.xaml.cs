@@ -14,6 +14,7 @@ using Ra3MapUtils.Views.SubWindows;
 using SharedFunctionLib.Utils;
 using Velopack;
 using Wpf.Ui;
+using Microsoft.Extensions.Logging;
 
 namespace Ra3MapUtils;
 
@@ -28,6 +29,7 @@ public partial class App : Application
 
     private static IServiceProvider ConfigureServices()
     {
+        
         var services = new ServiceCollection();
 
         services.AddSingleton<MainWindow>();
@@ -60,26 +62,31 @@ public partial class App : Application
         services.AddSingleton<ILuaImportService, LuaImportService>();
         services.AddSingleton<ISettingService, SettingService>();
 
-        services.AddSingleton<ISnackbarService, SnackbarService>();
+        services.AddSingleton<IUpdateService, UpdateService>();
         
         return services.BuildServiceProvider();
     }
     
     public App()
     {
-        VelopackApp
-            .Build()
-            .WithFirstRun(i => MessageBox.Show("first run"))
-            .WithRestarted(i => MessageBox.Show("restarted"))
-            .WithAfterInstallFastCallback(i => MessageBox.Show("after install fast"))
-            .WithAfterUpdateFastCallback(i => MessageBox.Show("after update fast"))
-            .WithBeforeUninstallFastCallback(i => MessageBox.Show("before uninstall fast"))
-            .WithBeforeUpdateFastCallback(i => MessageBox.Show("before update fast"))
-            .Run();
         Services = ConfigureServices();
         InitializeComponent();
 
         Directory.CreateDirectory(Ra3MapUtilsPathUtil.UserDataPath);
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+        
+        VelopackApp
+            .Build()
+            // .WithFirstRun(i => MessageBox.Show("first run2"))
+            // .WithRestarted(i => MessageBox.Show("restarted2"))
+            // .WithAfterInstallFastCallback(i => MessageBox.Show("after install fast2"))
+            // .WithAfterUpdateFastCallback(i => MessageBox.Show("after update fast2"))
+            // .WithBeforeUninstallFastCallback(i => MessageBox.Show("before uninstall fast2"))
+            // .WithBeforeUpdateFastCallback(i => MessageBox.Show("before update fast2"))
+            .Run();
+
+        var settingPageViewModel = Services.GetRequiredService<SettingPageViewModel>();
+        settingPageViewModel.OnLoadUpdatePart();
+        settingPageViewModel.UpdateNow();
     }
 }

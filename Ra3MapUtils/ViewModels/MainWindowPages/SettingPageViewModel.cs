@@ -1,3 +1,4 @@
+using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,4 +29,5 @@ public partial class SettingPageViewModel: ObservableObject
         }
         SettingModel.LuaRedundancyFactor = LuaRedundancyFactor;
     }
+
 }
