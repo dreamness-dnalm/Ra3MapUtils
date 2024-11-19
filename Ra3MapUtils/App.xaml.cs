@@ -15,6 +15,7 @@ using SharedFunctionLib.Utils;
 using Velopack;
 using Wpf.Ui;
 using Microsoft.Extensions.Logging;
+using SettingPageViewModel = Ra3MapUtils.ViewModels.MainWindowPages.SettingPageViewModel;
 
 namespace Ra3MapUtils;
 

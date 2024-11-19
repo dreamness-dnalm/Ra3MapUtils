@@ -71,6 +71,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Business\LuaImporterBusiness.cs" />
+        <Compile Include="Business\NewWorldBuilderBusiness.cs" />
         <Compile Include="Business\UpdateBusiness.cs" />
         <Compile Include="Class1.cs" />
         <Compile Include="DAO\LuaLibConfigDAO.cs" />
