@@ -93,8 +93,9 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="绑定新地编" Margin="0, 0, 15, 0"/>
                                     <TextBlock Text="绑定成功" Foreground="Green"/>
+                                    <!-- TODO 非法路径的情况 -->
                                 </StackPanel>
-                                <TextBlock Text="c:/aaabbb/ccc " FontSize="10" Foreground="LightGray"/>
+                                <TextBlock Text="{Binding SettingModel.NewWorldBuilderPath}" FontSize="10" Foreground="LightGray"/>
                             </StackPanel>
                         </ui:CardControl.Header>
                         <ui:Button Content="指定新地编路径" Command="{Binding PickNewWorldBuilderPathCommand}"/>

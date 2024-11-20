@@ -1,14 +1,16 @@
+using System.Windows.Forms;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Win32;
+using hospital_pc_client.Utils;
+using Ra3MapUtils.Models;
 using SharedFunctionLib.Business;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace Ra3MapUtils.ViewModels.MainWindowPages;
 
 public partial class SettingPageViewModel: ObservableObject
 {
-    
-    
+    [ObservableProperty] private NewWorldBuilderModel _newWorldBuilderModel;
     
     [RelayCommand]
     private void PickNewWorldBuilderPath()
@@ -16,7 +18,7 @@ public partial class SettingPageViewModel: ObservableObject
         var dialog = new OpenFileDialog
         {
             Title = "选择新地编路径",
-            Filter = "All files (*.exe)|*.exe",
+            Filter = "新地编|WbLauncher.exe",
             InitialDirectory = @"C:\",
             Multiselect = false
         };
@@ -29,6 +31,25 @@ public partial class SettingPageViewModel: ObservableObject
             {
                 NewWorldBuilderBusiness.NewWorldBuilderPath = selectedPath;
             }
+            else
+            {
+                MessageBox.Show("非法的新地编路径");
+            }
         }
+    }
+
+    public void OnLoadNewWorldBuilderPart()
+    {
+        _newWorldBuilderModel = new NewWorldBuilderModel();
+        ObservableUtil.Subscribe(_newWorldBuilderModel, this);
+        if (! NewWorldBuilderBusiness.IsNewWorldBuilderPathValid)
+        {
+            MessageBox.Show("请在\"设置\"->\"新地编联动\"中配置合法的新地编路径 ");
+        }
+    }
+
+    public void InstallPluginNow()
+    {
+        
     }
 }

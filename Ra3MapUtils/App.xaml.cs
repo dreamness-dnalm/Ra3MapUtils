@@ -62,8 +62,10 @@ public partial class App : Application
 
         services.AddSingleton<ILuaImportService, LuaImportService>();
         services.AddSingleton<ISettingService, SettingService>();
-
         services.AddSingleton<IUpdateService, UpdateService>();
+        services.AddSingleton<INewWorldBuilderPluginService, NewWorldBuilderPluginService>();
+        
+        
         
         return services.BuildServiceProvider();
     }
@@ -89,5 +91,6 @@ public partial class App : Application
         var settingPageViewModel = Services.GetRequiredService<SettingPageViewModel>();
         settingPageViewModel.OnLoadUpdatePart();
         settingPageViewModel.UpdateNow();
+        settingPageViewModel.OnLoadNewWorldBuilderPart();
     }
 }
