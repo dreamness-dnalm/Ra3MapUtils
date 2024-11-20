@@ -12,13 +12,14 @@ using hospital_pc_client.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Ra3MapUtils.ViewModels;
 using Ra3MapUtils.Views.MainWindowPages;
+using Wpf.Ui.Controls;
 
 namespace Ra3MapUtils;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml
 /// </summary>
-public partial class MainWindow : Window
+public partial class MainWindow : FluentWindow
 {
     public MainWindowViewModel _mainWindowViewModel { get => (MainWindowViewModel)DataContext; }
 

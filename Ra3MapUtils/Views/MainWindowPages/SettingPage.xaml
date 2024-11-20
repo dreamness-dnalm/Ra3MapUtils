@@ -14,9 +14,9 @@
       ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       mc:Ignorable="d"
-      Title="SettingPage" Height="550" Width="700">
+      Title="SettingPage"   VerticalAlignment="Top" HorizontalAlignment="Stretch" >
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-        <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" Width="680">
+        <StackPanel Orientation="Vertical" Margin="15, 15, 15, 15" >
             <ui:CardExpander IsExpanded="True" Margin="0, 5, 0, 5">
                 <ui:CardExpander.Header><ui:TextBlock Text="更新"/></ui:CardExpander.Header>
                 <StackPanel Orientation="Vertical">

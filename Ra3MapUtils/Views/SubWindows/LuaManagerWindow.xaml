@@ -1,24 +1,27 @@
-<Window x:Class="Ra3MapUtils.Views.LuaManagerWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:Ra3MapUtils.Views"
-        xmlns:vm="clr-namespace:Ra3MapUtils.ViewModels"
-        d:DataContext="{d:DesignInstance Type=vm:LuaManagerWindowViewModel, IsDesignTimeCreatable=True}"
-        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-        d:DesignHeight="1650"
-        d:DesignWidth="1000"
-        ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
-        ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-        Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-        xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:controls="clr-namespace:Ra3MapUtils.Services.Controls"
-        xmlns:models="clr-namespace:Ra3MapUtils.Models"
-        mc:Ignorable="d"
-        Title="{Binding WindowTitle}" Height="450" Width="900" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
-         
-        >
+<ui:FluentWindow x:Class="Ra3MapUtils.Views.LuaManagerWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:local="clr-namespace:Ra3MapUtils.Views"
+                 xmlns:vm="clr-namespace:Ra3MapUtils.ViewModels"
+                 d:DataContext="{d:DesignInstance Type=vm:LuaManagerWindowViewModel, IsDesignTimeCreatable=True}"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 d:DesignHeight="1650"
+                 d:DesignWidth="1000"
+                 ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+                 ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                 xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                 xmlns:controls="clr-namespace:Ra3MapUtils.Services.Controls"
+                 xmlns:models="clr-namespace:Ra3MapUtils.Models"
+                 mc:Ignorable="d"
+                 Title="{Binding WindowTitle}" Height="450" Width="900" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+                 ExtendsContentIntoTitleBar="True"
+                 WindowBackdropType="Mica"
+                 WindowCornerPreference="Round"
+                 WindowStyle="SingleBorderWindow"
+>
     <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="Closed">
             <behaviors:InvokeCommandAction Command="{Binding ClosedCommand}" PassEventArgsToCommand="False"/>
@@ -31,11 +34,15 @@
         <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="15"/>
         </Grid.RowDefinitions>
-        <ui:HyperlinkButton Grid.Row="0" Content="使用文档" NavigateUri="https://www.yuque.com/muzeqaq/ra3mapwiki/ofa6ufyd9pmwwgnm" Icon="{ui:SymbolIcon Document20}"/>
-        <Grid Grid.Row="1" >
+            <ui:TitleBar Grid.Row="0" Title="{Binding WindowTitle}" ShowMaximize="False">
+            
+        </ui:TitleBar>
+        <ui:HyperlinkButton Grid.Row="1" Content="使用文档" NavigateUri="https://www.yuque.com/muzeqaq/ra3mapwiki/ofa6ufyd9pmwwgnm" Icon="{ui:SymbolIcon Document20}"/>
+        <Grid Grid.Row="2" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="2"/>
@@ -187,7 +194,7 @@
             
         </Grid>
         
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
             <ui:TextBlock Text="  已选中: "/>
             <ui:TextBlock Text="{Binding SelectedLuaLibConfig.ShowingName}"/>
             <ui:TextBlock Text="  路径: "/>
@@ -195,4 +202,4 @@
         </StackPanel>
        
     </Grid>
-</Window>
+</ui:FluentWindow>

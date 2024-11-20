@@ -15,6 +15,7 @@
       mc:Ignorable="d"
       Title="ToolBoxPage" Height="450" Width="800">
     <Grid>
+        <ui:TextBlock Text="敬请期待, 欢迎提需求和建议"/>
         
     </Grid>
 </Page>

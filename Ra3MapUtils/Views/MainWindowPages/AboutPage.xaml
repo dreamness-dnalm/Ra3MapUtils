@@ -14,28 +14,53 @@
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       mc:Ignorable="d"
       Title="AboutPage" Height="Auto" Width="Auto"
-      
+      VerticalAlignment="Top" HorizontalAlignment="Stretch"
       >
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"  Height="{Binding _aboutPage.Height}">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"  Height="{Binding _aboutPage.Height}" Margin="15, 15, 15, 15" >
             <StackPanel>
-        <Label Content="本软件完全免费开源" FontSize="15" FontWeight="Bold"/>
-        <ui:HyperlinkButton Content="https://github.com/dreamness-dnalm/Ra3MapUtils" Icon="{ui:SymbolIcon Code20}" NavigateUri="https://github.com/dreamness-dnalm/Ra3MapUtils" />
-        <StackPanel Orientation="Horizontal">
-            <ui:TextBlock Text="本软件使用" VerticalAlignment="Center"/>
-            <ui:HyperlinkButton Content="Apache2.0" NavigateUri="https://www.apache.org/licenses/LICENSE-2.0.txt"  VerticalAlignment="Center"/>
-            <ui:TextBlock Text="开源协议" VerticalAlignment="Center"/>
-        </StackPanel>
+                <ui:CardExpander  IsExpanded="True" Margin="0, 5, 0, 5">
+                    <ui:CardExpander.Header><ui:TextBlock Text="开源声明"/></ui:CardExpander.Header>
+                    <StackPanel>
+                        <Label Content="本软件完全免费开源"  Margin="0, 3, 0, 3"/>
+                        <Separator HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="0, 3, 0, 3"/>
+                            <Grid  Margin="0, 3, 0, 3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <ui:TextBlock Grid.Column="0" Text="仓库" VerticalAlignment="Center"/>
+                                <ui:HyperlinkButton Grid.Column="1" Content="https://github.com/dreamness-dnalm/Ra3MapUtils" Icon="{ui:SymbolIcon Code20}" NavigateUri="https://github.com/dreamness-dnalm/Ra3MapUtils" />
+                            </Grid>
+                        <Separator HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="0, 3, 0, 3" />
+                        <Grid Margin="0, 3, 0, 3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ui:TextBlock Grid.Column="0" Text="协议" VerticalAlignment="Center"/>
+                            <ui:HyperlinkButton Grid.Column="1" Content="Apache2.0" NavigateUri="https://www.apache.org/licenses/LICENSE-2.0.txt"  VerticalAlignment="Center"/>
+                        </Grid>
+                        <Separator HorizontalAlignment="Stretch" VerticalAlignment="Center"  Margin="0, 3, 0, 3"/>
+                        <ui:TextBlock Text="欢迎提PR, 提ISSUE, 也欢迎通过QQ群沟通/反馈." Margin="0, 3, 0, 3"/>
+                        <ui:TextBlock Text="QQ群 513118543 (工具问题反馈交流)" Margin="0, 3, 0, 3"/>
+                        <ui:TextBlock Text="QQ群 613550502 (物佬的地图群, 大佬云集的地方)" Margin="0, 3, 0, 3"/>
+                    </StackPanel>
+                    
+                </ui:CardExpander>
         
-        <ui:TextBlock Text="欢迎提PR, 提ISSUE, 也欢迎通过QQ群(xxxx)沟通/反馈."/>
         
-        <StackPanel>
-            <Label Content="贡献者" FontSize="15" FontWeight="Bold"/>
+        
+        
+        <ui:CardExpander IsExpanded="True" Margin="0, 5, 0, 5">
+            <ui:CardExpander.Header><ui:TextBlock Text="贡献者"/></ui:CardExpander.Header>
             <WrapPanel>
                 <ui:TextBlock Text="dreamness"/>
             </WrapPanel>
-        </StackPanel>
-        <StackPanel>
-            <Label Content="使用了以下第三方库" FontSize="15" FontWeight="Bold"/>
+        </ui:CardExpander>
+        
+        <ui:CardExpander IsExpanded="True" Margin="0, 5, 0, 5">
+            <ui:CardExpander.Header><ui:TextBlock Text="感谢以下开源项目"/></ui:CardExpander.Header>
+            <StackPanel>
             <WrapPanel Orientation="Horizontal" >
            <ui:CardControl Margin="4" Padding="20,10,20,10">
                <ui:CardControl.Header>
@@ -93,8 +118,19 @@
                         </StackPanel>
                     </ui:CardControl.Header>
                 </ui:CardControl>
+                <ui:CardControl Margin="4" Padding="20,10,20,10">
+                    <ui:CardControl.Header>
+                        <StackPanel HorizontalAlignment="Left">
+                            <ui:HyperlinkButton Content="velopack" NavigateUri="https://github.com/velopack/velopack" HorizontalAlignment="Center" />
+                            <ui:TextBlock Margin="0" Text="软件自更新工具" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                </ui:CardControl>
        </WrapPanel>
         </StackPanel>
+        </ui:CardExpander>
+        
+        
         
     </StackPanel>
     </ScrollViewer>

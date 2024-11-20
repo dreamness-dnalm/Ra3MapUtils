@@ -14,8 +14,8 @@
       ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       mc:Ignorable="d"
-      Title="MapManagePage" Height="550" Width="Auto">
-    <Grid VerticalAlignment="Stretch">
+      Title="MapManagePage" VerticalAlignment="Top" HorizontalAlignment="Stretch" >
+    <Grid Margin="15, 15, 15, 15">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -28,20 +28,20 @@
             <ui:MenuItem Icon="{ui:SymbolIcon Copy20}" ToolTip="另存为" Command="{Binding CloneMapCommand}"/>
             <ui:MenuItem Icon="{ui:SymbolIcon Delete20}" ToolTip="删除" Command="{Binding DeleteMapCommand}"/>
             <ui:MenuItem Icon="{ui:SymbolIcon FolderZip20}" ToolTip="压缩" Command="{Binding CompressMapCommand}"/>
-            <ui:MenuItem Icon="{ui:SymbolIcon BookCompass20}" ToolTip="map.str管理" IsEnabled="False"/>
-            <ui:MenuItem Icon="{ui:SymbolIcon PeopleEdit20}" ToolTip="修改地图名称" IsEnabled="False"/>
+            <!-- <ui:MenuItem Icon="{ui:SymbolIcon BookCompass20}" ToolTip="map.str管理" IsEnabled="False"/> -->
+            <!-- <ui:MenuItem Icon="{ui:SymbolIcon PeopleEdit20}" ToolTip="修改地图名称" IsEnabled="False"/> -->
             <ui:MenuItem Icon="{ui:SymbolIcon CodeBlock20}" ToolTip="Lua导入工具" Command="{Binding ManageLuaCommand}"/>
         </Menu>
 
-        <Grid Margin="5,5,5,5" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid Margin="5,5,5,5" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="710"/>
             </Grid.RowDefinitions>
 
             <ui:TextBox Grid.Column="0" Grid.Row="0" Style="{StaticResource WatermarkTextBox}">
@@ -52,9 +52,9 @@
                 </behaviors:Interaction.Triggers>
             </ui:TextBox>
 
-                <ScrollViewer Grid.Column="0" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Stretch" Margin="5, 0, 5, 0">
+                <ScrollViewer Grid.Column="0" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Top" Margin="5, 0, 5, 0">
                     <ui:ListView ItemsSource="{Binding MapList}" SelectedValue="{Binding SelectedMap}"
-                                 Height="410" MinWidth="200" VerticalAlignment="Stretch"
+                                  MinWidth="200" VerticalAlignment="Top" HorizontalAlignment="Stretch"
                     >
                     </ui:ListView>
                 </ScrollViewer>
