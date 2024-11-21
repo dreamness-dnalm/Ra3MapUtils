@@ -58,6 +58,10 @@
       <EmbeddedResource Include="VERSION" />
       <None Remove="lua4.xshd" />
       <EmbeddedResource Include="lua4.xshd" />
+      <Compile Remove="data\plugins\RA3MapUtil_LuaImporter\Main.cs" />
+      <None Include="data\plugins\RA3MapUtil_LuaImporter\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
