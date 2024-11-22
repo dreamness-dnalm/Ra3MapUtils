@@ -56,11 +56,5 @@ public class NewWorldBuilderPluginModel
             return null;
         }
     }
-
-    public static void main()
-    {
-        var path =
-            "H:\\Program Files (x86)\\Red Alert 3(Incomplete)\\CoronaLauncher_Test_3.11.9028.39760\\CoronaResources\\NewWorldBuilder\\data\\scripts";
-        var newWorldBuilderPluginModels = LoadPluginModelsAsync(path).Result;
-    }
+    
 }

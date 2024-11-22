@@ -2,7 +2,10 @@ using System.Windows.Forms;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using hospital_pc_client.Utils;
+using Microsoft.Extensions.DependencyInjection;
 using Ra3MapUtils.Models;
+using Ra3MapUtils.Services.Impl;
+using Ra3MapUtils.Services.Interface;
 using SharedFunctionLib.Business;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
@@ -11,6 +14,8 @@ namespace Ra3MapUtils.ViewModels.MainWindowPages;
 public partial class SettingPageViewModel: ObservableObject
 {
     [ObservableProperty] private NewWorldBuilderModel _newWorldBuilderModel;
+    
+    private INewWorldBuilderPluginService _newWorldBuilderPluginService = App.Current.Services.GetRequiredService<INewWorldBuilderPluginService>();
     
     [RelayCommand]
     private void PickNewWorldBuilderPath()
@@ -45,11 +50,14 @@ public partial class SettingPageViewModel: ObservableObject
         if (! NewWorldBuilderBusiness.IsNewWorldBuilderPathValid)
         {
             MessageBox.Show("请在\"设置\"->\"新地编联动\"中配置合法的新地编路径 ");
+            return;
         }
+        InstallNewWorldBuilderPluginNow();
+        
     }
 
-    public void InstallPluginNow()
+    public void InstallNewWorldBuilderPluginNow()
     {
-        
+        _newWorldBuilderPluginService.CheckAndInstallNewPluginsAvailable(NewWorldBuilderModel, SettingModel.NewWorldBuilderPath);
     }
 }

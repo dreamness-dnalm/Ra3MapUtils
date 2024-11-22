@@ -22,7 +22,7 @@ public class NewWorldBuilderPluginService: INewWorldBuilderPluginService
 
 
             var installedScriptsPath = GetScriptsPath(newWorldBuilderPath);
-            var availableScriptsPath = "plugins";
+            var availableScriptsPath = "data\\plugins";
 
             var installedPluginModelsTask = NewWorldBuilderPluginModel.LoadPluginModelsAsync(installedScriptsPath);
             var availablePluginModelsTask = NewWorldBuilderPluginModel.LoadPluginModelsAsync(availableScriptsPath);
@@ -51,12 +51,12 @@ public class NewWorldBuilderPluginService: INewWorldBuilderPluginService
                         Directory.Delete(installedPluginPath, true);
                     }
 
-                    Directory.CreateDirectory(installedScriptsPath);
+                    Directory.CreateDirectory(installedPluginPath);
 
                     foreach (var (sourceFilePath, targetPath) in model.RequireFileDictionary)
                     {
-                        var fullSourcePath = Path.Combine(availableScriptsPath, sourceFilePath);
-                        var fullTargetPath = Path.Combine(installedScriptsPath, targetPath);
+                        var fullSourcePath = sourceFilePath;
+                        var fullTargetPath = Path.Combine(installedScriptsPath, name, targetPath);
 
                         var parentTargetPath = Path.GetDirectoryName(fullTargetPath);
                         if (!Directory.Exists(parentTargetPath))
@@ -70,6 +70,7 @@ public class NewWorldBuilderPluginService: INewWorldBuilderPluginService
                 }
                 catch (Exception e)
                 {
+                    throw e;
                     Directory.Delete(installedPluginPath);
                     ret = false;
                     newWorldBuilderModel.IsPluginsInstallError = true;
@@ -100,4 +101,14 @@ public class NewWorldBuilderPluginService: INewWorldBuilderPluginService
     {
         return models.ToDictionary(m => m.PluginName, m => m);
     }
+
+    public static void main()
+    {
+        var newWorldBuilderPluginService = new NewWorldBuilderPluginService();
+
+        newWorldBuilderPluginService.CheckAndInstallNewPluginsAvailable(new NewWorldBuilderModel(),
+            "H:\\Program Files (x86)\\Red Alert 3(Incomplete)\\CoronaLauncher_Test_3.11.9028.39760\\CoronaResources\\NewWorldBuilder\\WbLauncher.exe");
+    }
+
+
 }

@@ -1,9 +1,10 @@
 $toolPath = Split-Path -parent $MyInvocation.MyCommand.Definition
 
+$compileType = "Release" # Debug / Release
 $projectPath = "$toolPath\..\Ra3MapUtils"
 $version = Get-Content -Path "$projectPath\VERSION" -Raw
 $projectFilePath = "$projectPath\Ra3MapUtils.csproj"
-$buildOutPath = "$toolPath\.cache\Release"
+$buildOutPath = "$toolPath\.cache\$compileType"
 $packageOutPath = "$toolPath\publish\v$version"
 $releaseNotesPath = "$toolPath\..\doc\release_notes\RELEASE_v$version.md"
 $softwareName = "RA3µØ±à°éÂÂ"
@@ -19,7 +20,7 @@ New-item -ItemType Directory -Path $buildOutPath
 
 dotnet publish `
     $projectFilePath `
-    -c Release `
+    -c $compileType `
     -r win-x64 `
     -o $buildOutPath
 
