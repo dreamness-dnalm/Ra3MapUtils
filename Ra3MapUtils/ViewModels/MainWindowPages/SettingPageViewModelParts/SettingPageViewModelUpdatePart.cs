@@ -159,15 +159,5 @@ public partial class SettingPageViewModel: ObservableObject, IObserver, INotify
         return true;
     }
 
-    
-    public void OnNotify(object sender, NotifyEventArgs e)
-    {
-        if (e.EventName == "UpdateModelChanged")
-        {
-            OnUpdateModelChanged(UpdateModel);
-            ObservableUtil.Notify(this, e);
-        }
-    }
-
     public List<IObserver> _observers { get; set; } = new List<IObserver>();
 }

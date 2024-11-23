@@ -55,7 +55,7 @@ vpk pack `
 ##--icon {path}
 # `
 
-#Remove-Item -Recurse -Force "$packageOutPath\RELEASES"
+Remove-Item -Recurse -Force "$packageOutPath\RELEASES"
 Remove-Item -Recurse -Force "$packageOutPath\assets.win.json"
 
 7z x "$packageOutPath\$vpkPackId-win-Portable.zip" -o"$packageOutPath\$softwareName"

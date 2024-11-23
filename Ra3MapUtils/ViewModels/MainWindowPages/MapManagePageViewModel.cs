@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Ra3MapUtils.Models;
 using Ra3MapUtils.Utils;
 using Ra3MapUtils.Views;
+using SharedFunctionLib.Business;
 using UtilLib.mapFileHelper;
 using TextBox = System.Windows.Controls.TextBox;
 
@@ -35,7 +36,8 @@ public partial class MapManagePageViewModel : ObservableObject
 
     private string _searchingKeyword = "";
 
-
+    private SettingPageViewModel _settingPageViewModel = App.Current.Services.GetRequiredService<SettingPageViewModel>();
+    
     partial void OnSelectedMapChanged(string value)
     {
         if (value == "")
@@ -289,6 +291,13 @@ public partial class MapManagePageViewModel : ObservableObject
     [RelayCommand]
     private void ManageLua()
     {
+        if ((!NewWorldBuilderBusiness.IsNewWorldBuilderPathValid) ||
+            (!_settingPageViewModel.NewWorldBuilderModel.IsPluginsInstalled))
+        {
+            MessageBox.Show("请先安装新地编联动插件, 在\"设置\"->\"新地编联动\"中设置");
+            return;
+        }
+        
         if (_selectedMap == "")
         {
             return;

@@ -92,18 +92,32 @@
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="绑定新地编" Margin="0, 0, 15, 0"/>
-                                    <TextBlock Text="绑定成功" Foreground="Green"/>
-                                    <!-- TODO 非法路径的情况 -->
+                                    <TextBlock Text="{Binding NewWorldBuilderPathHint}" Foreground="{Binding NewWorldBuilderPathHintColor}"/>
                                 </StackPanel>
                                 <TextBlock Text="{Binding SettingModel.NewWorldBuilderPath}" FontSize="10" Foreground="LightGray"/>
                             </StackPanel>
                         </ui:CardControl.Header>
                         <ui:Button Content="指定新地编路径" Command="{Binding PickNewWorldBuilderPathCommand}"/>
                     </ui:CardControl>
+                    <ui:CardControl  Margin="0, 0, 0, 5" >
+                        <ui:CardControl.Header>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="地编插件安装状态" Margin="0, 0, 15, 0"/>
+                                    <TextBlock Text="{Binding NewWorldBuilderPluginHint}" Foreground="{Binding NewWorldBuilderPluginHintColor}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </ui:CardControl.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <ui:Button Content="打开插件文件夹" Command="{Binding OpenNewWorldBuilderPluginFolderCommand}" Margin="0,0,10,0"/>
+                            <ui:Button Content="重试安装" Command="{Binding InstallNewWorldBuilderPluginNowCommand}" IsEnabled="{Binding NewWorldBuilderPluginReInstallButtonEnable}"/>
+                        </StackPanel>
+                        
+                    </ui:CardControl>
                 </StackPanel>
             </ui:CardExpander>
 
-            <ui:CardExpander IsExpanded="False"  Margin="0, 5, 0, 5">
+            <ui:CardExpander IsExpanded="False"  Margin="0, 5, 0, 5" Visibility="Collapsed">
                 <ui:CardExpander.Header><ui:TextBlock Text="地图管理"/></ui:CardExpander.Header>
                 <StackPanel Orientation="Vertical">
                     <ui:CardControl Margin="0, 0, 0, 5" IsEnabled="False">

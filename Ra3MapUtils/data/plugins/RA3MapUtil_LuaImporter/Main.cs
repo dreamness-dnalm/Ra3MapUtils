@@ -146,13 +146,8 @@ namespace MapCoreLib.Core.Scripts.ScriptFile
 
     public static class ExternalFuncHelper
     {
-        // private static string basePath = "H:\\workspace\\dreamness_ra3_tools\\SharedFunctionLib\\bin\\Debug";
-        // private static string basePath = ".\\";
 
-        // private static Assembly sharedFunctionLibAssembly = Assembly.LoadFrom(Path.Combine(basePath, "SharedFunctionLib.dll"));
-        // private static Assembly utilCoreLibAssembly = Assembly.LoadFrom(Path.Combine(basePath, "UtilCoreLib.dll"));
-
-             private static Assembly sharedFunctionLibAssembly = Assembly.LoadFrom("bin\\SharedFunctionLib.dll");
+        private static Assembly sharedFunctionLibAssembly = Assembly.LoadFrom("bin\\SharedFunctionLib.dll");
         private static Assembly utilCoreLibAssembly = Assembly.LoadFrom("bin\\UtilCoreLib.dll");
 
         public static void WriteLog(string log)

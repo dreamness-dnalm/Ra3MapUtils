@@ -34,50 +34,61 @@
             </Grid.ColumnDefinitions>
             
             <StackPanel Grid.Column="0">
-                <ui:CardExpander IsExpanded="True" Margin="0, 0, 10, 10">
-                    <ui:CardExpander.Header><ui:TextBlock Text="特色功能"/></ui:CardExpander.Header>
-                    <StackPanel>
-                        <ui:TextBlock Text="地图快速管理" Margin="0, 5, 0, 5"/>
-                        <ui:TextBlock Text="Lua脚本快速导入(针对日冕等mod)" Margin="0, 5, 0, 5"/>
-                    </StackPanel>
-                </ui:CardExpander>
+                <StackPanel Margin="10, 10, 0, 10">
+                    <TextBlock Text="教程" FontWeight="Black" Margin="0,10,0,5"/>
+                    <Border Background="White" CornerRadius="5" BorderBrush="LightGray">
+                        <StackPanel>
+                            <ui:HyperlinkButton Content="地编百科" NavigateUri="https://www.yuque.com/muzeqaq/ra3mapwiki/wn3aerk3amyg9bw0" Margin="0, 5, 0, 5"/>
+                            <!-- <ui:HyperlinkButton Content="视频教程" NavigateUri="" Margin="0, 5, 0, 5"/> --> 
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
                 
-                <ui:CardExpander IsExpanded="True" Margin="0, 10, 10, 0">
-                    <ui:CardExpander.Header><ui:TextBlock Text="教程"/></ui:CardExpander.Header>
-                    <StackPanel>
-                        <ui:HyperlinkButton Content="地编百科" NavigateUri="https://www.yuque.com/muzeqaq/ra3mapwiki/wn3aerk3amyg9bw0" Margin="0, 5, 0, 5"/>
-                        <ui:HyperlinkButton Content="视频教程" NavigateUri="" Margin="0, 5, 0, 5"/> <!-- TODO -->
-                    </StackPanel>
-                </ui:CardExpander>
+                <StackPanel Margin="10, 10, 0, 10">
+                    <TextBlock Text="下载与更新渠道" FontWeight="Black" Margin="0,10,0,5"/>
+                    <Border Background="White" CornerRadius="5" BorderBrush="LightGray">
+                        <StackPanel>
+                            <ui:TextBlock Text="可优先使用软件的自动更新, 若自动更新失效, 可以通过以下渠道获取更新, 覆盖安装即可." TextWrapping="Wrap" Margin="5, 5, 5, 5"  FontSize="15"/>
+                            <ui:HyperlinkButton Content="地编百科" NavigateUri="https://www.yuque.com/muzeqaq/ra3mapwiki/vppua7qbrig4emxd" Margin="0, 5, 0, 5"/>
+                            <ui:HyperlinkButton Content="Gitee" NavigateUri="https://gitee.com/dreamness/Ra3MapUtils/releases" Margin="0, 5, 0, 5" />
+                            <ui:HyperlinkButton Content="GitHub" NavigateUri="https://github.com/dreamness-dnalm/Ra3MapUtils/releases" Margin="0, 5, 0, 5"/> 
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
                 
-                <ui:CardExpander IsExpanded="True" Margin="0, 10, 10, 0">
-                    <ui:CardExpander.Header><ui:TextBlock Text="下载与更新渠道"/></ui:CardExpander.Header>
-                    <StackPanel>
-                        <ui:TextBlock Text="可优先使用软件的自动更新, 若自动更新失效, 可以通过以下渠道获取更新, 覆盖安装即可." TextWrapping="Wrap" Margin="5, 5, 5, 5"/>
-                        <ui:HyperlinkButton Content="地编百科" NavigateUri="https://www.yuque.com/muzeqaq/ra3mapwiki/vppua7qbrig4emxd" Margin="0, 5, 0, 5"/>
-                        <ui:HyperlinkButton Content="Gitee" NavigateUri="https://gitee.com/dreamness/Ra3MapUtils/releases" Margin="0, 5, 0, 5" />
-                        <ui:HyperlinkButton Content="GitHub" NavigateUri="https://github.com/dreamness-dnalm/Ra3MapUtils/releases" Margin="0, 5, 0, 5"/> <!-- TODO -->
-                        
-                    </StackPanel>
-                </ui:CardExpander>
             </StackPanel>
             
             <StackPanel Grid.Column="1">
-                <ui:CardExpander IsExpanded="True" Margin="10, 0, 0, 0">
-                    <ui:CardExpander.Header><ui:TextBlock Text="交流社区"/></ui:CardExpander.Header>
-                    <StackPanel>
-                        <ui:TextBlock Text="QQ群 513118543 (工具问题反馈交流)" Margin="0, 5, 0, 5"/>
-                        <ui:TextBlock Text="QQ群 613550502 (物佬的地图群, 大佬云集的地方)" Margin="0, 5, 0, 5"/>
-                    </StackPanel>
-                </ui:CardExpander>
                 
-                <ui:CardExpander IsExpanded="True" Margin="10, 10, 0, 10">
-                    <ui:CardExpander.Header><ui:TextBlock Text="友情链接"/></ui:CardExpander.Header>
-                    <StackPanel>
-                        <ui:HyperlinkButton Content="日冕Mod 官网" NavigateUri="https://cor-games.com/" Margin="0, 5, 0, 5"/>
-                        <ui:HyperlinkButton Content="红警3战网" NavigateUri="https://ra3battle.net/" Margin="0, 5, 0, 5"/>
-                    </StackPanel>
-                </ui:CardExpander>
+                <StackPanel Margin="10, 10, 0, 10">
+                    <TextBlock Text="交流社区" FontWeight="Black" Margin="0,10,0,5"/>
+                    <Border Background="White" CornerRadius="5" BorderBrush="LightGray">
+                        <StackPanel>
+                            <ui:TextBlock Text="QQ群 513118543 (工具问题反馈交流)" Margin="10, 5, 0, 5" FontSize="15"/>
+                            <ui:TextBlock Text="QQ群 613550502 (物佬的地图群, 大佬云集的地方)" Margin="10, 5, 0, 5" FontSize="15"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+                <StackPanel Margin="10, 10, 0, 10">
+                    <TextBlock Text="特色功能" FontWeight="Black" Margin="0,10,0,5"/>
+                    <Border Background="White" CornerRadius="5" BorderBrush="LightGray">
+                        <StackPanel>
+                            <ui:TextBlock Text="地图快速管理" Margin="10, 5, 0, 5" FontSize="15"/>
+                            <ui:TextBlock Text="Lua脚本快速导入(针对日冕等mod)" Margin="10, 5, 0, 5" FontSize="15"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+                
+                <StackPanel Margin="10, 10, 0, 10">
+                    <TextBlock Text="友情链接" FontWeight="Black" Margin="0,10,0,5"/>
+                    <Border Background="White" CornerRadius="5" BorderBrush="LightGray">
+                        <StackPanel>
+                            <ui:HyperlinkButton Content="日冕Mod 官网" NavigateUri="https://cor-games.com/" Margin="0, 5, 0, 5"/>
+                            <ui:HyperlinkButton Content="红警3战网" NavigateUri="https://ra3battle.net/" Margin="0, 5, 0, 5"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+                
             </StackPanel>
         </Grid>
     </Grid>

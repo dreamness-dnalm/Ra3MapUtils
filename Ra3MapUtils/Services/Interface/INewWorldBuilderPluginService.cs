@@ -6,4 +6,6 @@ public interface INewWorldBuilderPluginService
 {
     public Task<bool> CheckAndInstallNewPluginsAvailable(NewWorldBuilderModel newWorldBuilderModel, string newWorldBuilderPath);
     
+    public void OpenPluginFolder(string newWorldBuilderPath);
+    
 }

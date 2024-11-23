@@ -1,11 +1,13 @@
 using System.IO;
 using Ra3MapUtils.Models;
 using Ra3MapUtils.Services.Interface;
+using Ra3MapUtils.Utils;
 
 namespace Ra3MapUtils.Services.Impl;
 
 public class NewWorldBuilderPluginService: INewWorldBuilderPluginService
 {
+    
     private string GetScriptsPath(string newWorldBuilderPath)
     {
         return Path.Combine(Path.GetDirectoryName(newWorldBuilderPath), "data", "scripts");
@@ -96,7 +98,14 @@ public class NewWorldBuilderPluginService: INewWorldBuilderPluginService
             newWorldBuilderModel.IsPluginsInstalling = false;
         }
     }
-    
+
+    public void OpenPluginFolder(string newWorldBuilderPath)
+    {
+        var installedScriptsPath = GetScriptsPath(newWorldBuilderPath);
+        ExplorerUtil.OpenExplorer(installedScriptsPath, true);
+    }
+
+
     private Dictionary<string, NewWorldBuilderPluginModel> newWorldBuilderModelsToDictionary(List<NewWorldBuilderPluginModel> models)
     {
         return models.ToDictionary(m => m.PluginName, m => m);
