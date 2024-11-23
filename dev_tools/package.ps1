@@ -62,7 +62,7 @@ Remove-Item -Recurse -Force "$packageOutPath\assets.win.json"
 Remove-Item -Recurse -Force "$packageOutPath\$softwareName\.portable"
 Remove-Item -Recurse -Force "$packageOutPath\$vpkPackId-win-Portable.zip"
 
-7z a -t7z "$packageOutPath\$softwareName-v$version.7z" "$packageOutPath\$softwareName" -mx=9
+7z a -t7z "$packageOutPath\$vpkPackId-v$version.7z" "$packageOutPath\$softwareName" -mx=9
 #Remove-Item -Recurse -Force "$packageOutPath\$softwareName"
 
 # Êä³ö
