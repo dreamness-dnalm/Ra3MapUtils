@@ -95,8 +95,9 @@ public partial class SettingPageViewModel: ObservableObject
         {
             NewWorldBuilderPathHint = "已绑定";
             NewWorldBuilderPathHintColor = Brushes.Green;
+            InstallNewWorldBuilderPluginNow();
         }
-        InstallNewWorldBuilderPluginNow();
+       
     }
     
 
@@ -110,7 +111,7 @@ public partial class SettingPageViewModel: ObservableObject
         
         try
         {
-            await _newWorldBuilderPluginService.CheckAndInstallNewPluginsAvailable(NewWorldBuilderModel, SettingModel.NewWorldBuilderPath);
+            await _newWorldBuilderPluginService.CheckAndInstallNewPluginsAvailable(NewWorldBuilderModel, NewWorldBuilderBusiness.NewWorldBuilderPath);
         }catch (Exception e)
         {
             var taskDialog = new Ookii.Dialogs.WinForms.TaskDialog();
