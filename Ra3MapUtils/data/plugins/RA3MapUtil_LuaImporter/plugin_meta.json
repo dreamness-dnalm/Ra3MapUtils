@@ -1,11 +1,11 @@
 {
   "PluginName": "RA3MapUtil_LuaImporter",
-  "PluginVersion": "v1.0",
+  "PluginVersion": "v1.0.1",
   "RequireFileDictionary": {
     "UtilCoreLib.dll": "bin/UtilCoreLib.dll",
     "SharedFunctionLib.dll": "bin/SharedFunctionLib.dll",
     "data/plugins_lib/linq2db.dll": "bin/linq2db.dll",
-    "data/plugins_lib/System.Data.SQLite.dll": "bin/System.DataSQLite.dll",
+    "data/plugins_lib/System.Data.SQLite.dll": "bin/System.Data.SQLite.dll",
     "data/plugins_lib/System.ValueTuple.dll": "bin/System.ValueTuple.dll",
     "data/plugins_lib/SQLite.Interop.dll": "bin/SQLite.Interop.dll",
     "data/plugins/RA3MapUtil_LuaImporter/Main.cs": "Source/Main.cs",
