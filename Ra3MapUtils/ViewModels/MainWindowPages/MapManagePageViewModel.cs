@@ -352,4 +352,23 @@ public partial class MapManagePageViewModel : ObservableObject
         }
     }
 
+    [RelayCommand]
+    private void EditMapViewName()
+    {
+        if (_selectedMap == "")
+        {
+            return;
+        }
+        var inputDialog = new Ookii.Dialogs.WinForms.InputDialog();
+        inputDialog.MainInstruction = "请输入游戏显示的地图名";
+        inputDialog.Content = "请输入游戏显示的地图名";
+        inputDialog.WindowTitle = "请输入游戏显示的地图名";
+        inputDialog.Input = SelectedMapFile.Comment;
+        
+        if (inputDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+        {
+            // todo
+        }
+    }
+
 }
