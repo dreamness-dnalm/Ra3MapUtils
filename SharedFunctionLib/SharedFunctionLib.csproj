@@ -45,8 +45,8 @@
         <Reference Include="linq2db, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e41013125f9e410a, processorArchitecture=MSIL">
           <HintPath>..\packages\linq2db.5.4.1\lib\net45\linq2db.dll</HintPath>
         </Reference>
-        <Reference Include="MapCoreLib">
-          <HintPath>..\..\..\Program Files (x86)\Red Alert 3(Incomplete)\CoronaLauncher_Test_3.11.9028.39760\CoronaResources\NewWorldBuilder\bin\MapCoreLib.dll</HintPath>
+        <Reference Include="MapCoreLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>..\packages\Ra3Map.1.0.1\lib\net45\MapCoreLib.dll</HintPath>
         </Reference>
         <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
           <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
