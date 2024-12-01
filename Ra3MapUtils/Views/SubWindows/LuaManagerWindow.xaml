@@ -16,7 +16,7 @@
                  xmlns:controls="clr-namespace:Ra3MapUtils.Services.Controls"
                  xmlns:models="clr-namespace:Ra3MapUtils.Models"
                  mc:Ignorable="d"
-                 Title="{Binding WindowTitle}" Height="450" Width="900" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+                 Title="{Binding WindowTitle}" Height="600" Width="1200" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"
                  ExtendsContentIntoTitleBar="True"
                  WindowBackdropType="Mica"
                  WindowCornerPreference="Round"
@@ -107,37 +107,17 @@
             <Separator Grid.Column="1" Width="5" FontWeight="Heavy"/>
             
             <!-- 库目录结构预览-->
-            <StackPanel Grid.Column="2" Orientation="Vertical" Margin="5, 0, 5, 0">
-                <Menu>
+            <Grid Grid.Column="2" Margin="5, 0, 5, 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Menu Grid.Row="0">
                     <ui:MenuItem
                         ToolTip="刷新"
                         Icon="{ui:SymbolIcon ArrowSync20}"
                         Command="{Binding ReloadLibPreviewCommand}"
                     />
-                    <!-- <ui:MenuItem -->
-                    <!--     ToolTip="新增lua文件" -->
-                    <!--     Icon="{ui:SymbolIcon ReceiptAdd20}" -->
-                    <!--     Command="{Binding PreviewAddLuaCommand}" -->
-                    <!--     IsEnabled="False" -->
-                    <!-- /> -->
-                    <!-- <ui:MenuItem -->
-                    <!--     Icon="{ui:SymbolIcon FolderAdd20}" -->
-                    <!--     ToolTip="新建文件夹" -->
-                    <!--     Command="{Binding PreviewAddFolderCommand}" -->
-                    <!--     IsEnabled="False" -->
-                    <!-- /> -->
-                    <!-- <ui:MenuItem -->
-                    <!--     ToolTip="重命名" -->
-                    <!--     Icon="{ui:SymbolIcon Rename20}" -->
-                    <!--     Command="{Binding PreviewRenameCommand}" -->
-                    <!--     IsEnabled="False" -->
-                    <!-- /> -->
-                    <!-- <ui:MenuItem -->
-                    <!--     ToolTip="删除" -->
-                    <!--     Icon="{ui:SymbolIcon Delete20}" -->
-                    <!--     Command="{Binding PreviewDeleteCommand}" -->
-                    <!--     IsEnabled="False" -->
-                    <!-- /> -->
                     <ui:MenuItem
                         ToolTip="向上移动"
                         Icon="{ui:SymbolIcon ArrowUp20}"
@@ -149,8 +129,8 @@
                         Command="{Binding PreviewDownPositionCommand}"
                     />
                 </Menu>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <TreeView ItemsSource="{Binding SelectPreviewLibFileModels}" Height="320">
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" VerticalAlignment="Top">
+                    <TreeView ItemsSource="{Binding SelectPreviewLibFileModels}" VerticalAlignment="Top">
                         <behaviors:Interaction.Triggers>
                             <behaviors:EventTrigger EventName="SelectedItemChanged">
                                 <behaviors:InvokeCommandAction Command="{Binding LibPreviewItemSelectedChangedCommand}" PassEventArgsToCommand="True"/>
@@ -167,22 +147,23 @@
                         </TreeView.ItemTemplate>
                     </TreeView>
                 </ScrollViewer>
-            </StackPanel>
+            </Grid>
             <Separator Grid.Column="3" Width="5" FontWeight="Heavy"/>
             <!-- Lua文件管理 -->
             <StackPanel Grid.Column="4" Visibility="{Binding PreviewSelectedScriptVisibility}" Margin="5, 0, 5, 0">
-                <ui:TextBlock Text="脚本信息"/>
-                <StackPanel Orientation="Horizontal">
+                <ui:TextBlock Text="脚本信息"  FontWeight="Heavy" FontSize="15" Margin="5, 2"/>
+                <StackPanel Orientation="Horizontal"  Margin="5, 2">
                     <ui:TextBlock Text="文件名: "/>
                     <ui:TextBlock Text="{Binding SelectedLibFileModel.FileName}"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" Margin="5, 2">
                     <ui:TextBlock Text="文件类型: "/>
                     <ui:TextBlock Text="{Binding SelectedLibFileModel.FileType}"/>
                 </StackPanel>
-                <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.IsIncluded}" Content="包含到库中" Command="{Binding PreviewChangedCommand}"/>
-                <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.IsEnabled}" Content="启用"  Command="{Binding PreviewChangedCommand}"/>
-                <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.RunOnce}" Content="只运行一次" Visibility="{Binding PreviewSelectedScriptRunOnceVisibility}"  Command="{Binding PreviewChangedCommand}"/>
+                <ui:TextBlock Text="脚本配置"  FontWeight="Heavy" FontSize="15" Margin="5, 2"/>
+                <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.IsIncluded}" Content="包含到库中" Command="{Binding PreviewChangedCommand}"  Margin="5, 2"/>
+                <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.IsEnabled}" Content="启用"  Command="{Binding PreviewChangedCommand}"  Margin="5, 2"/>
+                <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.RunOnce}" Content="只运行一次" Visibility="{Binding PreviewSelectedScriptRunOnceVisibility}"  Command="{Binding PreviewChangedCommand}"  Margin="5, 2"/>
                    
                 <ui:Button Appearance="Primary" Content="预览" Command="{Binding PreviewShowCodeCommand}" Margin="0, 10, 0, 10" Visibility="{Binding PreviewSelectedScriptRunOnceVisibility}"/>
                 <StackPanel Orientation="Horizontal">

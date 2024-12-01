@@ -39,7 +39,7 @@
                     <Border Background="White" CornerRadius="5" BorderBrush="LightGray">
                         <StackPanel>
                             <ui:HyperlinkButton Content="地编百科" NavigateUri="https://www.yuque.com/muzeqaq/ra3mapwiki/wn3aerk3amyg9bw0" Margin="0, 5, 0, 5"/>
-                            <!-- <ui:HyperlinkButton Content="视频教程" NavigateUri="" Margin="0, 5, 0, 5"/> --> 
+                            <ui:HyperlinkButton Content="视频教程" NavigateUri="https://space.bilibili.com/6979174" Margin="0, 5, 0, 5"/> 
                         </StackPanel>
                     </Border>
                 </StackPanel>
