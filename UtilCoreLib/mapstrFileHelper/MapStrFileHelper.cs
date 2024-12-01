@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MapCoreLib.Util;
 using UtilLib.mapFileHelper;
 
 namespace UtilLib.mapstrFileHelper
@@ -39,11 +40,12 @@ namespace UtilLib.mapstrFileHelper
                 {
                     continue;
                 }
-                else if (line == "END")
+                else if (line.ToUpper() == "END")
                 {
                     if (status == 2)
                     {
-                        retDict.Add(currKey, currValue);
+                        retDict.put(currKey, currValue);
+                        // retDict.Add(currKey, currValue);
                         status = 0;
                         currKey = "";
                         currValue = "";
@@ -65,7 +67,7 @@ namespace UtilLib.mapstrFileHelper
                         throw new Exception("格式解析错误: " + mapStrPath + " 行数: " + (i + 1));
                     }
                 }
-                else if(char.IsLetter(line[0]) && char.IsLetter(line[line.Length - 1]))
+                else
                 {
                     if (status == 0)
                     {
@@ -77,13 +79,9 @@ namespace UtilLib.mapstrFileHelper
                         throw new Exception("格式解析错误: " + mapStrPath + " 行数: " + (i + 1));
                     }
                 }
-                else
-                {
-                    throw new Exception("格式解析错误: " + mapStrPath + " 行数: " + (i + 1));
-                }
             }
 
-            if (status != 1)
+            if (status != 0)
             {
                 throw new Exception("格式解析错误: " + mapStrPath + " 行数: " + lines.Length);
             }
@@ -110,7 +108,7 @@ namespace UtilLib.mapstrFileHelper
             File.WriteAllText(mapStrPath, content);
             
         }
-
+        
         public static void SetMapName(string mapPath, string mapInsideName)
         {
             string mapName;
@@ -124,5 +122,19 @@ namespace UtilLib.mapstrFileHelper
             
             Save(mapPath, dict);
         }
+
+        public static string? GetMapName(string mapPath)
+        {
+            string mapName;
+            (_, mapName) = MapFileHelper.TranslateMapPath(mapPath);
+            
+            var dict = LoadAsDictionary(mapPath);
+
+            string? ret = null;
+            string targetKey = "MAP:" + mapName;
+            dict.Where(p => p.Key == targetKey).ToList().ForEach(p => ret = p.Value);
+            return ret;
+        }
+        
     }
 }

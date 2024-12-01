@@ -14,6 +14,7 @@ using Ra3MapUtils.Utils;
 using Ra3MapUtils.Views;
 using SharedFunctionLib.Business;
 using UtilLib.mapFileHelper;
+using UtilLib.mapstrFileHelper;
 using TextBox = System.Windows.Controls.TextBox;
 
 namespace Ra3MapUtils.ViewModels.MainWindowPages;
@@ -37,12 +38,15 @@ public partial class MapManagePageViewModel : ObservableObject
     private string _searchingKeyword = "";
 
     private SettingPageViewModel _settingPageViewModel = App.Current.Services.GetRequiredService<SettingPageViewModel>();
+
+    [ObservableProperty] private string _selectedMapViewName;
     
     partial void OnSelectedMapChanged(string value)
     {
         if (value == "")
         {
             _selectedMapInfo = new MapInfoModel();
+            SelectedMapViewName = "";
         }
         else
         {
@@ -60,6 +64,15 @@ public partial class MapManagePageViewModel : ObservableObject
             catch (Exception e)
             {
                 // MessageBox.Show("获取地图文件列表失败, msg: " + e.Message);
+            }
+
+            try
+            {
+                SelectedMapViewName = MapStrFileHelper.GetMapName(value);
+            }
+            catch (Exception e)
+            {
+                SelectedMapViewName = "(读取错误)";
             }
 
             try
@@ -359,15 +372,26 @@ public partial class MapManagePageViewModel : ObservableObject
         {
             return;
         }
+
+        var previousViewName = MapStrFileHelper.GetMapName(_selectedMap);
+
         var inputDialog = new Ookii.Dialogs.WinForms.InputDialog();
         inputDialog.MainInstruction = "请输入游戏显示的地图名";
         inputDialog.Content = "请输入游戏显示的地图名";
         inputDialog.WindowTitle = "请输入游戏显示的地图名";
-        inputDialog.Input = SelectedMapFile.Comment;
+        if (previousViewName != null)
+        {
+            inputDialog.Input = previousViewName;
+        }
+        else
+        {
+            inputDialog.Input = _selectedMap;
+        }
         
         if (inputDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
         {
-            // todo
+            MapStrFileHelper.SetMapName(_selectedMap, inputDialog.Input);
+            
         }
     }
 

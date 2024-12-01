@@ -1,6 +1,7 @@
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
+using UtilLib.mapstrFileHelper;
 
 namespace Ra3MapUtils.Models;
 
@@ -21,7 +22,8 @@ public partial class MapFileModel: ObservableObject
     
     private static MapFileModel LoadFromPath(string mapDirPath)
     {
-        return new MapFileModel();
+        var model = new MapFileModel();
+        return model;
     }
     
     private static MapFileModel LoadFromMeta(string mapDirPath)

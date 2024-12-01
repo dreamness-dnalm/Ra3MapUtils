@@ -28,9 +28,9 @@
             <ui:MenuItem Icon="{ui:SymbolIcon Copy20}" ToolTip="另存为" Command="{Binding CloneMapCommand}"/>
             <ui:MenuItem Icon="{ui:SymbolIcon Delete20}" ToolTip="删除" Command="{Binding DeleteMapCommand}"/>
             <ui:MenuItem Icon="{ui:SymbolIcon FolderZip20}" ToolTip="压缩" Command="{Binding CompressMapCommand}"/>
-            <ui:MenuItem Icon="{ui:SymbolIcon BookCompass20}" ToolTip="map.str管理" />
-            <ui:MenuItem Icon="{ui:SymbolIcon PeopleEdit20}" ToolTip="修改地图名称" Command="{Binding EditMapViewNameCommand}"/>
-            <ui:MenuItem Icon="{ui:SymbolIcon CodeBlock20}" ToolTip="Lua导入工具" Command="{Binding ManageLuaCommand}"/>
+            <ui:MenuItem Icon="{ui:SymbolIcon PeopleEdit20}" ToolTip="修改游戏内显示名(map.str)" Command="{Binding EditMapViewNameCommand}"/>
+            <ui:MenuItem Icon="{ui:SymbolIcon BookCompass20}" ToolTip="map.str管理"  Visibility="Collapsed"/>
+            <ui:MenuItem Icon="{ui:SymbolIcon CodeBlock20}" ToolTip="Lua导入工具" Command="{Binding ManageLuaCommand}" />
         </Menu>
 
         <Grid Margin="5,5,5,5" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top">
@@ -69,9 +69,13 @@
                             <ui:TextBlock Text="尺寸: " FontSize="10" Foreground="Gray"/>
                             <ui:TextBlock Text="{Binding SelectedMapInfo.MapSize}"  FontSize="10" Foreground="Gray"/>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="5, 2">
+                        <StackPanel Orientation="Horizontal" Margin="5, 4">
                             <ui:TextBlock Text="玩家数: " FontSize="10" Foreground="Gray"/>
                             <ui:TextBlock Text="{Binding SelectedMapInfo.PlayerCnt}" FontSize="10" Foreground="Gray"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5, 4">
+                            <ui:TextBlock Text="游戏内名称(map.str): " FontSize="10" Foreground="Gray"/>
+                            <ui:TextBlock Text="{Binding  SelectedMapViewName}" FontSize="10" Foreground="Gray"/>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="5, 0">
                             <StackPanel Orientation="Horizontal">
@@ -80,6 +84,7 @@
                             </StackPanel>
                             <ui:TextBlock Text="{Binding SelectedMapFile.Comment}" TextWrapping="Wrap" Width="100" HorizontalAlignment="Left" MaxWidth="200"/>
                         </StackPanel>
+
                     </StackPanel>
                     
                     <StackPanel Orientation="Vertical"  Margin="10, 10">
