@@ -17,7 +17,8 @@ QQ群 613550502 (物佬的地图群, 大佬云集的地方)
 [B站(简介及教学视频)](https://space.bilibili.com/6979174)
 
 ## 软件截图
-![](doc/imgs/ui/map_manager.png)
+
+[//]: # (![]&#40;doc/imgs/ui/map_manager.png&#41;)
 ![](doc/imgs/ui/lua_importer.png)
 ![](doc/imgs/ui/code_viewer.png)
 ![](doc/imgs/ui/setting.png)
