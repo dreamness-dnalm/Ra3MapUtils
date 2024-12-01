@@ -7,6 +7,7 @@ using System.Windows.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ImageMagick;
+using LinqToDB.Tools;
 using MapCoreLib.Core.Util;
 using Microsoft.Extensions.DependencyInjection;
 using Ra3MapUtils.Models;
@@ -198,8 +199,22 @@ public partial class MapManagePageViewModel : ObservableObject
                 MessageBox.Show("新地图名不能与原地图名相同");
                 return;
             }
-
-            MapFileHelper.Move(_selectedMap, inputDialog.Input);
+            var newName = inputDialog.Input;
+            
+            var viewName = MapStrFileHelper.GetMapName(_selectedMap);
+            
+            
+            
+            MapFileHelper.Move(_selectedMap, newName);
+            if (viewName != null)
+            {
+                var mapStrDict = MapStrFileHelper.LoadAsDictionary(newName);
+                mapStrDict.Remove("MAP:" + _selectedMap);
+                mapStrDict.Add("MAP:" + newName, viewName);
+                MapStrFileHelper.Save(newName, mapStrDict);
+            }
+            
+            
             RefreshMapList();
         }
         catch (Exception e)
@@ -223,7 +238,7 @@ public partial class MapManagePageViewModel : ObservableObject
             inputDialog.MainInstruction = "请输入新地图名";
             inputDialog.Content = "请输入新地图名";
             inputDialog.WindowTitle = "另存为";
-            inputDialog.Input = _selectedMap;
+            inputDialog.Input = _selectedMap + "_COPY";
 
             if (inputDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
             {
@@ -241,8 +256,37 @@ public partial class MapManagePageViewModel : ObservableObject
                 MessageBox.Show("新地图名不能与原地图名相同");
                 return;
             }
+            var newName = inputDialog.Input;
+            var viewName = MapStrFileHelper.GetMapName(_selectedMap);
+            string newViewName = null;
+            if (viewName != null)
+            {
+                var viewNameDialog = new Ookii.Dialogs.WinForms.InputDialog();
+                viewNameDialog.MainInstruction = "请输入游戏显示的地图名";
+                viewNameDialog.Content = "请输入游戏显示的地图名";
+                viewNameDialog.WindowTitle = "请输入游戏显示的地图名";
+                viewNameDialog.Input = viewName + "_COPY";
+                
+                if (viewNameDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    newViewName = viewNameDialog.Input;
+                }
+                else
+                {
+                    newViewName = viewName + "_COPY";
+                }
+            }
 
             MapFileHelper.Copy(_selectedMap, inputDialog.Input);
+            
+            if (newViewName != null)
+            {
+                var mapStrDict = MapStrFileHelper.LoadAsDictionary(newName);
+                mapStrDict.Remove("MAP:" + _selectedMap);
+                mapStrDict.Add("MAP:" + newName, newViewName);
+                MapStrFileHelper.Save(newName, mapStrDict);
+            }
+            
             RefreshMapList();
         }
         catch (Exception e)
