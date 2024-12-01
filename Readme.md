@@ -18,7 +18,7 @@ QQ群 613550502 (物佬的地图群, 大佬云集的地方)
 
 ## 软件截图
 
-![](doc/imgs/ui/map_manager.png)
+![](doc/imgs/ui/map_manager_ui.png)
 ![](doc/imgs/ui/lua_importer.png)
 ![](doc/imgs/ui/code_viewer.png)
 ![](doc/imgs/ui/setting.png)
