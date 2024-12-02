@@ -29,7 +29,7 @@
             <ui:MenuItem Icon="{ui:SymbolIcon Delete20}" ToolTip="删除" Command="{Binding DeleteMapCommand}"/>
             <ui:MenuItem Icon="{ui:SymbolIcon FolderZip20}" ToolTip="压缩" Command="{Binding CompressMapCommand}"/>
             <ui:MenuItem Icon="{ui:SymbolIcon PeopleEdit20}" ToolTip="修改游戏内显示名(map.str)" Command="{Binding EditMapViewNameCommand}"/>
-            <ui:MenuItem Icon="{ui:SymbolIcon BookCompass20}" ToolTip="map.str管理"  Visibility="Collapsed"/>
+            <ui:MenuItem Icon="{ui:SymbolIcon BookCompass20}" ToolTip="map.str管理" />
             <ui:MenuItem Icon="{ui:SymbolIcon CodeBlock20}" ToolTip="Lua导入工具" Command="{Binding ManageLuaCommand}" />
         </Menu>
 
