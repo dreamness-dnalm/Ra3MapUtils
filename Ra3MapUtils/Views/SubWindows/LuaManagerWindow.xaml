@@ -14,6 +14,7 @@
                  Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                  xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
                  xmlns:converters="clr-namespace:Ra3MapUtils.Utils.XamlConverters"
+                 xmlns:validationRules="clr-namespace:Ra3MapUtils.Utils.XamlValidationRules"
                  xmlns:controls="clr-namespace:Ra3MapUtils.Services.Controls"
                  xmlns:models="clr-namespace:Ra3MapUtils.Models"
                  mc:Ignorable="d"
@@ -24,7 +25,7 @@
                  WindowStyle="SingleBorderWindow"
 >
     <ui:FluentWindow.Resources>
-        <converters:BooleanToOppositeConverter x:Key="BooleanToOppositeBooleanConverter"/>
+        <converters:BooleanToOppositeVisibilityConverter x:Key="BooleanToOppositeVisibilityConverter"/>
     </ui:FluentWindow.Resources>
     
     <behaviors:Interaction.Triggers>
@@ -173,10 +174,18 @@
                 <StackPanel Orientation="Vertical" Visibility="{Binding PreviewSelectedScriptRunOnceVisibility}">
                     <ui:TextBlock Text="循环设定"  FontWeight="Heavy" FontSize="15" Margin="5, 2"/>
                     <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.IsEvaluateEachFrame}" Content="每帧运行"  Command="{Binding PreviewChangedCommand}"  Margin="5, 2"/>
-                    <StackPanel Orientation="Horizontal" Visibility="{Binding SelectedLibFileModel.IsEvaluateEachFrame, Converter={StaticResource BooleanToOppositeBooleanConverter}}"  Margin="5, 2">
-                        <ui:TextBlock Text="每" FontSize="14"/>
-                        <TextBox Width="50" Height="20" Text="{Binding SelectedLibFileModel.EvaluationInterval}" FontSize="12"/>
-                        <ui:TextBlock Text="秒运行一次" FontSize="14"/>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding SelectedLibFileModel.IsEvaluateEachFrame, Converter={StaticResource BooleanToOppositeVisibilityConverter}}"  Margin="5, 2">
+                        <ui:TextBlock Text="每" FontSize="14" VerticalAlignment="Center"/>
+                        <TextBox Width="50" Height="30" FontSize="12">
+                            <TextBox.Text>
+                                <Binding Path = "SelectedLibFileModel.EvaluationInterval" UpdateSourceTrigger="PropertyChanged" ValidatesOnNotifyDataErrors="True">
+                                    <Binding.ValidationRules>
+                                        <validationRules:IntValidationRule MinValue="1" ErrorMsg="非法输入, 必须是大于1的整数"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <ui:TextBlock Text="秒运行一次" FontSize="14"  VerticalAlignment="Center"/>
                     </StackPanel>
                 </StackPanel>
                 
