@@ -1,6 +1,6 @@
 {
   "PluginName": "RA3MapUtil_LuaImporter",
-  "PluginVersion": "v1.0.1",
+  "PluginVersion": "v1.1.0",
   "RequireFileDictionary": {
     "UtilCoreLib.dll": "bin/UtilCoreLib.dll",
     "SharedFunctionLib.dll": "bin/SharedFunctionLib.dll",

@@ -13,6 +13,7 @@
                  ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                  Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                  xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                 xmlns:converters="clr-namespace:Ra3MapUtils.Utils.XamlConverters"
                  xmlns:controls="clr-namespace:Ra3MapUtils.Services.Controls"
                  xmlns:models="clr-namespace:Ra3MapUtils.Models"
                  mc:Ignorable="d"
@@ -22,6 +23,10 @@
                  WindowCornerPreference="Round"
                  WindowStyle="SingleBorderWindow"
 >
+    <ui:FluentWindow.Resources>
+        <converters:BooleanToOppositeConverter x:Key="BooleanToOppositeBooleanConverter"/>
+    </ui:FluentWindow.Resources>
+    
     <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="Closed">
             <behaviors:InvokeCommandAction Command="{Binding ClosedCommand}" PassEventArgsToCommand="False"/>
@@ -164,7 +169,24 @@
                 <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.IsIncluded}" Content="包含到库中" Command="{Binding PreviewChangedCommand}"  Margin="5, 2"/>
                 <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.IsEnabled}" Content="启用"  Command="{Binding PreviewChangedCommand}"  Margin="5, 2"/>
                 <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.RunOnce}" Content="只运行一次" Visibility="{Binding PreviewSelectedScriptRunOnceVisibility}"  Command="{Binding PreviewChangedCommand}"  Margin="5, 2"/>
-                   
+                
+                <StackPanel Orientation="Vertical" Visibility="{Binding PreviewSelectedScriptRunOnceVisibility}">
+                    <ui:TextBlock Text="循环设定"  FontWeight="Heavy" FontSize="15" Margin="5, 2"/>
+                    <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.IsEvaluateEachFrame}" Content="每帧运行"  Command="{Binding PreviewChangedCommand}"  Margin="5, 2"/>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding SelectedLibFileModel.IsEvaluateEachFrame, Converter={StaticResource BooleanToOppositeBooleanConverter}}"  Margin="5, 2">
+                        <ui:TextBlock Text="每" FontSize="14"/>
+                        <TextBox Width="50" Height="20" Text="{Binding SelectedLibFileModel.EvaluationInterval}" FontSize="12"/>
+                        <ui:TextBlock Text="秒运行一次" FontSize="14"/>
+                    </StackPanel>
+                </StackPanel>
+                
+                <StackPanel Orientation="Vertical"  Visibility="{Binding PreviewSelectedScriptRunOnceVisibility}">
+                    <ui:TextBlock Text="AI生效难度"  FontWeight="Heavy" FontSize="15" Margin="5, 2"/>
+                    <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.ActiveInEasy}" Content="简单" Visibility="{Binding PreviewSelectedScriptRunOnceVisibility}"  Command="{Binding PreviewChangedCommand}"  Margin="5, 2"/>
+                    <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.ActiveInMedium}" Content="中等" Visibility="{Binding PreviewSelectedScriptRunOnceVisibility}"  Command="{Binding PreviewChangedCommand}"  Margin="5, 2"/>
+                    <ui:ToggleSwitch IsChecked="{Binding SelectedLibFileModel.ActiveInHard}" Content="困难" Visibility="{Binding PreviewSelectedScriptRunOnceVisibility}"  Command="{Binding PreviewChangedCommand}"  Margin="5, 2"/>
+                </StackPanel>
+                
                 <ui:Button Appearance="Primary" Content="预览" Command="{Binding PreviewShowCodeCommand}" Margin="0, 10, 0, 10" Visibility="{Binding PreviewSelectedScriptRunOnceVisibility}"/>
                 <StackPanel Orientation="Horizontal">
                     <ui:TextBlock Text="备注" TextAlignment="Center" VerticalAlignment="Center"/>

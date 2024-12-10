@@ -19,6 +19,11 @@ public class SimpleLibFileModel
     public bool IsEnabled = true;
     public bool IsIncluded = true;
     public bool RunOnce = true;
+    public bool IsEvaluateEachFrame = true;
+    public int EvaluationInterval = 1;
+    public bool ActiveInEasy = true;
+    public bool ActiveInMedium = true;
+    public bool ActiveInHard = true;
     public int OrderNum = 99;
     public List<SimpleLibFileModel> Children = new List<SimpleLibFileModel>();
 
@@ -34,6 +39,11 @@ public class SimpleLibFileModel
                ", IsEnabled=" + IsEnabled +
                ", IsIncluded=" + IsIncluded +
                ", RunOnce=" + RunOnce +
+                ", IsEvaluateEachFrame=" + IsEvaluateEachFrame +
+               ", EvaluationInterval=" + EvaluationInterval +
+                ", ActiveInEasy=" + ActiveInEasy +
+               ", ActiveInMedium=" + ActiveInMedium +
+                ", ActiveInHard=" + ActiveInHard +
                ", OrderNum=" + OrderNum +
                ", Children=" + Children +
                ", LibPath='" + LibPath + '\'' +
@@ -51,6 +61,11 @@ public class SimpleLibFileModel
         rootModel.FilePath = libPath;
         rootModel.IsEnabled = metaModel.IsEnabled;
         rootModel.IsIncluded = metaModel.IsIncluded;
+        rootModel.ActiveInEasy = metaModel.ActiveInEasy;
+        rootModel.ActiveInMedium = metaModel.ActiveInMedium;
+        rootModel.ActiveInHard = metaModel.ActiveInHard;
+        rootModel.EvaluationInterval = metaModel.EvaluationInterval;
+        rootModel.IsEvaluateEachFrame = metaModel.IsEvaluateEachFrame;
         rootModel.RunOnce = metaModel.RunOnce;
         
         // 递归套用配置
@@ -75,7 +90,12 @@ public class SimpleLibFileModel
                 dirModelChild.IsIncluded = metaModelChild.IsIncluded;
                 dirModelChild.RunOnce = metaModelChild.RunOnce;
                 dirModelChild.OrderNum = metaModelChild.OrderNum;
-
+                dirModelChild.ActiveInEasy = metaModelChild.ActiveInEasy;
+                dirModelChild.ActiveInMedium = metaModelChild.ActiveInMedium;
+                dirModelChild.ActiveInHard = metaModelChild.ActiveInHard;
+                dirModelChild.EvaluationInterval = metaModelChild.EvaluationInterval;
+                dirModelChild.IsEvaluateEachFrame = metaModelChild.IsEvaluateEachFrame;
+                
                 if (fileType == "dir")
                 {
                     ApplyMeta(dirModelChild, metaModelChild);

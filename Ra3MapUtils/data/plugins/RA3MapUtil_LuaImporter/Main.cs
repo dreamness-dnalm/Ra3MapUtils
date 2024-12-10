@@ -69,6 +69,14 @@ namespace MapCoreLib.Core.Scripts.ScriptFile
             bool isIncluded = AssemblyHelper.GetObjectField<bool>(model, "IsIncluded"); 
             bool runOnce = AssemblyHelper.GetObjectField<bool>(model, "RunOnce"); 
             int orderNum = AssemblyHelper.GetObjectField<int>(model, "OrderNum");  
+            
+            bool activeInEasy = AssemblyHelper.GetObjectField<bool>(model, "ActiveInEasy");
+            bool activeInMedium = AssemblyHelper.GetObjectField<bool>(model, "ActiveInMedium");
+            bool activeInHard = AssemblyHelper.GetObjectField<bool>(model, "ActiveInHard");
+            
+            int evaluationInterval = AssemblyHelper.GetObjectField<bool>(model, "EvaluationInterval");
+            bool isEvaluateEachFrame = AssemblyHelper.GetObjectField<bool>(model, "IsEvaluateEachFrame");
+            
             IList children = AssemblyHelper.GetObjectField<IList>(model, "Children");
 
             if (fileType == "lua")
@@ -80,7 +88,12 @@ namespace MapCoreLib.Core.Scripts.ScriptFile
                     new List<string>() { File.ReadAllText(path) },
                     isEnabled,
                     isIncluded,
-                    runOnce), orderNum);
+                    runOnce,
+                    isEvaluateEachFrame? -1: evaluationInterval,
+                    activeInEasy,
+                    activeInMedium,
+                    activeInHard,
+                    ), orderNum);
             }
             else if (fileType == "dir")
             {
@@ -224,7 +237,7 @@ namespace MapCoreLib.Core.Scripts.ScriptFile
         }
 
 
-        public static Script MakeScript(MapDataContext context, string name, List<string> luaContents, bool isEnable, bool isInclude, bool runOnce)
+        public static Script MakeScript(MapDataContext context, string name, List<string> luaContents, bool isEnable, bool isInclude, bool runOnce, int evaluationInterval, bool activeInEasy, bool activeInMedium, bool activeInHard)
         {
             if (!isInclude)
             {
@@ -236,6 +249,14 @@ namespace MapCoreLib.Core.Scripts.ScriptFile
             script.ScriptActionOnTrue = new List<ScriptAction>();
             script.isActive = isEnable;
             script.DeactivateUponSuccess = runOnce;
+            if(evaluationInterval > 0)
+            {
+                script.EvaluationInterval = evaluationInterval;
+            }
+
+            script.ActiveInEasy = activeInEasy;
+            script.ActiveInMedium = activeInMedium;
+            script.ActiveInHard = activeInHard;
 
 
             foreach (var luaContent in luaContents)

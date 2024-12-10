@@ -17,6 +17,11 @@ public partial class LibFileModel: ObservableObject
     [ObservableProperty] private bool _isEnabled = true;
     [ObservableProperty] private bool _isIncluded = true;
     [ObservableProperty] private bool _runOnce = true;
+    [ObservableProperty] private bool _isEvaluateEachFrame = true;
+    [ObservableProperty] private int _evaluationInterval = 1;
+    [ObservableProperty] private bool _activeInEasy = true;
+    [ObservableProperty] private bool _activeInMedium = true;
+    [ObservableProperty] private bool _activeInHard = true;
     [ObservableProperty] private int _orderNum = 99;
     [ObservableProperty] private ObservableCollection<LibFileModel> _children = new ObservableCollection<LibFileModel>();
     [ObservableProperty] private string _comment = "";
@@ -35,7 +40,13 @@ public partial class LibFileModel: ObservableObject
         rootModel.IsEnabled = metaModel.IsEnabled;
         rootModel.IsIncluded = metaModel.IsIncluded;
         rootModel.RunOnce = metaModel.RunOnce;
+        rootModel.ActiveInEasy = metaModel.ActiveInEasy;
+        rootModel.ActiveInMedium = metaModel.ActiveInMedium;
+        rootModel.ActiveInHard = metaModel.ActiveInHard;
+        rootModel.EvaluationInterval = metaModel.EvaluationInterval;
+        rootModel.IsEvaluateEachFrame = metaModel.IsEvaluateEachFrame;
         rootModel.Comment = metaModel.Comment;
+        
         
         // 递归套用配置
         ApplyMeta(rootModel, metaModel);
@@ -60,6 +71,11 @@ public partial class LibFileModel: ObservableObject
                 dirModelChild.RunOnce = metaModelChild.RunOnce;
                 dirModelChild.OrderNum = metaModelChild.OrderNum;
                 dirModelChild.Comment = metaModelChild.Comment;
+                dirModelChild.ActiveInEasy = metaModelChild.ActiveInEasy;
+                dirModelChild.ActiveInMedium = metaModelChild.ActiveInMedium;
+                dirModelChild.ActiveInHard = metaModelChild.ActiveInHard;
+                dirModelChild.EvaluationInterval = metaModelChild.EvaluationInterval;
+                dirModelChild.IsEvaluateEachFrame = metaModelChild.IsEvaluateEachFrame;
 
                 if (fileType == "dir")
                 {
