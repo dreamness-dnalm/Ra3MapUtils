@@ -100,6 +100,8 @@
                         <ListView.ItemTemplate>
                             <DataTemplate DataType="{x:Type models:LuaLibConfigModel}">
                                 <StackPanel Orientation="Horizontal" ToolTip="{Binding LibPath}">
+                                    <!-- <ui:ToggleSwitch IsChecked="{Binding IsEnabled}" Command="{Binding UpsertCommand }"/> -->
+                                    <!-- <ui:TextBlock Text="     "/> -->
                                     <ui:TextBlock Text="{Binding ShowingName}" />
                                     <ui:TextBlock Text="     "/>
                                     <ui:TextBlock Text="{Binding LibPath}" Foreground="Gray"/>

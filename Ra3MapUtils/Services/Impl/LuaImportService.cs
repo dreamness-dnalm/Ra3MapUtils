@@ -9,7 +9,7 @@ public class LuaImportService: ILuaImportService
 {
     public void SaveMapLuaLibConfig(LuaLibConfigModel luaLibConfigModel)
     {
-        LuaImporterBusiness.Save(luaLibConfigModel.MapName, luaLibConfigModel.ShowingName, luaLibConfigModel.LibPath, luaLibConfigModel.OrderNum);
+        LuaImporterBusiness.Save(luaLibConfigModel.MapName, luaLibConfigModel.ShowingName, luaLibConfigModel.LibPath, luaLibConfigModel.OrderNum, luaLibConfigModel.IsEnabled);
     }
 
     public void RenameMapLuaLibConfig(string mapName, string oldShowingName, string newShowingName)

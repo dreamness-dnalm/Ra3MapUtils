@@ -29,7 +29,7 @@ public partial class LuaManagerWindowViewModel
             orderNum = _luaLibConfigs.Max(o => o.OrderNum) + 1;
         }
 
-        var model = new LuaLibConfigModel(_mapName, "lib_" + (_luaLibConfigs.Count + 1), "", orderNum);
+        var model = new LuaLibConfigModel(_mapName, "lib_" + (_luaLibConfigs.Count + 1), "", orderNum, true);
         _luaImportService.SaveMapLuaLibConfig(model);
         LuaLibConfigs.Add(model);
         SelectedLuaLibConfig = model;
@@ -88,6 +88,13 @@ public partial class LuaManagerWindowViewModel
             MessageBox.Show("重命名失败, 详细错误: " + e.Message);
         }
     }
+    
+    [RelayCommand]
+    private void UpdateLuaLibConfig(LuaLibConfigModel model)
+    {
+        model.Upsert();
+    }
+    
     [RelayCommand]
     private void ChangePathLuaLibConfig()
     {

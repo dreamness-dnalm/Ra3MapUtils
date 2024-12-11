@@ -16,6 +16,9 @@ public class SimpleLuaLibConfigModel
         public string LibPath;
         [Column(Name="OrderNum")]
         public int OrderNum;
+        [Column(Name="IsEnabled")]
+        public int IsEnabled = 1;
+        
 
         public override string ToString()
         {
@@ -24,6 +27,7 @@ public class SimpleLuaLibConfigModel
                        ", ShowingName='" + ShowingName + '\'' +
                        ", LibPath='" + LibPath + '\'' +
                        ", OrderNum=" + OrderNum +
+                          ", IsEnabled=" + IsEnabled +
                        '}';
         }
 }

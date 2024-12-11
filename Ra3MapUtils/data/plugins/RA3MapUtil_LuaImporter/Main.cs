@@ -25,13 +25,21 @@ namespace MapCoreLib.Core.Scripts.ScriptFile
                     object model = models[i];
                     string libPath = AssemblyHelper.GetObjectField<string>(model, "LibPath");
                     object fileModel = ExternalFuncHelper.LoadSimpleFileModel(libPath);
-
+                    // bool isEnabled = AssemblyHelper.GetObjectField<int>(model, "IsEnabled") > 0;
+                    bool isEnabled = true;
                     ExternalFuncHelper.WriteLog(fileModel.ToString());
 
                     var scriptGroup = Translate(fileModel, context).Item1;
                     if (scriptGroup != null)
                     {
-                        ScriptHelper.AddScriptGroup(context, scriptList, (ScriptGroup)scriptGroup, lastScriptGroupName);
+                        if(isEnabled)
+                        {
+                            ScriptHelper.AddScriptGroup(context, scriptList, (ScriptGroup)scriptGroup, lastScriptGroupName);                            
+                        }
+                        else
+                        {
+                            // TODO 改变顺序
+                        }
                         lastScriptGroupName = Path.GetFileName(libPath);
                     }
                 }
@@ -74,7 +82,7 @@ namespace MapCoreLib.Core.Scripts.ScriptFile
             bool activeInMedium = AssemblyHelper.GetObjectField<bool>(model, "ActiveInMedium");
             bool activeInHard = AssemblyHelper.GetObjectField<bool>(model, "ActiveInHard");
             
-            int evaluationInterval = AssemblyHelper.GetObjectField<bool>(model, "EvaluationInterval");
+            int evaluationInterval = AssemblyHelper.GetObjectField<int>(model, "EvaluationInterval");
             bool isEvaluateEachFrame = AssemblyHelper.GetObjectField<bool>(model, "IsEvaluateEachFrame");
             
             IList children = AssemblyHelper.GetObjectField<IList>(model, "Children");
@@ -92,7 +100,7 @@ namespace MapCoreLib.Core.Scripts.ScriptFile
                     isEvaluateEachFrame? -1: evaluationInterval,
                     activeInEasy,
                     activeInMedium,
-                    activeInHard,
+                    activeInHard
                     ), orderNum);
             }
             else if (fileType == "dir")

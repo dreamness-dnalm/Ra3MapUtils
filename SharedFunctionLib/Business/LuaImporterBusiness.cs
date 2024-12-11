@@ -64,14 +64,15 @@ public static class LuaImporterBusiness
         return luaLibConfigModels;
     }
     
-    public static void Save(string mapName, string showingName, string libPath, int orderNum)
+    public static void Save(string mapName, string showingName, string libPath, int orderNum, bool isEnabled)
     {
         var model = new SimpleLuaLibConfigModel
         {
             MapName = mapName,
             ShowingName = showingName,
             LibPath = libPath,
-            OrderNum = orderNum
+            OrderNum = orderNum,
+            IsEnabled = isEnabled ? 1 : 0
         };
         LuaLibConfigDAO.Save(model);
     }
