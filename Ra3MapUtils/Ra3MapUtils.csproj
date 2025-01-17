@@ -92,4 +92,8 @@
       </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="data\test\" />
+    </ItemGroup>
+
 </Project>
