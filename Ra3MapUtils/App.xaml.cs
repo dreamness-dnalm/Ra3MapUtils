@@ -15,6 +15,8 @@ using SharedFunctionLib.Utils;
 using Velopack;
 using Wpf.Ui;
 using Microsoft.Extensions.Logging;
+using Ra3MapUtils.ViewModels.toolbox;
+using Ra3MapUtils.Views.SubWindows.toolbox;
 using SettingPageViewModel = Ra3MapUtils.ViewModels.MainWindowPages.SettingPageViewModel;
 
 namespace Ra3MapUtils;
@@ -59,6 +61,9 @@ public partial class App : Application
 
         services.AddTransient<CodeEditorWindow>();
         services.AddTransient<CodeEditorWindowViewModel>();
+
+        services.AddSingleton<LogViewerWindow>();
+        services.AddSingleton<LogViewerWindowViewModel>();
 
         services.AddSingleton<ILuaImportService, LuaImportService>();
         services.AddSingleton<ISettingService, SettingService>();

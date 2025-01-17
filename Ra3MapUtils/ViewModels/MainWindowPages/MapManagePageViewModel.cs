@@ -367,9 +367,10 @@ public partial class MapManagePageViewModel : ObservableObject
         }
 
         var luaManagerWindow = App.Current.Services.GetRequiredService<LuaManagerWindow>();
-
+        
         luaManagerWindow._luaManagerWindowViewModel.MapName = _selectedMap;
         luaManagerWindow.Show();
+        GlobalVarsModel.LuaManagerWindowOpened = true;
         GlobalVarsModel.SetLuaManagerWindowOpenedMapName(_selectedMap);
     }
 

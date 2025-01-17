@@ -96,4 +96,11 @@
       <Folder Include="data\test\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="data\imgs\log_viewer_icon.png" />
+      <Resource Include="data\imgs\log_viewer_icon.png" />
+      <None Remove="data\imgs\coming_soon_icon.png" />
+      <Resource Include="data\imgs\coming_soon_icon.png" />
+    </ItemGroup>
+
 </Project>

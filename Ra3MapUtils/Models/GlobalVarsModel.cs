@@ -8,7 +8,7 @@ namespace Ra3MapUtils.Models;
 
 public static class GlobalVarsModel
 {
-    public static bool LuaManagerWindowOpened { get; private set; } = false;
+    public static bool LuaManagerWindowOpened { get; set; } = false;
 
     public static void SetLuaManagerWindowOpenedMapName(string mapName)
     {
@@ -33,4 +33,6 @@ public static class GlobalVarsModel
     }
 
     public static NuGet.Versioning.SemanticVersion Version => NuGet.Versioning.SemanticVersion.Parse(VersionStr);
+    
+    public static bool LogViewerWindowOpened { get; set; } = false;
 }

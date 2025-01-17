@@ -13,9 +13,88 @@
       ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       mc:Ignorable="d"
-      Title="ToolBoxPage" Height="450" Width="800">
+      Title="ToolBoxPage"  VerticalAlignment="Top" HorizontalAlignment="Stretch" >
     <Grid>
-        <ui:TextBlock Text="敬请期待, 欢迎提需求和建议"/>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        
+        
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch"
+                      Margin="10, 10, 10, 10">
+            <WrapPanel Orientation="Horizontal">
+                <ui:CardAction
+                    Margin="4,4,4,4"
+                    Padding="0"
+                    VerticalAlignment="Stretch"
+                    Command="{Binding OpenLogViewerWindowCommand}"
+                    IsChevronVisible="False">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Image
+                            Width="60"
+                            Margin="24,0,0,0"
+                            Source="pack://application:,,,/data/imgs/log_viewer_icon.png" />
+
+                        <StackPanel
+                            Grid.Column="1"
+                            Margin="24"
+                            VerticalAlignment="Center">
+                            <ui:TextBlock
+                                Margin="0"
+                                FontTypography="BodyStrong"
+                                Text="地图日志查看器"
+                                TextWrapping="WrapWithOverflow" />
+                            <ui:TextBlock
+                                Appearance="Secondary"
+                                Text="查看Lua库产生的日志"
+                                TextWrapping="WrapWithOverflow" />
+                        </StackPanel>
+                    </Grid>
+                </ui:CardAction>
+                
+                
+                
+                <ui:CardAction
+                    Margin="4,4,4,4"
+                    Padding="0"
+                    VerticalAlignment="Stretch"
+                    Command="{Binding OpenMoreFunctionsWindowCommand}"
+                    IsChevronVisible="False">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Image
+                            Width="60"
+                            Margin="24,0,0,0"
+                            Source="pack://application:,,,/data/imgs/coming_soon_icon.png" />
+
+                        <StackPanel
+                            Grid.Column="1"
+                            Margin="24"
+                            VerticalAlignment="Center">
+                            <ui:TextBlock
+                                Margin="0"
+                                FontTypography="BodyStrong"
+                                Text="更多功能敬请期待"
+                                TextWrapping="WrapWithOverflow" />
+                            <ui:TextBlock
+                                Appearance="Secondary"
+                                Text="欢迎联系, 期待您的需求和建议"
+                                TextWrapping="WrapWithOverflow" />
+                        </StackPanel>
+                    </Grid>
+                </ui:CardAction>
+            </WrapPanel>
+        </ScrollViewer>
         
     </Grid>
 </Page>
