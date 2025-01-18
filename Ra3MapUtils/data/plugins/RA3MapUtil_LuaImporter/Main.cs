@@ -8,6 +8,8 @@ using System.Reflection;
 using System.Linq;
 using System.IO;
 using System.Diagnostics;
+using System.Text;
+
 namespace MapCoreLib.Core.Scripts.ScriptFile
 {
     public class RA3MapUtil_LuaImporter : ScriptInterface
@@ -93,7 +95,7 @@ namespace MapCoreLib.Core.Scripts.ScriptFile
                 return new Tuple2(ScriptHelper.MakeScript(
                     context,
                     fileName,
-                    new List<string>() { File.ReadAllText(path) },
+                    new List<string>() { File.ReadAllText(path, Encoding.GetEncoding("gbk")) },
                     isEnabled,
                     isIncluded,
                     runOnce,
@@ -252,7 +254,7 @@ namespace MapCoreLib.Core.Scripts.ScriptFile
                 return null;
             }
             var script = new Script();
-            script.Name = name;
+            script.Name = StringHelper.StringTranslate(name);
             script.scriptOrConditions = MakeConditionTrue(context);
             script.ScriptActionOnTrue = new List<ScriptAction>();
             script.isActive = isEnable;
@@ -277,6 +279,9 @@ namespace MapCoreLib.Core.Scripts.ScriptFile
                 {
                     content += "-- end of script, please ignore this line";
                 }
+                // ExternalFuncHelper.WriteLog(content);
+                // content = StringHelper.StringTranslate(content);
+                // ExternalFuncHelper.WriteLog(content);
                 script.ScriptActionOnTrue.Add(ScriptAction.of(context, "DEBUG_MESSAGE_BOX", new List<object> { (object)content }));
             }
 
@@ -292,7 +297,7 @@ namespace MapCoreLib.Core.Scripts.ScriptFile
             }
             var scriptGroup = new ScriptGroup
             {
-                Name = name,
+                Name = StringHelper.StringTranslate(name),
                 IsActive = isEnable
             };
             foreach (var subScript in subScripts)
@@ -306,6 +311,23 @@ namespace MapCoreLib.Core.Scripts.ScriptFile
             }
 
             return scriptGroup;
+        }
+    }
+
+    public static class StringHelper
+    {
+        public static string TranslateEncoding(string sourceString, string sourceEncoding, string targetEncoding)
+        {
+            Encoding srcEnc = Encoding.GetEncoding(sourceEncoding);
+            Encoding destEnc = Encoding.GetEncoding(targetEncoding);
+            byte[] srcBytes = srcEnc.GetBytes(sourceString);
+            byte[] destBytes = Encoding.Convert(srcEnc, destEnc, srcBytes);
+            return destEnc.GetString(destBytes);
+        }
+
+        public static string StringTranslate(string source)
+        {
+            return TranslateEncoding(source, "utf-8", "gbk");
         }
     }
 }

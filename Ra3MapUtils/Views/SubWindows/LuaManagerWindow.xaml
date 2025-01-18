@@ -47,7 +47,11 @@
             <ui:TitleBar Grid.Row="0" Title="{Binding WindowTitle}" ShowMaximize="False">
             
         </ui:TitleBar>
-        <ui:HyperlinkButton Grid.Row="1" Content="使用文档" NavigateUri="https://www.yuque.com/muzeqaq/ra3mapwiki/ofa6ufyd9pmwwgnm" Icon="{ui:SymbolIcon Document20}"/>
+            <StackPanel Grid.Row="1" Orientation="Vertical" Margin="5, 0, 5, 5">
+                <ui:HyperlinkButton Content="使用文档及常见错误" NavigateUri="https://www.yuque.com/muzeqaq/ra3mapwiki/ofa6ufyd9pmwwgnm" Icon="{ui:SymbolIcon Document20}"/>
+                <ui:InfoBar Message="导入的文件夹, 路径, 以及lua文件名, 请不要包含中中文, 否则会损坏地图文件." IsOpen="True"  /> 
+            </StackPanel>
+            
         <Grid Grid.Row="2" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>

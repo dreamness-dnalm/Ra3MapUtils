@@ -29,7 +29,7 @@
                     Padding="0"
                     VerticalAlignment="Stretch"
                     Command="{Binding OpenLogViewerWindowCommand}"
-                    IsChevronVisible="False">
+                    IsChevronVisible="False" Visibility="Collapsed">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
