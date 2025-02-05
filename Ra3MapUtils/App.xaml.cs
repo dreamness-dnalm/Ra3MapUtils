@@ -97,5 +97,6 @@ public partial class App : Application
         settingPageViewModel.OnLoadUpdatePart();
         settingPageViewModel.UpdateNow();
         settingPageViewModel.OnLoadNewWorldBuilderPart();
+        settingPageViewModel.OnLoadLuaLibBindingPart();
     }
 }

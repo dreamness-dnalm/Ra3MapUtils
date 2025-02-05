@@ -1,15 +1,18 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using hospital_pc_client.Utils;
 using SharedFunctionLib.Business;
 
 namespace Ra3MapUtils.Models;
 
-public partial class SettingModel: ObservableObject
+public partial class SettingModel: ObservableObject, INotify
 {
     [ObservableProperty]private int _luaRedundancyFactor;
     
     [ObservableProperty]private bool _isAutoUpdate;
     
     [ObservableProperty]private string _newWorldBuilderPath;
+
+    [ObservableProperty] private bool _isEnableAutoBackup;
 
     partial void OnLuaRedundancyFactorChanged(int value)
     {
@@ -37,4 +40,6 @@ public partial class SettingModel: ObservableObject
     {
         Reload();
     }
+
+    public List<IObserver> _observers { get; set; }
 }

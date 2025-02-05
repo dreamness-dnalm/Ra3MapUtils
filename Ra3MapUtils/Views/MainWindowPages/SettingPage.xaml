@@ -83,7 +83,23 @@
                     </ui:CardControl>
                 </StackPanel>
             </ui:CardExpander>
-            
+            <ui:CardExpander Margin="0, 5, 0, 5" IsExpanded="True" >
+                <ui:CardExpander.Header><ui:TextBlock Text="Lua库联动"></ui:TextBlock></ui:CardExpander.Header>
+                <StackPanel Orientation="Vertical">
+                    <ui:CardControl  Margin="0, 0, 0, 5" >
+                        <ui:CardControl.Header>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Lua库路径" Margin="0, 0, 15, 0"/>
+                                    <TextBlock Text="{Binding LuaLibBindingPathHint}" Foreground="{Binding LuaLibBindingPathHintColor}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding LuaLibBindingModel.LuaLibPath}" FontSize="10" Foreground="LightGray"/>
+                            </StackPanel>
+                        </ui:CardControl.Header>
+                        <ui:Button Content="指定Lua库路径" Command="{Binding PickLuaLibPathCommand}"/>
+                    </ui:CardControl>
+                </StackPanel>
+            </ui:CardExpander>
             <ui:CardExpander Margin="0, 5, 0, 5" IsExpanded="True" >
                 <ui:CardExpander.Header><ui:TextBlock Text="新地编联动"></ui:TextBlock></ui:CardExpander.Header>
                 <StackPanel Orientation="Vertical">
