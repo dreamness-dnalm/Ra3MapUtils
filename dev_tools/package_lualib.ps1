@@ -2,8 +2,10 @@
 $excludeDirs = @(".git")
 
 $toolPath = Split-Path -parent $MyInvocation.MyCommand.Definition
-$packageOutPath = "$toolPath\publish"
+$packageOutPath = "$toolPath\publish\lualib"
 $version = Get-Content -Path "$luaLibPath\VERSION" -Raw
+$output7zFileName = "Ra3CoronaMapLuaLib_v$version.7z"
+$output7zPath = "$packageOutPath\$output7zFileName"
 
 # 检查7-Zip是否可用
 if (-not (Get-Command 7z -ErrorAction SilentlyContinue)) {
@@ -30,15 +32,17 @@ try {
     Write-Host "排除目录: $($excludeDirs -join ', ')"
 
     # 执行7-Zip命令
-    7z a -t7z "$packageOutPath\Ra3CoronaMapLuaLib_v$version.7z" "$luaLibPath\*" -mx=9 -aoa $excludeParams
+    7z a -t7z "$output7zPath" "$luaLibPath\*" -mx=9 -aoa $excludeParams
 
     if ($LASTEXITCODE -ne 0) {
         Write-Error "压缩失败，错误码：$LASTEXITCODE"
         exit $LASTEXITCODE
     }
 
-    Write-Host "压缩成功完成！输出文件：$output7z" -ForegroundColor Green
+    Write-Host "压缩成功完成！输出文件：$output7zPath" -ForegroundColor Green
 }
 finally {
     Pop-Location
 }
+
+$output7zMd5 = Get-FileHash -Path $output7zPath -Algorithm MD5
