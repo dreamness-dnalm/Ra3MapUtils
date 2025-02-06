@@ -3,6 +3,7 @@ $excludeDirs = @(".git")
 
 $toolPath = Split-Path -parent $MyInvocation.MyCommand.Definition
 $packageOutPath = "$toolPath\publish"
+$version = Get-Content -Path "$luaLibPath\VERSION" -Raw
 
 # 检查7-Zip是否可用
 if (-not (Get-Command 7z -ErrorAction SilentlyContinue)) {
@@ -24,26 +25,12 @@ $excludeParams = $excludeDirs | ForEach-Object { "-xr!$_" }
 
 # 执行压缩命令
 try {
-    # 切换到源目录上级目录以确保正确的相对路径
-    Push-Location (Split-Path $luaLibPath -Parent)
-
-    # 构建完整命令
-#    $commandArgs = @(
-#        "a",                     # 添加文件到压缩包
-#        "",
-#        "`"$packageOutPath\Ra3CoronaMapLuaLib_v.7z`"",         # 输出文件路径
-#        "`"$luaLibPath\*`"", # 源目录内容
-#        $compressionLevel,       # 压缩级别
-#        "-spf2",                 # 使用标准文件路径格式
-#        $excludeParams           # 排除参数
-#    )
-
     # 显示压缩信息
     Write-Host "正在压缩 $luaLibPath 到 $packageOutPath..."
     Write-Host "排除目录: $($excludeDirs -join ', ')"
 
     # 执行7-Zip命令
-    7z a -t7z "$packageOutPath\Ra3CoronaMapLuaLib_v.7z" -o"$luaLibPath" -mx=9 
+    7z a -t7z "$packageOutPath\Ra3CoronaMapLuaLib_v$version.7z" "$luaLibPath\*" -mx=9 -aoa $excludeParams
 
     if ($LASTEXITCODE -ne 0) {
         Write-Error "压缩失败，错误码：$LASTEXITCODE"
