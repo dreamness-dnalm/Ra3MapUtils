@@ -98,6 +98,71 @@
                         </ui:CardControl.Header>
                         <ui:Button Content="指定Lua库路径" Command="{Binding PickLuaLibPathCommand}"/>
                     </ui:CardControl>
+                    <ui:CardControl  Margin="0, 0, 0, 5" >
+                        <ui:CardControl.Header>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="主动提示更新"/>
+                                <TextBlock Text="程序初始化时会尝试自动更新,建议开启" FontSize="10" Foreground="LightGray"/>
+                            </StackPanel>
+                        </ui:CardControl.Header>
+                        <ui:ToggleSwitch IsChecked="{Binding LuaLibBindingModel.IsAutoUpdateEnabled}"/>
+                    </ui:CardControl>
+                    <ui:CardControl Margin="0, 0, 0, 5">
+                <ui:CardControl.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        
+                      <Grid Grid.Column="0" Width="70" HorizontalAlignment="Left">
+                          <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="*"/>
+                              <ColumnDefinition Width="15"/>
+                          </Grid.ColumnDefinitions>
+                          <TextBlock Grid.Column="0" Text="检查更新" VerticalAlignment="Center" />
+                          <ui:InfoBadge Grid.Column="1" Severity="Critical" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{DynamicResource DotInfoBadgeStyle}" Visibility="{Binding LuaLibBindingUpdateNowVisibility}"/>
+                          
+                      </Grid>
+                           
+              
+                        
+                        <StackPanel Grid.Column="1" Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="当前版本: " FontSize="10" Foreground="LightGray"/>
+                                <TextBlock Text="{Binding LuaLibBindingCurrVersion }" FontSize="10" Foreground="LightGray"/>
+                            </StackPanel>
+                            <TextBlock  FontSize="10" Text="{Binding LuaLibBindingUpdateHint}" Foreground="{Binding LuaLibBindingUpdateHintColor}"/>
+                            
+                        </StackPanel>
+                        
+                    </Grid>
+                    
+                </ui:CardControl.Header>
+                <StackPanel Orientation="Horizontal">
+                    <ui:Button  Visibility="{Binding UpdateNowVisibility}" Margin="0, 0, 5, 0" IsEnabled="{Binding UpdateNowEnabled}" Command="{Binding LuaLibReinstallCommand}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="15"/>
+                            </Grid.ColumnDefinitions>
+                            <ui:TextBlock Grid.Column="0" Grid.ColumnSpan="2" Text="立即更新/重新安装"/>
+                            <ui:InfoBadge Grid.Column="1" Severity="Critical"   Visibility="{Binding UpdateNowVisibility}" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{DynamicResource DotInfoBadgeStyle}" />
+                        </Grid>
+                        
+                    </ui:Button>
+                    <ui:Button Content="检查更新" Margin="5, 0, 0, 0" Command="{Binding LuaLibCheckUpdateCommand}" />
+                </StackPanel>
+            </ui:CardControl>
+                    <ui:CardControl  Margin="0, 0, 0, 5" >
+                        <ui:CardControl.Header>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Lua导入工具中自动导入"/>
+                                <TextBlock Text="对于新地图, Lua导入工具会默认导入Lua库, 建议开启" FontSize="10" Foreground="LightGray"/>
+                            </StackPanel>
+                        </ui:CardControl.Header>
+                        <ui:ToggleSwitch IsChecked="{Binding LuaLibBindingModel.IsAutoLoadWhenImport}"/>
+                    </ui:CardControl>
                 </StackPanel>
             </ui:CardExpander>
             <ui:CardExpander Margin="0, 5, 0, 5" IsExpanded="True" >
