@@ -52,33 +52,40 @@ public partial class SettingPageViewModel: ObservableObject
     [RelayCommand]
     private void PickLuaLibPath()
     {
-        var openFolderDialog = new OpenFolderDialog
+        try
         {
-            Title = "选择Lua库安装路径(空目录)"
-        };
-        openFolderDialog.ShowDialog();
-        var dir = openFolderDialog.FolderName;
-        if (string.IsNullOrEmpty(dir))
-        {
-            return;
-        }
+            MessageBox.Show("请选择lua库的安装路径, 稍候会自动在该目录下创建Ra3CoronaMapLuaLib文件夹,作为lua库的安装目录");
+            var openFolderDialog = new OpenFolderDialog
+            {
+                Title = "选择Lua库安装路径(空目录)"
+            };
+            openFolderDialog.ShowDialog();
+            var dir = openFolderDialog.FolderName;
+            if (string.IsNullOrEmpty(dir))
+            {
+                return;
+            }
 
-        if (! Directory.Exists(dir))
-        {
-            MessageBox.Show("目录不存在");
-            return;
-        }
+            if (!Directory.Exists(dir))
+            {
+                MessageBox.Show("目录不存在");
+                return;
+            }
 
-        if (Directory.EnumerateFileSystemEntries(dir).Any())
-        {
-            MessageBox.Show("请指定一个空文件夹. 如果该文件夹已经安装了lua库, 可以先删除, 稍候会重新安装");
-            return;
-        }
+            dir = Path.Combine(dir, "Ra3CoronaMapLuaLib");
 
-        LuaLibBindingModel.LuaLibPath = dir;
-        
-        OnLuaLibBindingModelChanged(_luaLibBindingModel);
-        MessageBox.Show("开始安装!");
+            Directory.CreateDirectory(dir);
+
+            LuaLibBindingModel.LuaLibPath = dir;
+
+            OnLuaLibBindingModelChanged(_luaLibBindingModel);
+
+            LuaLibReinstall();
+        }catch(Exception e)
+        {
+            Logger.WriteLog(e.Message);
+            MessageBox.Show("操作异常, 请重试, 或加入QQ群513118543寻求帮助");
+        }
     }
 
     [RelayCommand]
@@ -92,8 +99,7 @@ public partial class SettingPageViewModel: ObservableObject
     {
         if (!Directory.Exists(_luaLibBindingModel.LuaLibPath))
         {
-            MessageBox.Show("Lua库路径不存在, 请重新指定路径");
-            return;
+            Directory.CreateDirectory(_luaLibBindingModel.LuaLibPath);
         }
         LuaLibBindingUpdateHint = "正在检查更新...";
         LuaLibBindingUpdateHintColor = Brushes.Blue;
