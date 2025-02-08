@@ -6,6 +6,7 @@ $packageOutPath = "$toolPath\publish\lualib"
 $version = Get-Content -Path "$luaLibPath\VERSION" -Raw
 $output7zFileName = "Ra3CoronaMapLuaLib_v$version.7z"
 $output7zPath = "$packageOutPath\$output7zFileName"
+$releaseJsonFilePath = "$packageOutPath\release.json"
 
 # 检查7-Zip是否可用
 if (-not (Get-Command 7z -ErrorAction SilentlyContinue)) {
@@ -46,3 +47,15 @@ finally {
 }
 
 $output7zMd5 = Get-FileHash -Path $output7zPath -Algorithm MD5
+
+$releaseJsonFileData = @{
+    "Version" = "$version"
+    "Md5" = $output7zMd5.Hash
+    "FileName" = $output7zFileName
+}
+
+$releaseJsonFileData | ConvertTo-Json | Out-File -FilePath $releaseJsonFilePath -Encoding utf8
+
+Write-Host "Release json file: $releaseJsonFilePath" -ForegroundColor Green
+
+Invoke-Item "$packageOutPath"
