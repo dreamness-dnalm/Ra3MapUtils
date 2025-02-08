@@ -132,15 +132,6 @@ public partial class SettingPageViewModel: ObservableObject
             LuaLibBindingUpdateHint = "请先绑定Lua库文件夹";
             LuaLibBindingUpdateHintColor = Brushes.Red;
         } 
-        else if (! Directory.Exists(value.LuaLibPath))
-        {
-            LuaLibBindingPathHint = "目标文件夹不存在";
-            LuaLibBindingPathHintColor = Brushes.Red;
-            LuaLibBindingCurrVersion = "unknown";
-            LuaLibBindingUpdateNowVisibility = Visibility.Collapsed;
-            LuaLibBindingUpdateHint = "请先绑定Lua库文件夹";
-            LuaLibBindingUpdateHintColor = Brushes.Red;
-        }
         else
         {
             LuaLibBindingPathHint = "已绑定";
