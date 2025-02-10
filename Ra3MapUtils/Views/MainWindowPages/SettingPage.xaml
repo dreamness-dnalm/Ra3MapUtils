@@ -154,15 +154,15 @@
                     <ui:Button Content="检查更新" Margin="5, 0, 0, 0" Command="{Binding LuaLibCheckUpdateCommand}" />
                 </StackPanel>
             </ui:CardControl>
-                    <ui:CardControl  Margin="0, 0, 0, 5" >
-                        <ui:CardControl.Header>
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="Lua导入工具中自动导入"/>
-                                <TextBlock Text="对于新地图, Lua导入工具会默认导入Lua库, 建议开启" FontSize="10" Foreground="LightGray"/>
-                            </StackPanel>
-                        </ui:CardControl.Header>
-                        <ui:ToggleSwitch IsChecked="{Binding LuaLibBindingModel.IsAutoLoadWhenImport}"/>
-                    </ui:CardControl>
+                    <!-- <ui:CardControl  Margin="0, 0, 0, 5" > -->
+                    <!--     <ui:CardControl.Header> -->
+                    <!--         <StackPanel Orientation="Vertical"> -->
+                    <!--             <TextBlock Text="Lua导入工具中自动导入"/> -->
+                    <!--             <TextBlock Text="对于新地图, Lua导入工具会默认导入Lua库, 建议开启" FontSize="10" Foreground="LightGray"/> -->
+                    <!--         </StackPanel> -->
+                    <!--     </ui:CardControl.Header> -->
+                    <!--     <ui:ToggleSwitch IsChecked="{Binding LuaLibBindingModel.IsAutoLoadWhenImport}"/> -->
+                    <!-- </ui:CardControl> -->
                 </StackPanel>
             </ui:CardExpander>
             <ui:CardExpander Margin="0, 5, 0, 5" IsExpanded="True" >
