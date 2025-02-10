@@ -26,6 +26,7 @@
       <PackageReference Include="NLog" Version="5.3.4" />
       <PackageReference Include="Ookii.Dialogs.WinForms" Version="4.0.0" />
       <PackageReference Include="SemanticVersion" Version="2.1.0" />
+      <PackageReference Include="SevenZipExtractor" Version="1.0.19" />
       <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
       <PackageReference Include="Velopack" Version="0.0.869" />
       <PackageReference Include="WPF-UI" Version="3.0.5" />

@@ -9,6 +9,8 @@ using CommunityToolkit.Mvvm.Input;
 using hospital_pc_client.Utils;
 using Microsoft.Win32;
 using Ra3MapUtils.Models;
+using Ra3MapUtils.Utils;
+using SevenZipExtractor;
 using SharedFunctionLib.Utils;
 using UtilLib.utils;
 
@@ -41,6 +43,8 @@ public partial class SettingPageViewModel: ObservableObject
     private static string luaLibUpdateVersionUrl = luaLibUpdateBaseUrl + "release.json";
 
     private static string downloadCachePath = Path.Combine(Ra3MapUtilsPathUtil.UserCachePath, "luaLibDownloadCache");
+    
+    private static string luaLibDownloadCacheFileName = "";
 
     public void OnLoadLuaLibBindingPart()
     {
@@ -247,6 +251,7 @@ public partial class SettingPageViewModel: ObservableObject
                     luaLibLastestMd5 = root.GetProperty("Md5").GetString();
                     string fileName = root.GetProperty("FileName").GetString();
                     luaLibLatestDownloadUrl = luaLibUpdateBaseUrl + fileName;
+                    luaLibDownloadCacheFileName = Path.Combine(downloadCachePath, fileName);
                 }
 
                 return true;
@@ -256,6 +261,62 @@ public partial class SettingPageViewModel: ObservableObject
                 Logger.WriteLog(e.Message);
                 return false;
             }
+        }
+    }
+
+    private async Task<bool> LuaLibDownLoad()
+    {
+        try
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                // 异步获取响应
+                HttpResponseMessage response = await client.GetAsync(luaLibLatestDownloadUrl);
+                response.EnsureSuccessStatusCode();
+
+                // 读取响应流
+                using (Stream stream = await response.Content.ReadAsStreamAsync())
+                    // 创建本地文件流
+                using (FileStream fileStream = new FileStream(luaLibDownloadCacheFileName, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    // 将下载的数据写入本地文件
+                    await stream.CopyToAsync(fileStream);
+                }
+            }
+            
+            if(Md5Util.CalculateFileMD5(luaLibDownloadCacheFileName) != luaLibLastestMd5)
+            {
+                Logger.WriteLog("下载文件MD5校验失败");
+                return false;
+            }
+            
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLog("下载失败：" + ex.Message);
+            return false;
+        }
+    }
+
+    private async Task<bool> LuaLibRelease()
+    {
+        try
+        {
+            Directory.Delete(_luaLibBindingModel.LuaLibPath, true);
+            Directory.CreateDirectory(_luaLibBindingModel.LuaLibPath);
+            
+            using (ArchiveFile archiveFile = new ArchiveFile(luaLibDownloadCacheFileName))
+            {
+                archiveFile.Extract(_luaLibBindingModel.LuaLibPath); // extract all
+            }
+
+            return true;
+        }
+        catch(Exception e)
+        {
+            Logger.WriteLog("lualib 安装失败" + e.Message);
+            return false;
         }
     }
     

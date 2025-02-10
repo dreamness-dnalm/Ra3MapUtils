@@ -126,6 +126,14 @@
                         </StackPanel>
                     </ui:CardControl.Header>
                 </ui:CardControl>
+                <ui:CardControl Margin="4" Padding="20,10,20,10">
+                    <ui:CardControl.Header>
+                        <StackPanel HorizontalAlignment="Left">
+                            <ui:HyperlinkButton Content="SevenZipExtractor" NavigateUri="https://github.com/adoconnection/SevenZipExtractor" HorizontalAlignment="Center" />
+                            <ui:TextBlock Margin="0" Text="7z.dll包装库" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                </ui:CardControl>
        </WrapPanel>
         </StackPanel>
         </ui:CardExpander>
