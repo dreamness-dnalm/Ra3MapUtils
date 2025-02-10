@@ -18,7 +18,7 @@ public static class Md5Util
                 {
                     sb.Append(b.ToString("x2")); // 转换为小写16进制
                 }
-                return sb.ToString();
+                return sb.ToString().ToUpperInvariant();
             }
         }
     }

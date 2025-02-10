@@ -35,7 +35,7 @@ namespace Ra3MapUtils.ViewModels
         {
             if (e.EventName == "UpdateModelChanged")
             {
-                if (_settingPageViewModel.UpdateModel.IsUpdateAvailable)
+                if (_settingPageViewModel.UpdateModel.IsUpdateAvailable || SettingPageViewModel.LuaLibIsRequireUpdate(_settingPageViewModel.LuaLibBindingCurrVersion, _settingPageViewModel.luaLibLatestVersion))
                 {
                     SettingPageInfoBadgeVisibility = Visibility.Visible;
                 }

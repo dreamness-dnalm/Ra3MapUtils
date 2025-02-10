@@ -34,7 +34,7 @@ public partial class SettingPageViewModel: ObservableObject
     
     private string luaLibLastestMd5 = "";
     
-    private string luaLibLatestVersion = "";
+    public string luaLibLatestVersion = "";
 
     private string luaLibLatestDownloadUrl = "";
     
@@ -46,15 +46,24 @@ public partial class SettingPageViewModel: ObservableObject
     
     private static string luaLibDownloadCacheFileName = "";
 
-    public void OnLoadLuaLibBindingPart()
+    private int luaLibReleaseFlag = 0;
+
+    public async Task<bool> OnLoadLuaLibBindingPart()
     {
         _luaLibBindingModel.Reload();
         OnLuaLibBindingModelChanged(_luaLibBindingModel);
         // ObservableUtil.Subscribe(_luaLibBindingModel, this);
+        await LuaLibCheckUpdate();
+        if(_luaLibBindingModel.IsAutoUpdateEnabled && LuaLibIsRequireUpdate(LuaLibBindingCurrVersion, luaLibLatestVersion))
+        {
+            LuaLibReinstall();
+        }
+
+        return true;
     }
     
     [RelayCommand]
-    private void PickLuaLibPath()
+    private async void PickLuaLibPath()
     {
         try
         {
@@ -82,9 +91,7 @@ public partial class SettingPageViewModel: ObservableObject
 
             LuaLibBindingModel.LuaLibPath = dir;
 
-            OnLuaLibBindingModelChanged(_luaLibBindingModel);
-
-            LuaLibReinstall();
+          await LuaLibCheckUpdateAndInstall();
         }catch(Exception e)
         {
             Logger.WriteLog(e.Message);
@@ -92,14 +99,64 @@ public partial class SettingPageViewModel: ObservableObject
         }
     }
 
-    [RelayCommand]
-    private void LuaLibReinstall()
+    private async Task<bool> LuaLibCheckUpdateAndInstall()
     {
+        var luaLibCheckUpdate = await LuaLibCheckUpdate();
+        if (luaLibCheckUpdate && LuaLibIsRequireUpdate(LuaLibBindingCurrVersion, luaLibLatestVersion))
+        {
+            LuaLibReinstall();
+        }
+        return true;
+    }
+
+    [RelayCommand]
+    private async void LuaLibReinstall()
+    {
+        MessageBox.Show("安装lua库前, 请确保编辑器已关闭, 如VSCode, 记事本等; \n 确认后请单击确认");
+
+        bool isCacheFileReady = false;
+        
+        if (File.Exists(luaLibDownloadCacheFileName))
+        {
+            if (Md5Util.CalculateFileMD5(luaLibDownloadCacheFileName) == luaLibLastestMd5)
+            {
+                isCacheFileReady = true;
+            }
+            else
+            {
+                isCacheFileReady = false;
+                File.Delete(luaLibDownloadCacheFileName);
+            }
+        }
+
+        if (!isCacheFileReady)
+        {
+            LuaLibBindingUpdateHint = "正在下载Lua库安装包...";
+            LuaLibBindingUpdateHintColor = Brushes.Blue;
+            isCacheFileReady = LuaLibDownLoad().Result;
+        }
+
+        if (! isCacheFileReady)
+        {
+            LuaLibBindingUpdateHint = "下载失败, 请稍候重试";
+            LuaLibBindingUpdateHintColor = Brushes.Red;
+            MessageBox.Show("下载失败, 请稍候重试");
+            return;
+        }
+        LuaLibBindingUpdateHint = "正在安装...";
+        LuaLibBindingUpdateHintColor = Brushes.Blue;
+        bool isReleaseSuccess = LuaLibRelease().Result;
+        if (!isReleaseSuccess)
+        {
+            luaLibReleaseFlag = -1;
+        }
+        
+        OnLuaLibBindingModelChanged(_luaLibBindingModel);
         
     }
     
     [RelayCommand]
-    private void LuaLibCheckUpdate()
+    private async Task<bool> LuaLibCheckUpdate()
     {
         if (!Directory.Exists(_luaLibBindingModel.LuaLibPath))
         {
@@ -110,19 +167,18 @@ public partial class SettingPageViewModel: ObservableObject
 
         var isSuccess = LuaLibFullRemoteVersionInfo();
 
+        OnLuaLibBindingModelChanged(_luaLibBindingModel);
         if (isSuccess)
         {
-            OnLuaLibBindingModelChanged(_luaLibBindingModel);
-            
-            // todo 如果需要更新, 开始更新逻辑
         }
         else
         {
+            
             LuaLibBindingUpdateHint = "检查更新失败, 请稍候重试";
             LuaLibBindingUpdateHintColor = Brushes.Red;
         }
 
-        
+        return isSuccess;
     }
     
     partial void OnLuaLibBindingModelChanged(LuaLibBindingModel value)
@@ -141,20 +197,30 @@ public partial class SettingPageViewModel: ObservableObject
             LuaLibBindingPathHint = "已绑定";
             LuaLibBindingPathHintColor = Brushes.Green;
             LuaLibBindingCurrVersion = LuaLibGetLocalVersion(value.LuaLibPath);
-            LuaLibBindingUpdateHint = "最新版本: " + luaLibLatestVersion;
-            if (LuaLibIsRequireUpdate(LuaLibBindingCurrVersion, luaLibLatestVersion))
+            if (luaLibReleaseFlag == -1)
             {
-                LuaLibBindingUpdateNowVisibility = Visibility.Visible;
+                LuaLibBindingUpdateHint = "安装失败, 请重试";
+                LuaLibBindingUpdateHintColor = Brushes.Red;
             }
             else
             {
-                LuaLibBindingUpdateNowVisibility = Visibility.Collapsed;
+                LuaLibBindingUpdateHintColor = Brushes.Green;
+                LuaLibBindingUpdateHint = "最新版本: " + luaLibLatestVersion;
             }
+            
+            // if (LuaLibIsRequireUpdate(LuaLibBindingCurrVersion, luaLibLatestVersion))
+            // {
+            //     LuaLibBindingUpdateNowVisibility = Visibility.Visible;
+            // }
+            // else
+            // {
+            //     LuaLibBindingUpdateNowVisibility = Visibility.Collapsed;
+            // }
         }
         
     }
 
-    private static bool LuaLibIsRequireUpdate(string localVersion, string remoteVersion)
+    public static bool LuaLibIsRequireUpdate(string localVersion, string remoteVersion)
     {
         if (localVersion == "unknown")
         {
@@ -251,7 +317,7 @@ public partial class SettingPageViewModel: ObservableObject
                     luaLibLastestMd5 = root.GetProperty("Md5").GetString();
                     string fileName = root.GetProperty("FileName").GetString();
                     luaLibLatestDownloadUrl = luaLibUpdateBaseUrl + fileName;
-                    luaLibDownloadCacheFileName = Path.Combine(downloadCachePath, fileName);
+                    luaLibDownloadCacheFileName = Path.Combine(downloadCachePath, "Ra3CoronaMapLuaLib_latest.7z");
                 }
 
                 return true;
@@ -259,6 +325,7 @@ public partial class SettingPageViewModel: ObservableObject
             catch(Exception e)
             {
                 Logger.WriteLog(e.Message);
+                luaLibLatestVersion = "error";
                 return false;
             }
         }
@@ -273,6 +340,7 @@ public partial class SettingPageViewModel: ObservableObject
                 // 异步获取响应
                 HttpResponseMessage response = await client.GetAsync(luaLibLatestDownloadUrl);
                 response.EnsureSuccessStatusCode();
+                Directory.CreateDirectory(Path.GetDirectoryName(luaLibDownloadCacheFileName));
 
                 // 读取响应流
                 using (Stream stream = await response.Content.ReadAsStreamAsync())
@@ -287,6 +355,7 @@ public partial class SettingPageViewModel: ObservableObject
             if(Md5Util.CalculateFileMD5(luaLibDownloadCacheFileName) != luaLibLastestMd5)
             {
                 Logger.WriteLog("下载文件MD5校验失败");
+                // MessageBox.Show("下载文件MD5校验失败");
                 return false;
             }
             
