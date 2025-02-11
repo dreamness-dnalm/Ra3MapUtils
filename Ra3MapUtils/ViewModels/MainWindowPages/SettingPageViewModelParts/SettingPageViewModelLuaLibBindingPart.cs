@@ -132,19 +132,19 @@ public partial class SettingPageViewModel: ObservableObject
         if (!isCacheFileReady)
         {
             LuaLibBindingUpdateHint = "正在下载Lua库安装包...";
-            LuaLibBindingUpdateHintColor = Brushes.Blue;
+            LuaLibBindingUpdateHintColor = Brushes.CornflowerBlue;
             isCacheFileReady = LuaLibDownLoad().Result;
         }
 
         if (! isCacheFileReady)
         {
             LuaLibBindingUpdateHint = "下载失败, 请稍候重试";
-            LuaLibBindingUpdateHintColor = Brushes.Red;
+            LuaLibBindingUpdateHintColor = Brushes.PaleVioletRed;
             MessageBox.Show("下载失败, 请稍候重试");
             return;
         }
         LuaLibBindingUpdateHint = "正在安装...";
-        LuaLibBindingUpdateHintColor = Brushes.Blue;
+        LuaLibBindingUpdateHintColor = Brushes.CornflowerBlue;
         bool isReleaseSuccess = LuaLibRelease().Result;
         if (!isReleaseSuccess)
         {
@@ -163,7 +163,7 @@ public partial class SettingPageViewModel: ObservableObject
             Directory.CreateDirectory(_luaLibBindingModel.LuaLibPath);
         }
         LuaLibBindingUpdateHint = "正在检查更新...";
-        LuaLibBindingUpdateHintColor = Brushes.Blue;
+        LuaLibBindingUpdateHintColor = Brushes.CornflowerBlue;
 
         var isSuccess = LuaLibFullRemoteVersionInfo();
 
@@ -175,7 +175,7 @@ public partial class SettingPageViewModel: ObservableObject
         {
             
             LuaLibBindingUpdateHint = "检查更新失败, 请稍候重试";
-            LuaLibBindingUpdateHintColor = Brushes.Red;
+            LuaLibBindingUpdateHintColor = Brushes.PaleVioletRed;
         }
 
         return isSuccess;
@@ -186,11 +186,11 @@ public partial class SettingPageViewModel: ObservableObject
         if (string.IsNullOrEmpty(value.LuaLibPath))
         {
             LuaLibBindingPathHint = "未绑定";
-            LuaLibBindingPathHintColor = Brushes.Red;
+            LuaLibBindingPathHintColor = Brushes.PaleVioletRed;
             LuaLibBindingCurrVersion = "unknown";
             LuaLibBindingUpdateNowVisibility = Visibility.Collapsed;
             LuaLibBindingUpdateHint = "请先绑定Lua库文件夹";
-            LuaLibBindingUpdateHintColor = Brushes.Red;
+            LuaLibBindingUpdateHintColor = Brushes.PaleVioletRed;
         } 
         else
         {
@@ -200,7 +200,7 @@ public partial class SettingPageViewModel: ObservableObject
             if (luaLibReleaseFlag == -1)
             {
                 LuaLibBindingUpdateHint = "安装失败, 请重试";
-                LuaLibBindingUpdateHintColor = Brushes.Red;
+                LuaLibBindingUpdateHintColor = Brushes.PaleVioletRed;
             }
             else
             {
