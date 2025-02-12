@@ -67,7 +67,7 @@ public partial class SettingPageViewModel: ObservableObject
         }else if (value.IsPluginsInstalling)
         {
             NewWorldBuilderPluginHint = "正在安装";
-            NewWorldBuilderPluginHintColor = Brushes.Blue;
+            NewWorldBuilderPluginHintColor = Brushes.CornflowerBlue;
             NewWorldBuilderPluginReInstallButtonEnable = false;
         }else if (value.IsPluginsInstallError)
         {
