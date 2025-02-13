@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.ObjectModel;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Documents;
 using System.Windows.Forms;
@@ -33,6 +34,8 @@ public partial class LogViewerWindowViewModel: ObservableObject
     
     [ObservableProperty] private bool _isParseLogPosition = true;
     
+    // [ObservableProperty] 
+    public ObservableCollection<RichTextLine> TextLines { get; } = new ObservableCollection<RichTextLine>();
     
     private SettingPageViewModel _settingPageViewModel = App.Current.Services.GetRequiredService<SettingPageViewModel>();
     
@@ -41,8 +44,6 @@ public partial class LogViewerWindowViewModel: ObservableObject
     private string logLevel = "DEBUG";
 
     private long pos = 0;
-    
-    private Task<bool> _parseTask;
 
     private CancellationTokenSource _cancelTokenSource;
     
@@ -119,7 +120,11 @@ public partial class LogViewerWindowViewModel: ObservableObject
             MessageBox.Show("日志文件不存在: " + LogFilePath);
         }
         ClearLog();
-        _parseTask = StartParse(0, _cancelTokenSource.Token);
+        _cancelTokenSource = new CancellationTokenSource();
+        Task.Run(async () =>
+        {
+            await StartParse(-1, _cancelTokenSource.Token);
+        });
     }
 
     [RelayCommand]
@@ -134,7 +139,11 @@ public partial class LogViewerWindowViewModel: ObservableObject
         {
             MessageBox.Show("日志文件不存在: " + LogFilePath);
         }
-        _parseTask = StartParse(-1, _cancelTokenSource.Token);
+        _cancelTokenSource = new CancellationTokenSource();
+        Task.Run(async () =>
+        {
+            await StartParse(0, _cancelTokenSource.Token);
+        });
     }
 
     [RelayCommand]
@@ -149,16 +158,17 @@ public partial class LogViewerWindowViewModel: ObservableObject
         {
             MessageBox.Show("日志文件不存在: " + LogFilePath);
         }
-        _parseTask = StartParse(pos, _cancelTokenSource.Token);
+        _cancelTokenSource = new CancellationTokenSource();
+        Task.Run(async () =>
+        {
+            await StartParse(pos, _cancelTokenSource.Token);
+        });
     }
 
     [RelayCommand]
     private void Stop()
     {
-        if (_parseTask != null)
-        {
-            _cancelTokenSource.CancelAsync();
-        }
+        _cancelTokenSource.CancelAsync();
         ParseStatus = "停止中...";
         ParseStatusColor = Brushes.Red;
         IsParsing = false;
@@ -167,7 +177,7 @@ public partial class LogViewerWindowViewModel: ObservableObject
     [RelayCommand]
     private void cleanLog()
     {
-        
+        TextLines.Clear();
     }
 
     [RelayCommand]
@@ -190,13 +200,18 @@ public partial class LogViewerWindowViewModel: ObservableObject
 
     private void AddLog(string log)
     {
-        Paragraph paragraph = new Paragraph();
-        Run run = new Run(log)
-        {
-            Foreground = new SolidColorBrush(Colors.Aqua)
-        };
-        paragraph.Inlines.Add(run);
-        _logViewerWindow.LogTextBox.Document.Blocks.Add(paragraph);
+        // Paragraph paragraph = new Paragraph();
+        // Run run = new Run(log)
+        // {
+        //     Foreground = new SolidColorBrush(Colors.Aqua)
+        // };
+        // paragraph.Inlines.Add(run);
+        // _logViewerWindow.LogTextBox.Dispatcher.Invoke(() =>
+        // {
+        //     _logViewerWindow.LogTextBox.Document.Blocks.Add(paragraph);
+        // });
+        // // _logViewerWindow.LogTextBox.Document.Blocks.Add(paragraph);
+        TextLines.Add(new RichTextLine(log, Brushes.Blue));
     }
 
     private async Task<bool> StartParse(long pos, CancellationToken token)
@@ -232,6 +247,7 @@ public partial class LogViewerWindowViewModel: ObservableObject
                     if (line != null)
                     {
                         AddLog(line);
+                        pos = fs.Position;
                     }
                     else
                     {
@@ -251,4 +267,16 @@ public partial class LogViewerWindowViewModel: ObservableObject
     }
     
 
+}
+
+public class RichTextLine
+{
+    public string Text { get; set; }
+    public Brush Color { get; set; }
+
+    public RichTextLine(string text, Brush color)
+    {
+        Text = text;
+        Color = color;
+    }
 }
