@@ -13,5 +13,6 @@ public partial class LogViewerWindow : FluentWindow
     {
         DataContext = App.Current.Services.GetRequiredService<LogViewerWindowViewModel>();
         InitializeComponent();
+        _LogViewerWindowViewModel._logViewerWindow = this;
     }
 }
