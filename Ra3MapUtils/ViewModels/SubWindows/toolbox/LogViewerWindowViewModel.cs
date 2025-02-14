@@ -27,6 +27,8 @@ public partial class LogViewerWindowViewModel: ObservableObject
     [ObservableProperty] private Brush _parseStatusColor = Brushes.Red;
 
     [ObservableProperty] private bool _isHideParseErrorLogs = false;
+    
+    [ObservableProperty] private bool _isParseLogTime = false;
 
     [ObservableProperty] private bool _isParseFrameIndex = true;
 
@@ -43,7 +45,7 @@ public partial class LogViewerWindowViewModel: ObservableObject
 
     private string logLevel = "DEBUG";
 
-    private long pos = 0;
+    private long lastParsePos = 0;
 
     private CancellationTokenSource _cancelTokenSource;
     
@@ -161,7 +163,7 @@ public partial class LogViewerWindowViewModel: ObservableObject
         _cancelTokenSource = new CancellationTokenSource();
         Task.Run(async () =>
         {
-            await StartParse(pos, _cancelTokenSource.Token);
+            await StartParse(lastParsePos, _cancelTokenSource.Token);
         });
     }
 
@@ -197,20 +199,41 @@ public partial class LogViewerWindowViewModel: ObservableObject
     {
         _logViewerWindow.LogTextBox.Document.Blocks.Clear();
     }
+    
+    private string normalLogPattern = @"\[(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\].*?\](?<frame>\d+)\s(?<detail>.+)";
+    private string systemLogPattern = @"\[(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\]\s.*?\]\s(?<detail>.+)";
 
     private void AddLog(string log)
     {
-        // Paragraph paragraph = new Paragraph();
-        // Run run = new Run(log)
-        // {
-        //     Foreground = new SolidColorBrush(Colors.Aqua)
-        // };
-        // paragraph.Inlines.Add(run);
-        // _logViewerWindow.LogTextBox.Dispatcher.Invoke(() =>
-        // {
-        //     _logViewerWindow.LogTextBox.Document.Blocks.Add(paragraph);
-        // });
-        // // _logViewerWindow.LogTextBox.Document.Blocks.Add(paragraph);
+        string time = "";
+        string frameIndex = "";
+        string logDetail = "";
+        string logLevel = "";
+        string logContent = "";
+        bool isParseError = false;
+        
+        var normalLogMatch = Regex.Match(log, normalLogPattern);
+        if (normalLogMatch.Success)
+        {
+            time = normalLogMatch.Groups["time"].Value;
+            frameIndex = normalLogMatch.Groups["frame"].Value;
+            logDetail = normalLogMatch.Groups["detail"].Value;
+        }
+        else
+        {
+            var systemLogMatch = Regex.Match(log, systemLogPattern);
+            if (systemLogMatch.Success)
+            {
+                time = systemLogMatch.Groups["time"].Value;
+                logContent = systemLogMatch.Groups["detail"].Value;
+                logLevel = "INFO";
+            }
+            else
+            {
+                logContent = log;
+            }
+        }
+
         TextLines.Add(new RichTextLine(log, Brushes.Blue));
     }
 
@@ -226,9 +249,13 @@ public partial class LogViewerWindowViewModel: ObservableObject
             using (FileStream fs = new FileStream(LogFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (StreamReader reader = new StreamReader(fs))
             {
-                if (pos >= 0)
+                if (pos > 0)
                 {
                     fs.Seek(pos, SeekOrigin.Begin);
+                }
+                else if (pos == 0)
+                {
+                    
                 }
                 else
                 {
@@ -247,7 +274,7 @@ public partial class LogViewerWindowViewModel: ObservableObject
                     if (line != null)
                     {
                         AddLog(line);
-                        pos = fs.Position;
+                        lastParsePos = fs.Position;
                     }
                     else
                     {

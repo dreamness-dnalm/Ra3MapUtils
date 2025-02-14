@@ -80,6 +80,7 @@
         
         <StackPanel Grid.Row="3" Orientation="Horizontal">
             <ui:TextBlock Text="显示的日志内容: " VerticalAlignment="Center" Margin="0,0,15,0"/>
+            <CheckBox Content="日志时间" IsChecked="{Binding IsParseLogTime}"/>
             <CheckBox Content="帧序号" IsChecked="{Binding IsParseFrameIndex}"/>
             <CheckBox Content="日志级别" IsChecked="{Binding IsParseLogLeve}"/>
             <CheckBox Content="日志位置" IsChecked="{Binding IsParseLogPosition}"/>
