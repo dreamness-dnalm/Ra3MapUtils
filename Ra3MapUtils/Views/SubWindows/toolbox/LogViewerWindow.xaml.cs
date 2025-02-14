@@ -27,6 +27,7 @@ public partial class LogViewerWindow : FluentWindow
             {
                 var paragraph = new Paragraph();
                 var run = new Run(line.Text) { Foreground = line.Color };
+                paragraph.Margin = new Thickness(0, 0, 0, 3); 
                 paragraph.Inlines.Add(run);
                 LogTextBox.Document.Blocks.Add(paragraph);
             }

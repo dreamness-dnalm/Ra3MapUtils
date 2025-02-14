@@ -35,7 +35,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         
-        <ui:TitleBar Grid.Row="0" Title="地图日志查看器" ShowMaximize="False">
+        <ui:TitleBar Grid.Row="0" Title="地图日志查看器" ShowMaximize="True">
             
         </ui:TitleBar>
         
@@ -45,8 +45,8 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/> 
             </Grid.ColumnDefinitions>
-            <ui:Button Grid.Column="0" Icon="{ui:SymbolIcon ArrowClockwise16}" Content="自动加载最新日志" Command="{Binding AutoLoadLogFileCommand}"/>
-            <ui:Button Grid.Column="1" Icon="{ui:SymbolIcon Document16}" Content="指定日志文件" Command="{Binding PickLogFileCommand}"/>
+            <ui:Button Grid.Column="0" Icon="{ui:SymbolIcon ArrowClockwise16}" Content="自动加载最新日志" Command="{Binding AutoLoadLogFileCommand}" IsEnabled="{Binding IsParsing, Converter={StaticResource BooleanNotConverter}}"/>
+            <ui:Button Grid.Column="1" Icon="{ui:SymbolIcon Document16}" Content="指定日志文件" Command="{Binding PickLogFileCommand}" IsEnabled="{Binding IsParsing, Converter={StaticResource BooleanNotConverter}}"/>
             
             <TextBlock Grid.Column="2" Text="{Binding LogFileName}" ToolTip="{Binding LogFilePath}"/>
         </Grid>

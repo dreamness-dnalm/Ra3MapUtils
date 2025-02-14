@@ -49,9 +49,31 @@ public partial class LogViewerWindowViewModel: ObservableObject
 
     private CancellationTokenSource _cancelTokenSource;
     
+    private Dictionary<string, int> logLevelDict = new Dictionary<string, int>
+    {
+        {"TRACE", 0},
+        {"DEBUG", 1},
+        {"INFO", 2},
+        {"WARN", 3},
+        {"ERROR", 4}
+    };
+    
+    private Dictionary<string, Brush> logLevelColorDict = new Dictionary<string, Brush>
+    {
+        {"TRACE", Brushes.DimGray},
+        {"DEBUG", Brushes.DodgerBlue},
+        {"INFO", Brushes.LimeGreen},
+        {"WARN", Brushes.Gold},
+        {"ERROR", Brushes.Crimson}
+    };
     
 
     [ObservableProperty] private bool _isParsing = false;
+
+    public void OnLoad()
+    {
+        // todo: 初始化状态
+    }
 
     [RelayCommand]
     public void AutoLoadLogFile()
@@ -202,6 +224,8 @@ public partial class LogViewerWindowViewModel: ObservableObject
     
     private string normalLogPattern = @"\[(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\].*?\](?<frame>\d+)\s(?<detail>.+)";
     private string systemLogPattern = @"\[(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\]\s.*?\]\s(?<detail>.+)";
+    string detailLogpattern = @"<(?<level>\w+)><pos:(?<position>[^>]+)>(?<content>.+)";
+    
 
     private void AddLog(string log)
     {
@@ -210,6 +234,7 @@ public partial class LogViewerWindowViewModel: ObservableObject
         string logDetail = "";
         string logLevel = "";
         string logContent = "";
+        string logPos = "";
         bool isParseError = false;
         
         var normalLogMatch = Regex.Match(log, normalLogPattern);
@@ -218,6 +243,19 @@ public partial class LogViewerWindowViewModel: ObservableObject
             time = normalLogMatch.Groups["time"].Value;
             frameIndex = normalLogMatch.Groups["frame"].Value;
             logDetail = normalLogMatch.Groups["detail"].Value;
+
+            var detailMatch = Regex.Match(logDetail, detailLogpattern);
+            if (detailMatch.Success)
+            {
+                logLevel = detailMatch.Groups["level"].Value;
+                logPos = detailMatch.Groups["position"].Value;
+                logContent = detailMatch.Groups["content"].Value;
+            }
+            else
+            {
+                logLevel = "TRACE";
+                logContent = logDetail;
+            }
         }
         else
         {
@@ -233,8 +271,37 @@ public partial class LogViewerWindowViewModel: ObservableObject
                 logContent = log;
             }
         }
+        
+        if (logLevelDict.GetValueOrDefault(logLevel, 2) < _logLevelIndex)
+        {
+            return;
+        }
 
-        TextLines.Add(new RichTextLine(log, Brushes.Blue));
+        string finalLogConent = "";
+
+        if (IsParseFrameIndex && frameIndex != "")
+        {
+            finalLogConent += $"{frameIndex}";
+        }
+
+        if (IsParseLogTime && time != "")
+        {
+            finalLogConent += $"[{time}]";
+        }
+
+        if (IsParseLogLeve && logLevel != "")
+        {
+            finalLogConent += $"[{logLevel}]";
+        }
+        
+        if(IsParseLogPosition && logPos != "")
+        {
+            finalLogConent += $"[{logPos}]";
+        }
+
+        finalLogConent += logContent;
+        
+        TextLines.Add(new RichTextLine(finalLogConent, logLevelColorDict.GetValueOrDefault(logLevel, Brushes.Black)));
     }
 
     private async Task<bool> StartParse(long pos, CancellationToken token)

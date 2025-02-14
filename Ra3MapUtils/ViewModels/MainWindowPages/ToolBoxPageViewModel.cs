@@ -18,7 +18,7 @@ public partial class ToolBoxPageViewModel: ObservableObject
         if ((!NewWorldBuilderBusiness.IsNewWorldBuilderPathValid) ||
             (!_settingPageViewModel.NewWorldBuilderModel.IsPluginsInstalled))
         {
-            MessageBox.Show("请先安装新地编联动插件, 在\"设置\"->\"新地编联动\"中设置");
+            MessageBox.Show("请配置新地编联动, 在\"设置\"->\"新地编联动\"中设置");
             return;
         }
         
@@ -29,6 +29,7 @@ public partial class ToolBoxPageViewModel: ObservableObject
         }
 
         var logViewerWindow = App.Current.Services.GetRequiredService<LogViewerWindow>();
+        logViewerWindow._LogViewerWindowViewModel.OnLoad();
         logViewerWindow.Show();
 
         GlobalVarsModel.LogViewerWindowOpened = true;
