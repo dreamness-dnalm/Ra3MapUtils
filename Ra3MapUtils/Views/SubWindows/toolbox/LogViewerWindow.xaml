@@ -8,6 +8,7 @@
                  xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
                  xmlns:vm="clr-namespace:Ra3MapUtils.ViewModels.toolbox"
                  xmlns:xamlConverters="clr-namespace:Ra3MapUtils.Utils.XamlConverters"
+                 xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
                  d:DesignHeight="1650"
                  d:DesignWidth="1000"
                  ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
@@ -25,6 +26,16 @@
     <ui:FluentWindow.Resources>
         <xamlConverters:BooleanNotConverter x:Key="BooleanNotConverter"/>
     </ui:FluentWindow.Resources>
+    
+    <!-- <behaviors:Interaction.Triggers> -->
+    <!--     <behaviors:EventTrigger EventName="Closed"> -->
+    <!--         <behaviors:InvokeCommandAction Command="{Binding ClosedCommand}" PassEventArgsToCommand="False"/> -->
+    <!--     </behaviors:EventTrigger> -->
+    <!--     ~1~ <behaviors:EventTrigger EventName="Initialized"> @1@ -->
+    <!--     ~1~     <behaviors:InvokeCommandAction Command="{Binding InitializeCommand}" PassEventArgsToCommand="False"/> @1@ -->
+    <!--     ~1~ </behaviors:EventTrigger> @1@ -->
+    <!-- </behaviors:Interaction.Triggers> -->
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -59,8 +70,8 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="15"/>
-                <ColumnDefinition/>
+                <ColumnDefinition  Width="Auto"/>
+                <ColumnDefinition Width="170"/>
             </Grid.ColumnDefinitions>
             
             <TextBlock Grid.Column="0" Text="日志级别" VerticalAlignment="Center" Margin="0,0,5,0"/>
@@ -75,7 +86,8 @@
                </ComboBox.Items>
            </ComboBox>
             
-            <CheckBox Grid.Column="3" Content="隐藏解析失败的日志"/>
+            <!-- <TextBlock Grid.Column="2" Text="展示最大行数" VerticalAlignment="Center" Margin="20,0,5,0"/> -->
+            <!-- <ui:NumberBox Grid.Column="3" Value="{Binding ShowingCount}"/> -->
         </Grid>
         
         <StackPanel Grid.Row="3" Orientation="Horizontal">
@@ -87,13 +99,13 @@
         </StackPanel>
         
         <StackPanel Grid.Row="4" Orientation="Horizontal">
-            <ui:Button Content="从头解析" Command="{Binding StartFromBeginningCommand}" IsEnabled="{Binding IsParsing, Converter={StaticResource BooleanNotConverter}}"/>
             <ui:Button Content="从最新位置解析" Command="{Binding StartFromLatestCommand}" IsEnabled="{Binding IsParsing, Converter={StaticResource BooleanNotConverter}}"/>
-            <ui:Button Content="从上次停止解析" Command="{Binding StartFromLastStopPosCommand}" IsEnabled="{Binding IsParsing, Converter={StaticResource BooleanNotConverter}}"/>
-            <ui:Button Content="中止解析" Command="{Binding StopCommand}" Foreground="Red" IsEnabled="{Binding IsParsing}"/>
+            <!-- <ui:Button Content="从上次停止解析" Command="{Binding StartFromLastStopPosCommand}" IsEnabled="{Binding IsParsing, Converter={StaticResource BooleanNotConverter}}"/> -->
+            <!-- <ui:Button Content="从头解析" Command="{Binding StartFromBeginningCommand}" IsEnabled="{Binding IsParsing, Converter={StaticResource BooleanNotConverter}}"/> -->
+            <ui:Button Content="中止解析" Command="{Binding StopCommand}" Foreground="PaleVioletRed" IsEnabled="{Binding IsParsing}"/>
             <TextBlock Text="解析状态: " VerticalAlignment="Center"/>
             <TextBlock Text="{Binding ParseStatus}" Foreground="{Binding ParseStatusColor}"  VerticalAlignment="Center"/>
-            <ui:Button Content="清除所以日志" Command="{Binding ClearLogCommand}"/>
+            <ui:Button Content="清除所有日志" Command="{Binding ClearLogCommand}"/>
         </StackPanel>
 
     <ScrollViewer Grid.Row="5" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">

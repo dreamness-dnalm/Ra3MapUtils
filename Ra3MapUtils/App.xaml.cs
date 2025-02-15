@@ -62,7 +62,7 @@ public partial class App : Application
         services.AddTransient<CodeEditorWindow>();
         services.AddTransient<CodeEditorWindowViewModel>();
 
-        services.AddSingleton<LogViewerWindow>();
+        services.AddTransient<LogViewerWindow>();
         services.AddSingleton<LogViewerWindowViewModel>();
 
         services.AddSingleton<ILuaImportService, LuaImportService>();

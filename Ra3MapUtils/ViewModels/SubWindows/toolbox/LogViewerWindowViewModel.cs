@@ -1,9 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Media;
+using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +13,7 @@ using Ra3MapUtils.Models;
 using Ra3MapUtils.ViewModels.MainWindowPages;
 using Ra3MapUtils.Views.SubWindows.toolbox;
 using SharedFunctionLib.Business;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace Ra3MapUtils.ViewModels.toolbox;
 
@@ -24,7 +27,7 @@ public partial class LogViewerWindowViewModel: ObservableObject
 
     [ObservableProperty] private string _parseStatus = "已停止";
     
-    [ObservableProperty] private Brush _parseStatusColor = Brushes.Red;
+    [ObservableProperty] private Brush _parseStatusColor = Brushes.PaleVioletRed;
 
     [ObservableProperty] private bool _isHideParseErrorLogs = false;
     
@@ -35,9 +38,11 @@ public partial class LogViewerWindowViewModel: ObservableObject
     [ObservableProperty] private bool _isParseLogLeve = true;
     
     [ObservableProperty] private bool _isParseLogPosition = true;
+
+    // [ObservableProperty] private int _showingCount = 2000;
     
     // [ObservableProperty] 
-    public ObservableCollection<RichTextLine> TextLines { get; } = new ObservableCollection<RichTextLine>();
+    // public ObservableCollection<RichTextLine> TextLines { get; } = new ObservableCollection<RichTextLine>();
     
     private SettingPageViewModel _settingPageViewModel = App.Current.Services.GetRequiredService<SettingPageViewModel>();
     
@@ -45,7 +50,7 @@ public partial class LogViewerWindowViewModel: ObservableObject
 
     private string logLevel = "DEBUG";
 
-    private long lastParsePos = 0;
+    private LogConsumerStatusModel _logConsumerStatusModel = new LogConsumerStatusModel();
 
     private CancellationTokenSource _cancelTokenSource;
     
@@ -72,7 +77,19 @@ public partial class LogViewerWindowViewModel: ObservableObject
 
     public void OnLoad()
     {
-        // todo: 初始化状态
+        AutoLoadLogFile();
+    }
+    
+    [RelayCommand]
+    private void Closed()
+    {
+        if (IsParsing)
+        {
+            Stop();
+        }
+        
+        cleanLog();
+        GlobalVarsModel.LogViewerWindowOpened = false;
     }
 
     [RelayCommand]
@@ -137,17 +154,20 @@ public partial class LogViewerWindowViewModel: ObservableObject
         if (LogFilePath == "")
         {
             MessageBox.Show("请先选择日志文件");
+            return;
         }
 
         if (!File.Exists(LogFilePath))
         {
             MessageBox.Show("日志文件不存在: " + LogFilePath);
+            return;
         }
         ClearLog();
         _cancelTokenSource = new CancellationTokenSource();
         Task.Run(async () =>
         {
-            await StartParse(-1, _cancelTokenSource.Token);
+            _logConsumerStatusModel.Pos = 0;
+            await StartParse(_cancelTokenSource.Token);
         });
     }
 
@@ -157,16 +177,19 @@ public partial class LogViewerWindowViewModel: ObservableObject
         if (LogFilePath == "")
         {
             MessageBox.Show("请先选择日志文件");
+            return;
         }
 
         if (!File.Exists(LogFilePath))
         {
             MessageBox.Show("日志文件不存在: " + LogFilePath);
+            return;
         }
         _cancelTokenSource = new CancellationTokenSource();
         Task.Run(async () =>
         {
-            await StartParse(0, _cancelTokenSource.Token);
+            _logConsumerStatusModel.Pos = -1;
+            await StartParse(_cancelTokenSource.Token);
         });
     }
 
@@ -176,16 +199,18 @@ public partial class LogViewerWindowViewModel: ObservableObject
         if (LogFilePath == "")
         {
             MessageBox.Show("请先选择日志文件");
+            return;
         }
 
         if (!File.Exists(LogFilePath))
         {
             MessageBox.Show("日志文件不存在: " + LogFilePath);
+            return;
         }
         _cancelTokenSource = new CancellationTokenSource();
         Task.Run(async () =>
         {
-            await StartParse(lastParsePos, _cancelTokenSource.Token);
+            await StartParse(_cancelTokenSource.Token);
         });
     }
 
@@ -194,14 +219,14 @@ public partial class LogViewerWindowViewModel: ObservableObject
     {
         _cancelTokenSource.CancelAsync();
         ParseStatus = "停止中...";
-        ParseStatusColor = Brushes.Red;
+        ParseStatusColor = Brushes.PaleVioletRed;
         IsParsing = false;
     }
     
     [RelayCommand]
     private void cleanLog()
     {
-        TextLines.Clear();
+        _logViewerWindow.LogTextBox.Document.Blocks.Clear();
     }
 
     [RelayCommand]
@@ -223,7 +248,7 @@ public partial class LogViewerWindowViewModel: ObservableObject
     }
     
     private string normalLogPattern = @"\[(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\].*?\](?<frame>\d+)\s(?<detail>.+)";
-    private string systemLogPattern = @"\[(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\]\s.*?\]\s(?<detail>.+)";
+    private string systemLogPattern =  @"\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}\]\s\[\w+\]\s\[(?<level>\w+)\]\s(?<detail>.+)";
     string detailLogpattern = @"<(?<level>\w+)><pos:(?<position>[^>]+)>(?<content>.+)";
     
 
@@ -237,14 +262,14 @@ public partial class LogViewerWindowViewModel: ObservableObject
         string logPos = "";
         bool isParseError = false;
         
-        var normalLogMatch = Regex.Match(log, normalLogPattern);
+        var normalLogMatch = Regex.Match(log, normalLogPattern, RegexOptions.Singleline);
         if (normalLogMatch.Success)
         {
             time = normalLogMatch.Groups["time"].Value;
             frameIndex = normalLogMatch.Groups["frame"].Value;
             logDetail = normalLogMatch.Groups["detail"].Value;
 
-            var detailMatch = Regex.Match(logDetail, detailLogpattern);
+            var detailMatch = Regex.Match(logDetail, detailLogpattern, RegexOptions.Singleline);
             if (detailMatch.Success)
             {
                 logLevel = detailMatch.Groups["level"].Value;
@@ -259,12 +284,16 @@ public partial class LogViewerWindowViewModel: ObservableObject
         }
         else
         {
-            var systemLogMatch = Regex.Match(log, systemLogPattern);
+            var systemLogMatch = Regex.Match(log, systemLogPattern, RegexOptions.Singleline);
             if (systemLogMatch.Success)
             {
                 time = systemLogMatch.Groups["time"].Value;
                 logContent = systemLogMatch.Groups["detail"].Value;
-                logLevel = "INFO";
+                logLevel = systemLogMatch.Groups["level"].Value.ToUpper();
+                if (logLevel == "WARNING")
+                {
+                    logLevel = "WARN";
+                }
             }
             else
             {
@@ -301,14 +330,25 @@ public partial class LogViewerWindowViewModel: ObservableObject
 
         finalLogConent += logContent;
         
-        TextLines.Add(new RichTextLine(finalLogConent, logLevelColorDict.GetValueOrDefault(logLevel, Brushes.Black)));
+        _logViewerWindow.LogTextBox.Dispatcher.Invoke(() =>
+        {
+        var paragraph = new Paragraph();
+        var run = new Run(finalLogConent) { Foreground = logLevelColorDict.GetValueOrDefault(logLevel, Brushes.Black) };
+        paragraph.Margin = new Thickness(0, 0, 0, 0); 
+        paragraph.Inlines.Add(run);
+        _logViewerWindow.LogTextBox.Document.Blocks.Add(paragraph);
+            });
+        
+        
     }
 
-    private async Task<bool> StartParse(long pos, CancellationToken token)
+    private async Task<bool> StartParse(CancellationToken token)
     {
         ParseStatus = "正在解析";
         ParseStatusColor = Brushes.Green;
         IsParsing = true;
+
+        var newLogPattern = @"^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}\] \[ra3GameDebug\] \[(?<level>\w+)\]";
         
         try
         {
@@ -316,11 +356,11 @@ public partial class LogViewerWindowViewModel: ObservableObject
             using (FileStream fs = new FileStream(LogFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (StreamReader reader = new StreamReader(fs))
             {
-                if (pos > 0)
+                if (_logConsumerStatusModel.Pos > 0)
                 {
-                    fs.Seek(pos, SeekOrigin.Begin);
+                    fs.Seek(_logConsumerStatusModel.Pos, SeekOrigin.Begin);
                 }
-                else if (pos == 0)
+                else if (_logConsumerStatusModel.Pos == 0)
                 {
                     
                 }
@@ -336,17 +376,75 @@ public partial class LogViewerWindowViewModel: ObservableObject
                     {
                         break;
                     }
-                    // 读取新追加的行
-                    string line = reader.ReadLine();
-                    if (line != null)
+
+                    var content = _logConsumerStatusModel.Cache + reader.ReadToEnd();
+                    var lines = content.Split("\r\n");
+                    var linesCnt = lines.Length;
+                    _logConsumerStatusModel.Cache = "";
+                    for (int i = 0; i < linesCnt - 1; i++)
                     {
-                        AddLog(line);
-                        lastParsePos = fs.Position;
+                        var line = lines[i];
+                        if(Regex.IsMatch(line, newLogPattern))
+                        {
+                            var tmpLog = _logConsumerStatusModel.Cache;
+                            if (tmpLog != "")
+                            {
+                                AddLog(tmpLog);
+                            }
+                            _logConsumerStatusModel.Cache = line;
+                        }
+                        else
+                        {
+                            if(_logConsumerStatusModel.Cache == "")
+                            {
+                                _logConsumerStatusModel.Cache = line;
+                            }
+                            else
+                            {
+                                _logConsumerStatusModel.Cache += "\n" + line;
+                            }
+                        }
                     }
-                    else
-                    {
-                        Thread.Sleep(500);
-                    }
+                    _logConsumerStatusModel.Cache += lines[linesCnt - 1];
+
+
+                    // // 读取新追加的行
+                    // string line = reader.ReadLine();
+                    // if (line != null)
+                    // {
+                    //     if (Regex.IsMatch(line, newLogPattern))
+                    //     {
+                    //         var tmpLog = _logConsumerStatusModel.Cache;
+                    //         AddLog(tmpLog);
+                    //         _logConsumerStatusModel.Cache = line;
+                    //     }
+                    //     else if(line == "")
+                    //     {
+                    //         
+                    //     }
+                    //     else 
+                    //     {
+                    //         if(_logConsumerStatusModel.Cache == "")
+                    //         {
+                    //             _logConsumerStatusModel.Cache = line;
+                    //         }
+                    //         else
+                    //         {
+                    //             _logConsumerStatusModel.Cache += "\n" + line;
+                    //         }
+                    //     }
+                    //     
+                    //     _logConsumerStatusModel.Pos = fs.Position;
+                    // }
+                    // else
+                    // {
+                    //     if(_logConsumerStatusModel.Cache != "")
+                    //     {
+                    //         AddLog(_logConsumerStatusModel.Cache);
+                    //         _logConsumerStatusModel.Cache = "";
+                    //     }
+                    //     Thread.Sleep(500);
+                    // }
                 }
             }
         }
@@ -355,8 +453,9 @@ public partial class LogViewerWindowViewModel: ObservableObject
             MessageBox.Show("发生异常: " + ex.Message);
         }
         ParseStatus = "已停止";
-        ParseStatusColor = Brushes.Red;
+        ParseStatusColor = Brushes.PaleVioletRed;
         IsParsing = false;
+        
         return true;
     }
     
@@ -373,4 +472,10 @@ public class RichTextLine
         Text = text;
         Color = color;
     }
+}
+
+public class LogConsumerStatusModel
+{
+    public long Pos = 0;
+    public string Cache = "";
 }

@@ -11,6 +11,7 @@ namespace Ra3MapUtils.ViewModels.MainWindowPages;
 public partial class ToolBoxPageViewModel: ObservableObject
 {
     private SettingPageViewModel _settingPageViewModel = App.Current.Services.GetRequiredService<SettingPageViewModel>();
+    // private LogViewerWindow _logViewerWindow = App.Current.Services.GetRequiredService<LogViewerWindow>();
     
     [RelayCommand]
     private void OpenLogViewerWindow()
@@ -22,15 +23,14 @@ public partial class ToolBoxPageViewModel: ObservableObject
             return;
         }
         
-        if (GlobalVarsModel.LogViewerWindowOpened)
-        {
-            MessageBox.Show("日志查看工具已经打开");
-            return;
-        }
-
-        var logViewerWindow = App.Current.Services.GetRequiredService<LogViewerWindow>();
-        logViewerWindow._LogViewerWindowViewModel.OnLoad();
-        logViewerWindow.Show();
+        // if (GlobalVarsModel.LogViewerWindowOpened)
+        // {
+        //     MessageBox.Show("日志查看工具已经打开");
+        //     return;
+        // }
+        LogViewerWindow _logViewerWindow = App.Current.Services.GetRequiredService<LogViewerWindow>();
+        _logViewerWindow._LogViewerWindowViewModel.OnLoad();
+        _logViewerWindow.Show();
 
         GlobalVarsModel.LogViewerWindowOpened = true;
     }
