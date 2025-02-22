@@ -70,6 +70,7 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Business\ChatLuaHelperBusiness.cs" />
         <Compile Include="Business\LuaImporterBusiness.cs" />
         <Compile Include="Business\LuaLibBindingBusiness.cs" />
         <Compile Include="Business\NewWorldBuilderBusiness.cs" />

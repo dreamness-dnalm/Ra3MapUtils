@@ -65,6 +65,9 @@ public partial class App : Application
         services.AddTransient<LogViewerWindow>();
         services.AddSingleton<LogViewerWindowViewModel>();
 
+        services.AddTransient<ChatLuaHelperViewWindow>();
+        services.AddSingleton<ChatLuaHelperViewModel>();
+
         services.AddSingleton<ILuaImportService, LuaImportService>();
         services.AddSingleton<ISettingService, SettingService>();
         services.AddSingleton<IUpdateService, UpdateService>();

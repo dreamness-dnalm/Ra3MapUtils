@@ -35,4 +35,6 @@ public static class GlobalVarsModel
     public static NuGet.Versioning.SemanticVersion Version => NuGet.Versioning.SemanticVersion.Parse(VersionStr);
     
     public static bool LogViewerWindowOpened { get; set; } = false;
+    
+    public static bool ChatLuaHelperWindowOpened { get; set; } = false;
 }

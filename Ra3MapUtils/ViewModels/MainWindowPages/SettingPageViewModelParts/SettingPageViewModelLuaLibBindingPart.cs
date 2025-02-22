@@ -112,7 +112,7 @@ public partial class SettingPageViewModel: ObservableObject
     [RelayCommand]
     private async void LuaLibReinstall()
     {
-        MessageBox.Show("安装lua库前, 请确保编辑器已关闭, 如VSCode, 记事本等; \n 确认后请单击确认");
+        MessageBox.Show("正在准备安装/更新lua库\n安装lua库前, 请确保编辑器已关闭, 如VSCode, 记事本等; \n 确认后请单击确认");
 
         bool isCacheFileReady = false;
         
@@ -140,7 +140,7 @@ public partial class SettingPageViewModel: ObservableObject
         {
             LuaLibBindingUpdateHint = "下载失败, 请稍候重试";
             LuaLibBindingUpdateHintColor = Brushes.PaleVioletRed;
-            MessageBox.Show("下载失败, 请稍候重试");
+            // MessageBox.Show("下载失败, 请稍候重试");
             return;
         }
         LuaLibBindingUpdateHint = "正在安装...";
@@ -222,6 +222,11 @@ public partial class SettingPageViewModel: ObservableObject
 
     public static bool LuaLibIsRequireUpdate(string localVersion, string remoteVersion)
     {
+        if (remoteVersion == "error")
+        {
+            return false;
+        }
+        
         if (localVersion == "unknown")
         {
             return true;
@@ -363,7 +368,7 @@ public partial class SettingPageViewModel: ObservableObject
         }
         catch (Exception ex)
         {
-            Logger.WriteLog("下载失败：" + ex.Message);
+            // Logger.WriteLog("下载失败：" + ex.Message);
             return false;
         }
     }
