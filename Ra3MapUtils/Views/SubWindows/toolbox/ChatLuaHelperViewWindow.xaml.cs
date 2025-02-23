@@ -14,5 +14,6 @@ public partial class ChatLuaHelperViewWindow : FluentWindow
     {
         DataContext = App.Current.Services.GetRequiredService<ChatLuaHelperViewModel>();
         InitializeComponent();
+        _chatLuaHelperViewModel._chatLuaHelperViewWindow = this;
     }
 }

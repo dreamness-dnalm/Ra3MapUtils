@@ -50,10 +50,12 @@
         <Grid Grid.Row="0"  Margin="10,5,10,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <ui:ToggleSwitch Grid.Column="0" Content="置顶" IsChecked="{Binding IsTopmost}"/>
-            <ui:TitleBar Grid.Column="1" Title="地图日志查看器" ShowMaximize="True"/>
+            <ui:HyperlinkButton Grid.Column="1" Content="帮助文档" NavigateUri="https://www.yuque.com/muzeqaq/ra3mapwiki/xydc50whmi8632pl"/>
+            <ui:TitleBar Grid.Column="2" Title="地图日志查看器" ShowMaximize="True"/>
         </Grid>
         
         
