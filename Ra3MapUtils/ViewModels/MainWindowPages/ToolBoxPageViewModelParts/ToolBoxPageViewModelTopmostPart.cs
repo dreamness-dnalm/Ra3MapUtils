@@ -12,7 +12,7 @@ public partial class ToolBoxPageViewModel: ObservableObject
     {
         if (SecurityPrincipalUtil.IsRunningAsAdministrator)
         { ;
-            var keyword = "红色警戒3:日冕";
+            var keyword = "红色警戒：日冕";
             if (value)
             {
                 TopmostUtil.SetTopMostByKeyword(keyword);
