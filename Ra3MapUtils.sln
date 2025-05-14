@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test_field", "test_field\te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedFunctionLib", "SharedFunctionLib\SharedFunctionLib.csproj", "{2AEACE0F-A3A8-4CC9-BEF8-D5DCE72C4656}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnowledgeBaseLib", "KnowledgeBaseLib\KnowledgeBaseLib.csproj", "{D93B84EA-4A98-4F70-BD6F-B4F10A4C359E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,5 +55,9 @@ Global
 		{2AEACE0F-A3A8-4CC9-BEF8-D5DCE72C4656}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AEACE0F-A3A8-4CC9-BEF8-D5DCE72C4656}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AEACE0F-A3A8-4CC9-BEF8-D5DCE72C4656}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D93B84EA-4A98-4F70-BD6F-B4F10A4C359E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D93B84EA-4A98-4F70-BD6F-B4F10A4C359E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D93B84EA-4A98-4F70-BD6F-B4F10A4C359E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D93B84EA-4A98-4F70-BD6F-B4F10A4C359E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
