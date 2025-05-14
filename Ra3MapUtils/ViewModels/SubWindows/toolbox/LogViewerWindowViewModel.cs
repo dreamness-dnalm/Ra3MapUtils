@@ -38,6 +38,8 @@ public partial class LogViewerWindowViewModel: ObservableObject
     [ObservableProperty] private bool _isParseLogLeve = true;
     
     [ObservableProperty] private bool _isParseLogPosition = true;
+    
+    [ObservableProperty] private bool _isTopmost = false;
 
     // [ObservableProperty] private int _showingCount = 2000;
     

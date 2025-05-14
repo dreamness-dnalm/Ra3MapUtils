@@ -15,26 +15,23 @@
                  ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                  Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                  mc:Ignorable="d"
-                 Title="LogViewerWindow" Height="450" Width="800"
+                 Title="LogViewerWindow" Height="900" Width="800"
                  ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"
                  ExtendsContentIntoTitleBar="True"
                  WindowBackdropType="Mica"
                  WindowCornerPreference="Round"
                  WindowStyle="SingleBorderWindow"
-                 
+                 Topmost="{Binding IsTopmost}"
 >
     <ui:FluentWindow.Resources>
         <xamlConverters:BooleanNotConverter x:Key="BooleanNotConverter"/>
     </ui:FluentWindow.Resources>
     
-    <!-- <behaviors:Interaction.Triggers> -->
-    <!--     <behaviors:EventTrigger EventName="Closed"> -->
-    <!--         <behaviors:InvokeCommandAction Command="{Binding ClosedCommand}" PassEventArgsToCommand="False"/> -->
-    <!--     </behaviors:EventTrigger> -->
-    <!--     ~1~ <behaviors:EventTrigger EventName="Initialized"> @1@ -->
-    <!--     ~1~     <behaviors:InvokeCommandAction Command="{Binding InitializeCommand}" PassEventArgsToCommand="False"/> @1@ -->
-    <!--     ~1~ </behaviors:EventTrigger> @1@ -->
-    <!-- </behaviors:Interaction.Triggers> -->
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="Closed">
+            <behaviors:InvokeCommandAction Command="{Binding ClosedCommand}" PassEventArgsToCommand="False"/>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
     
     <Grid>
         <Grid.RowDefinitions>
@@ -46,24 +43,36 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         
-        <ui:TitleBar Grid.Row="0" Title="地图日志查看器" ShowMaximize="True">
+        <!-- <ui:TitleBar Grid.Row="0" Title="地图日志查看器" ShowMaximize="True"> -->
             
-        </ui:TitleBar>
+        <!-- </ui:TitleBar> -->
         
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="0"  Margin="10,5,10,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ui:ToggleSwitch Grid.Column="0" Content="置顶" IsChecked="{Binding IsTopmost}"/>
+            <ui:HyperlinkButton Grid.Column="1" Content="帮助文档" NavigateUri="https://www.yuque.com/muzeqaq/ra3mapwiki/xydc50whmi8632pl"/>
+            <ui:TitleBar Grid.Column="2" Title="地图日志查看器" ShowMaximize="True"/>
+        </Grid>
+        
+        
+        <Grid Grid.Row="1"  Margin="15, 0, 15, 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/> 
             </Grid.ColumnDefinitions>
-            <ui:Button Grid.Column="0" Icon="{ui:SymbolIcon ArrowClockwise16}" Content="自动加载最新日志" Command="{Binding AutoLoadLogFileCommand}" IsEnabled="{Binding IsParsing, Converter={StaticResource BooleanNotConverter}}"/>
-            <ui:Button Grid.Column="1" Icon="{ui:SymbolIcon Document16}" Content="指定日志文件" Command="{Binding PickLogFileCommand}" IsEnabled="{Binding IsParsing, Converter={StaticResource BooleanNotConverter}}"/>
+            <ui:Button Grid.Column="0" Margin="0,0,10,0" Icon="{ui:SymbolIcon ArrowClockwise16}" Content="自动加载最新日志" Command="{Binding AutoLoadLogFileCommand}" IsEnabled="{Binding IsParsing, Converter={StaticResource BooleanNotConverter}}"/>
+            <ui:Button Grid.Column="1" Margin="0,0,10,0"  Icon="{ui:SymbolIcon Document16}" Content="指定日志文件" Command="{Binding PickLogFileCommand}" IsEnabled="{Binding IsParsing, Converter={StaticResource BooleanNotConverter}}"/>
             
-            <TextBlock Grid.Column="2" Text="{Binding LogFileName}" ToolTip="{Binding LogFilePath}"/>
+            <TextBlock Grid.Column="2" Text="{Binding LogFileName}" ToolTip="{Binding LogFilePath}" VerticalAlignment="Center"/>
         </Grid>
         
         
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2"  Margin="15, 0, 15, 0">
             <Grid.RowDefinitions>
                 <RowDefinition/>
             </Grid.RowDefinitions>
@@ -90,7 +99,7 @@
             <!-- <ui:NumberBox Grid.Column="3" Value="{Binding ShowingCount}"/> -->
         </Grid>
         
-        <StackPanel Grid.Row="3" Orientation="Horizontal">
+        <StackPanel Grid.Row="3" Orientation="Horizontal"  Margin="15, 0, 15, 0">
             <ui:TextBlock Text="显示的日志内容: " VerticalAlignment="Center" Margin="0,0,15,0"/>
             <CheckBox Content="日志时间" IsChecked="{Binding IsParseLogTime}"/>
             <CheckBox Content="帧序号" IsChecked="{Binding IsParseFrameIndex}"/>
@@ -98,20 +107,21 @@
             <CheckBox Content="日志位置" IsChecked="{Binding IsParseLogPosition}"/>
         </StackPanel>
         
-        <StackPanel Grid.Row="4" Orientation="Horizontal">
-            <ui:Button Content="从最新位置解析" Command="{Binding StartFromLatestCommand}" IsEnabled="{Binding IsParsing, Converter={StaticResource BooleanNotConverter}}"/>
+        <StackPanel Grid.Row="4" Orientation="Horizontal"  Margin="15, 0, 15, 0">
+            <ui:Button Content="从最新位置解析"  Margin="0,0,10,0"  Command="{Binding StartFromLatestCommand}" IsEnabled="{Binding IsParsing, Converter={StaticResource BooleanNotConverter}}"/>
             <!-- <ui:Button Content="从上次停止解析" Command="{Binding StartFromLastStopPosCommand}" IsEnabled="{Binding IsParsing, Converter={StaticResource BooleanNotConverter}}"/> -->
             <!-- <ui:Button Content="从头解析" Command="{Binding StartFromBeginningCommand}" IsEnabled="{Binding IsParsing, Converter={StaticResource BooleanNotConverter}}"/> -->
-            <ui:Button Content="中止解析" Command="{Binding StopCommand}" Foreground="PaleVioletRed" IsEnabled="{Binding IsParsing}"/>
+            <ui:Button Content="中止解析" Margin="0,0,10,0"  Command="{Binding StopCommand}" Foreground="PaleVioletRed" IsEnabled="{Binding IsParsing}"/>
             <TextBlock Text="解析状态: " VerticalAlignment="Center"/>
-            <TextBlock Text="{Binding ParseStatus}" Foreground="{Binding ParseStatusColor}"  VerticalAlignment="Center"/>
+            <TextBlock Margin="0,0,10,0"  Text="{Binding ParseStatus}" Foreground="{Binding ParseStatusColor}"  VerticalAlignment="Center"/>
             <ui:Button Content="清除所有日志" Command="{Binding ClearLogCommand}"/>
         </StackPanel>
 
-    <ScrollViewer Grid.Row="5" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Orientation="Vertical" Margin="15, 15, 15, 15" VerticalAlignment="Stretch" >
-            <ui:RichTextBox Name="LogTextBox" IsReadOnly="True"/>
-        </StackPanel>
+    <ScrollViewer Grid.Row="5" 
+                  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <!-- <StackPanel Orientation="Vertical" Margin="15, 15, 15, 15" VerticalAlignment="Stretch" > -->
+            <ui:RichTextBox Name="LogTextBox" IsReadOnly="True" Margin="15, 15, 15, 15"/>
+        <!-- </StackPanel> -->
         </ScrollViewer>
     </Grid>
 </ui:FluentWindow>

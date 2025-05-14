@@ -1,0 +1,74 @@
+<controls:FluentWindow  x:Class="Ra3MapUtils.Views.SubWindows.toolbox.ChatLuaHelperViewWindow"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:local="clr-namespace:Ra3MapUtils.Views.SubWindows.toolbox"
+                  xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                  d:DataContext="{d:DesignInstance Type=vm:ChatLuaHelperViewModel, IsDesignTimeCreatable=True}"
+                  mc:Ignorable="d"
+                  xmlns:vm="clr-namespace:Ra3MapUtils.ViewModels.toolbox"
+                  xmlns:xamlConverters="clr-namespace:Ra3MapUtils.Utils.XamlConverters"
+                  xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                  xmlns:controls="http://schemas.lepo.co/wpfui/2022/xaml"
+                  d:DesignHeight="1650"
+                  d:DesignWidth="1000"
+                  ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+                  ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                  Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                  Title="ChatLuaHelperViewWindow" Height="900" Width="800"
+                  ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"
+                  ExtendsContentIntoTitleBar="True"
+                  WindowBackdropType="Mica"
+                  WindowCornerPreference="Round"
+                  WindowStyle="SingleBorderWindow"
+                  Topmost="{Binding IsTopmost}"
+                  >
+    
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="Closed">
+            <behaviors:InvokeCommandAction Command="{Binding ClosedCommand}" PassEventArgsToCommand="False"/>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0"  Margin="15,0,15,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ui:ToggleSwitch Grid.Column="0" Content="置顶" IsChecked="{Binding IsTopmost}"/>
+            <ui:HyperlinkButton Grid.Column="1" Content="帮助文档" NavigateUri="https://www.yuque.com/muzeqaq/ra3mapwiki/xydc50whmi8632pl"/>
+            <ui:TitleBar Grid.Column="2" Title="地图聊天框Lua拆分工具" ShowMaximize="True" />
+        </Grid>
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal"  Margin="15,0,15,0">
+            <ui:Button Content="载入lua文件" Icon="{ui:SymbolIcon Document16}" Margin="0,0,15,0" Command="{Binding PickLuaFileCommand}"/>
+            <TextBlock Text="{Binding FileName}" ToolTip="{Binding ChatLuaHelperModel.ChatLuaHelperFilePath}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2"  Margin="15,5,15,0" Orientation="Horizontal">
+            <ui:Button Content="重新载入" Icon="{ui:SymbolIcon ArrowClockwise16}" Command="{Binding ReloadFileCommand}" Margin="0,0,10,0"/>
+            <!-- <CheckBox Content="极限压缩" IsChecked="{Binding ExtremeCompress}"/> -->
+        </StackPanel>
+        <ScrollViewer Grid.Row="3" 
+                      HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <!-- <ui:TextBox  Margin="15,15,15,15" -->
+            <!--              TextWrapping="Wrap" -->
+            <!--              AcceptsReturn="True" -->
+            <!--              Text="{Binding ParsedContent}"/> -->
+            <ui:RichTextBox 
+                Name="ParsedCodeTextBox" 
+                            Margin="15,15,15,15"
+                IsReadOnly="True"
+            />
+        </ScrollViewer>
+
+    </Grid>
+</controls:FluentWindow>

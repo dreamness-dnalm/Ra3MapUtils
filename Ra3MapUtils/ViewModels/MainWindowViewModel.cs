@@ -19,7 +19,7 @@ namespace Ra3MapUtils.ViewModels
 {
     public partial class MainWindowViewModel: ObservableObject, IObserver
     {
-        [ObservableProperty ]public string _windowTitle = $"{GlobalVarsModel.ProgramName} {GlobalVarsModel.VersionStr}";
+        [ObservableProperty] public string _windowTitle = GetWindowTitle();
         
         public SettingPageViewModel _settingPageViewModel = App.Current.Services.GetRequiredService<SettingPageViewModel>();
 
@@ -29,6 +29,17 @@ namespace Ra3MapUtils.ViewModels
         private void CloseWindow()
         {
             Environment.Exit(0);
+        }
+
+        private static string GetWindowTitle()
+        {
+            var title = $"{GlobalVarsModel.ProgramName} {GlobalVarsModel.VersionStr}";
+            if (SecurityPrincipalUtil.IsRunningAsAdministrator)
+            {
+                title += " - 管理员模式";
+            }
+
+            return title;
         }
 
         public void OnNotify(object sender, NotifyEventArgs e)

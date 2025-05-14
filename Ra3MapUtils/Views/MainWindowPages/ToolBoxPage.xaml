@@ -57,8 +57,87 @@
                         </StackPanel>
                     </Grid>
                 </ui:CardAction>
+                <ui:CardAction
+                    Margin="4,4,4,4"
+                    Padding="0"
+                    VerticalAlignment="Stretch"
+                    Command="{Binding OpenChatLuaHelperWindowCommand}"
+                    IsChevronVisible="False" Visibility="Visible">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Image
+                            Width="60"
+                            Margin="24,0,0,0"
+                            Source="pack://application:,,,/data/imgs/chat_lua_helper_icon.png" />
+
+                        <StackPanel
+                            Grid.Column="1"
+                            Margin="24"
+                            VerticalAlignment="Center">
+                            <ui:TextBlock
+                                Margin="0"
+                                FontTypography="BodyStrong"
+                                Text="地图聊天框Lua拆分工具"
+                                TextWrapping="WrapWithOverflow" />
+                            <ui:TextBlock
+                                Appearance="Secondary"
+                                Text="针对Lua库中的ChatLuaHelper"
+                                TextWrapping="WrapWithOverflow" />
+                        </StackPanel>
+                    </Grid>
+                </ui:CardAction>
                 
+                <ui:CardAction
+                    Margin="4,4,4,4"
+                    Padding="0"
+                    VerticalAlignment="Stretch"
+                    IsChevronVisible="False" Visibility="Visible">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <StackPanel
+                            Grid.Column="0"
+                            Margin="24"
+                            VerticalAlignment="Center">
+                            <ui:TextBlock
+                                Margin="0"
+                                FontTypography="BodyStrong"
+                                Text="窗口置顶-日冕mod"
+                                TextWrapping="WrapWithOverflow" />
+                            <ui:ToggleSwitch OnContent="已置顶" OffContent="未置顶" IsChecked="{Binding IsRa3CoronaTopmost}"/>
+                        </StackPanel>
+                    </Grid>
+                </ui:CardAction>
                 
+                <ui:CardAction
+                    Margin="4,4,4,4"
+                    Padding="0"
+                    VerticalAlignment="Stretch"
+                    IsChevronVisible="False" Visibility="Visible">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <StackPanel
+                            Grid.Column="0"
+                            Margin="24"
+                            VerticalAlignment="Center">
+                            <ui:TextBlock
+                                Margin="0"
+                                FontTypography="BodyStrong"
+                                Text="窗口置顶-新地编"
+                                TextWrapping="WrapWithOverflow" />
+                            <ui:ToggleSwitch OnContent="已置顶" OffContent="未置顶" IsChecked="{Binding IsNewWorldBuilderTopmost}"/>
+                        </StackPanel>
+                    </Grid>
+                </ui:CardAction>
                 
                 <ui:CardAction
                     Margin="4,4,4,4"

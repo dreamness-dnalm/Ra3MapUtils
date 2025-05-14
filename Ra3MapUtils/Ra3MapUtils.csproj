@@ -102,6 +102,8 @@
       <Resource Include="data\imgs\log_viewer_icon.png" />
       <None Remove="data\imgs\coming_soon_icon.png" />
       <Resource Include="data\imgs\coming_soon_icon.png" />
+      <None Remove="data\imgs\chat_lua_helper_icon.png" />
+      <Resource Include="data\imgs\chat_lua_helper_icon.png" />
     </ItemGroup>
 
 </Project>

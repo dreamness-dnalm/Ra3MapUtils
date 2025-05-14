@@ -23,16 +23,37 @@ public partial class ToolBoxPageViewModel: ObservableObject
             return;
         }
         
-        // if (GlobalVarsModel.LogViewerWindowOpened)
-        // {
-        //     MessageBox.Show("日志查看工具已经打开");
-        //     return;
-        // }
+        if (GlobalVarsModel.LogViewerWindowOpened)
+        {
+            // MessageBox.Show("日志查看工具已经打开");
+            return;
+        }
         LogViewerWindow _logViewerWindow = App.Current.Services.GetRequiredService<LogViewerWindow>();
         _logViewerWindow._LogViewerWindowViewModel.OnLoad();
         _logViewerWindow.Show();
 
         GlobalVarsModel.LogViewerWindowOpened = true;
+    }
+    
+    [RelayCommand]
+    private void OpenChatLuaHelperWindow()
+    {
+        if(GlobalVarsModel.ChatLuaHelperWindowOpened)
+        {
+            // MessageBox.Show("地图聊天框Lua拆分工具已经打开");
+            return;
+        }
+        
+        
+        ChatLuaHelperViewWindow _chatLuaHelperViewWindow = App.Current.Services.GetRequiredService<ChatLuaHelperViewWindow>();
+        _chatLuaHelperViewWindow._chatLuaHelperViewModel.OnLoad();
+        _chatLuaHelperViewWindow.Show();
+        if (_chatLuaHelperViewWindow._chatLuaHelperViewModel.ChatLuaHelperModel.ChatLuaHelperFilePath != "")
+        {
+            _chatLuaHelperViewWindow._chatLuaHelperViewModel.ReloadFile();
+        }
+        
+        GlobalVarsModel.ChatLuaHelperWindowOpened = true;
     }
 
     [RelayCommand]
