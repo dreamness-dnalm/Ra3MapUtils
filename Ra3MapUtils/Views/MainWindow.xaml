@@ -64,6 +64,12 @@
                         TargetPageTag="ToolBoxPage"
                         TargetPageType="{x:Type mainWindowPages:ToolBoxPage}"
                     />
+                    <ui:NavigationViewItem
+                        Content="知识库"
+                        Icon="{ui:SymbolIcon Library20}"
+                        TargetPageTag="ToolBoxPage"
+                        TargetPageType="{x:Type mainWindowPages:KnowledgeBasePage}"
+                    />
             
                 </ui:NavigationView.MenuItems>
             

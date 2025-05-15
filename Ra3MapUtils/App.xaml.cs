@@ -43,6 +43,9 @@ public partial class App : Application
         
         services.AddSingleton<ToolBoxPage>();
         services.AddSingleton<ToolBoxPageViewModel>();
+
+        services.AddSingleton<KnowledgeBasePage>();
+        services.AddSingleton<KnowledgeBasePageViewModel>();
         
         services.AddSingleton<AboutPage>();
         services.AddSingleton<AboutPageViewModel>();

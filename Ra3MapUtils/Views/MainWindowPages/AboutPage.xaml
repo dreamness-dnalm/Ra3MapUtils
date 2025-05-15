@@ -134,6 +134,14 @@
                         </StackPanel>
                     </ui:CardControl.Header>
                 </ui:CardControl>
+                <ui:CardControl Margin="4" Padding="20,10,20,10">
+                    <ui:CardControl.Header>
+                        <StackPanel HorizontalAlignment="Left">
+                            <ui:HyperlinkButton Content="Simple tokenizer" NavigateUri="https://github.com/wangfenjin/simple" HorizontalAlignment="Center" />
+                            <ui:TextBlock Margin="0" Text="SQLite fts5 全文搜索扩展" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                </ui:CardControl>
        </WrapPanel>
         </StackPanel>
         </ui:CardExpander>
