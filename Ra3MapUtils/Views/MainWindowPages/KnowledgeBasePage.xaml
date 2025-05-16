@@ -23,10 +23,13 @@
         </Grid.RowDefinitions>
         
         <Grid Row="0">
-            <Label Content="aaaaaaaaa"></Label>
+            <ui:TextBox PlaceholderText="搜索知识库" HorizontalAlignment="Stretch">
+                </ui:TextBox>
+            
         </Grid>
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <StackPanel>
+                <CheckBox></CheckBox>
             </StackPanel>
         </ScrollViewer>
         
