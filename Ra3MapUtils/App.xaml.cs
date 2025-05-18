@@ -62,6 +62,9 @@ public partial class App : Application
         services.AddTransient<LuaImportItemControl>();
         services.AddTransient<LuaManagerWindowViewModel>();
 
+        services.AddTransient<BorderManagerWindow>();
+        services.AddTransient<BorderManagerWindowViewModel>();
+
         services.AddTransient<CodeEditorWindow>();
         services.AddTransient<CodeEditorWindowViewModel>();
 

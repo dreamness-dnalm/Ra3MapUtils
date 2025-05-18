@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Ra3MapUtils.Models;
 using Ra3MapUtils.Utils;
 using Ra3MapUtils.Views;
+using Ra3MapUtils.Views.SubWindows;
 using SharedFunctionLib.Business;
 using UtilLib.mapFileHelper;
 using UtilLib.mapstrFileHelper;
@@ -372,6 +373,28 @@ public partial class MapManagePageViewModel : ObservableObject
         luaManagerWindow.Show();
         GlobalVarsModel.LuaManagerWindowOpened = true;
         GlobalVarsModel.SetLuaManagerWindowOpenedMapName(_selectedMap);
+    }
+    
+    [RelayCommand]
+    private void ManageBorder()
+    {
+        if (_selectedMap == "")
+        {
+            return;
+        }
+
+        if (GlobalVarsModel.BorderManagerWindowOpened)
+        {
+            MessageBox.Show("地图边界管理器已经打开");
+            return;
+        }
+
+        var borderManagerWindow = App.Current.Services.GetRequiredService<BorderManagerWindow>();
+        
+        borderManagerWindow._borderManagerWindowViewModel.MapName = _selectedMap;
+        borderManagerWindow.Show();
+        GlobalVarsModel.BorderManagerWindowOpened = true;
+        GlobalVarsModel.SetBorderManagerWindowOpenedMapName(_selectedMap);
     }
 
     [RelayCommand]

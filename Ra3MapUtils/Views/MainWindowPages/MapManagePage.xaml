@@ -31,6 +31,7 @@
             <ui:MenuItem Icon="{ui:SymbolIcon PeopleEdit20}" ToolTip="修改游戏内显示名(map.str)" Command="{Binding EditMapViewNameCommand}"/>
             <ui:MenuItem Icon="{ui:SymbolIcon BookCompass20}" ToolTip="map.str管理"  Visibility="Collapsed"/>
             <ui:MenuItem Icon="{ui:SymbolIcon CodeBlock20}" ToolTip="Lua导入工具" Command="{Binding ManageLuaCommand}" />
+            <ui:MenuItem Icon="{ui:SymbolIcon BorderNone20}" ToolTip="边界管理" Command="{Binding ManageBorderCommand}" />
         </Menu>
 
         <Grid Margin="5,5,5,5" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top">

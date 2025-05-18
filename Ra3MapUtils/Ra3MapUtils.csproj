@@ -93,6 +93,12 @@
       <None Update="data\plugins_lib\UtilCoreLib.dll">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="lib\MapCoreLibMod.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\Ra3MapBridge.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -106,6 +112,15 @@
       <Resource Include="data\imgs\coming_soon_icon.png" />
       <None Remove="data\imgs\chat_lua_helper_icon.png" />
       <Resource Include="data\imgs\chat_lua_helper_icon.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="MapCoreLibMod">
+        <HintPath>lib\MapCoreLibMod.dll</HintPath>
+      </Reference>
+      <Reference Include="Ra3MapBridge">
+        <HintPath>lib\Ra3MapBridge.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

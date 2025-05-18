@@ -37,20 +37,22 @@ public class KnowledgeBaseDAO: IDisposable
         
         var createTableCommand = _connection.CreateCommand();
         
-        createTableCommand.CommandText = "CREATE VIRTUAL TABLE IF NOT EXISTS  kb using fts5(title, content, tags, tokenize='simple')";
+        createTableCommand.CommandText = "CREATE VIRTUAL TABLE IF NOT EXISTS  kb using fts5(title, content, tags, data_type, tokenize='simple')";
         createTableCommand.ExecuteNonQuery();
     }
     
     public void AddRecord(KnowledgeBaseRecord record)
     {
         var insertCommand = _connection.CreateCommand();
-        insertCommand.CommandText = "INSERT INTO kb (title, content, tags) VALUES (@title, @content, @tags)";
+        insertCommand.CommandText = "INSERT INTO kb (title, content, tags) VALUES (@title, @content, @tags, @type_type)";
         insertCommand.Parameters.AddWithValue("@title", record.Title);
         insertCommand.Parameters.AddWithValue("@content", record.Content);
         insertCommand.Parameters.AddWithValue("@tags", record.Tags);
         insertCommand.ExecuteNonQuery();
     }
 
+    
+    
     public List<KnowledgeBaseRecord> Search(string query, string tagQuery, int page, int pageSize)
     {
         var queryCommand = _connection.CreateCommand();
@@ -61,11 +63,11 @@ public class KnowledgeBaseDAO: IDisposable
         
         if (string.IsNullOrWhiteSpace(tagQuery))
         {
-            queryCommand.CommandText = "SELECT title, content, tags FROM kb WHERE content MATCH @query LIMIT @pageSize OFFSET @offset";
+            queryCommand.CommandText = "SELECT title, content, tags, data_type FROM kb WHERE content MATCH @query LIMIT @pageSize OFFSET @offset";
         }
         else
         {
-            queryCommand.CommandText = "SELECT title, content, tags FROM kb WHERE (content MATCH @query AND tags MATCH @tagQuery)  LIMIT @pageSize OFFSET @offset";
+            queryCommand.CommandText = "SELECT title, content, tags, data_type FROM kb WHERE (content MATCH @query AND tags MATCH @tagQuery)  LIMIT @pageSize OFFSET @offset";
             queryCommand.Parameters.AddWithValue("@tagQuery", tagQuery);
         }
         
@@ -76,7 +78,8 @@ public class KnowledgeBaseDAO: IDisposable
             var title = reader.GetString(0);
             var content = reader.GetString(1);
             var tags = reader.GetString(2);
-            results.Add(new KnowledgeBaseRecord(title, content, tags));
+            var dataType = reader.GetString(3);
+            results.Add(new KnowledgeBaseRecord(title, content, tags, dataType));
         }
         return results;
     }

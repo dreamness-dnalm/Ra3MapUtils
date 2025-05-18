@@ -9,10 +9,17 @@ namespace Ra3MapUtils.Models;
 public static class GlobalVarsModel
 {
     public static bool LuaManagerWindowOpened { get; set; } = false;
+    
+    public static bool BorderManagerWindowOpened { get; set; } = false;
 
     public static void SetLuaManagerWindowOpenedMapName(string mapName)
     {
         LuaImporterBusiness.ActiveMapName = mapName;
+    }
+    
+    public static void SetBorderManagerWindowOpenedMapName(string mapName)
+    {
+        // BorderManagerBusiness.ActiveMapName = mapName;
     }
 
     public static string ProgramName = "RA3地编伴侣";
