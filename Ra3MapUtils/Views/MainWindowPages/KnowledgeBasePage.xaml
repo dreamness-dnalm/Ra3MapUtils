@@ -21,17 +21,18 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        <TextBlock Text="开发中, 敬请期待"/>
         
-        <Grid Row="0">
-            <ui:TextBox PlaceholderText="搜索知识库" HorizontalAlignment="Stretch">
-                </ui:TextBox>
-            
-        </Grid>
-        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-                <CheckBox></CheckBox>
-            </StackPanel>
-        </ScrollViewer>
+        <!-- <Grid Row="0"> -->
+        <!--     <ui:TextBox PlaceholderText="搜索知识库" HorizontalAlignment="Stretch"> -->
+        <!--         </ui:TextBox> -->
+        <!--      -->
+        <!-- </Grid> -->
+        <!-- <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"> -->
+        <!--     <StackPanel> -->
+        <!--         <CheckBox></CheckBox> -->
+        <!--     </StackPanel> -->
+        <!-- </ScrollViewer> -->
         
     </Grid>
 </Page>

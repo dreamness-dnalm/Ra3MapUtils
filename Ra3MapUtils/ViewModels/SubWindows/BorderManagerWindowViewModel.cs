@@ -4,8 +4,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MapCoreLibMod.Core.Util;
-using Ra3MapBridge;
+using Ra3MapFacade.Util;
+using Ra3MapParser.Exception;
 using Ra3MapUtils.Models;
 using MessageBox = System.Windows.Forms.MessageBox;
 
@@ -21,7 +21,12 @@ public partial class BorderManagerWindowViewModel: ObservableObject
     
     [ObservableProperty] private MapBorderModel? _selectedBorderModel;
 
-    private Ra3MapWrap _ra3MapWrap;
+    [ObservableProperty] private int _minX;
+    [ObservableProperty] private int _minY;
+    [ObservableProperty] private int _maxX;
+    [ObservableProperty] private int _maxY;
+
+    private Ra3MapFacade.Ra3MapFacade _ra3MapFacade;
     
     partial void OnMapNameChanged(string value)
     {
@@ -40,28 +45,39 @@ public partial class BorderManagerWindowViewModel: ObservableObject
         try
         {
             _borderModels.Clear();
-            
+
             if (_mapName == null || _mapName == "")
             {
                 MessageBox.Show("请先选择地图");
                 return;
             }
-            
-            _ra3MapWrap = Ra3MapWrap.Open(PathUtil.RA3MapFolder, _mapName);
 
-            var boarders = _ra3MapWrap.GetBorders();
+            _ra3MapFacade = Ra3MapFacade.Ra3MapFacade.Open(PathUtil.RA3MapFolder, _mapName);
             
+            MinX = -_ra3MapFacade.MapBorderWidth;
+            MinY = -_ra3MapFacade.MapBorderWidth;
+            MaxX = _ra3MapFacade.MapPlayableWidth + _ra3MapFacade.MapBorderWidth;
+            MaxY = _ra3MapFacade.MapPlayableHeight + _ra3MapFacade.MapBorderWidth;
+
+            var boarders = _ra3MapFacade.GetBorders();
+
             foreach (var border in boarders)
             {
                 var newBorderModel = new MapBorderModel();
                 _borderModels.Add(newBorderModel);
-                
-                newBorderModel.X1 = border.Corner1X;
-                newBorderModel.Y1 = border.Corner1Y;
-                newBorderModel.X2 = border.Corner2X;
-                newBorderModel.Y2 = border.Corner2Y;
+
+                newBorderModel.X1 = border.X1;
+                newBorderModel.Y1 = border.Y1;
+                newBorderModel.X2 = border.X2;
+                newBorderModel.Y2 = border.Y2;
             }
-        }catch (Exception e)
+        }
+        catch (BadMapException e)
+        {
+            _ra3MapFacade = null;
+            MessageBox.Show($"打开地图失败: {_mapName}, 文件损坏或被加密.");
+        }
+        catch (Exception e)
         {
             MessageBox.Show($"打开地图失败: {_mapName}, detail: {e.Message}");
         }
@@ -73,17 +89,33 @@ public partial class BorderManagerWindowViewModel: ObservableObject
     {
         try
         {
-            if (_ra3MapWrap == null)
+            if (_ra3MapFacade == null)
             {
+                MessageBox.Show("尚未加载地图");
                 return;
             }
             
-            _ra3MapWrap.GetBorders().Clear();
+            for(int i = 0; i < _borderModels.Count; i++)
+            {
+                var borderModel = _borderModels[i];
+                if (borderModel.X1 < MinX || borderModel.Y1 < MinY || borderModel.X2 > MaxX || borderModel.Y2 > MaxY)
+                {
+                    MessageBox.Show($"第{i + 1}个边界非法[边界坐标超出范围: ({borderModel.X1}, {borderModel.Y1}) - ({borderModel.X2}, {borderModel.Y2})]");
+                    return;
+                }
+                if(borderModel.X1 > borderModel.X2 || borderModel.Y1 > borderModel.Y2)
+                {
+                    MessageBox.Show($"第{i + 1}个边界非法[左下角坐标应大于右上角坐标: ({borderModel.X1}, {borderModel.Y1}) - ({borderModel.X2}, {borderModel.Y2})]");
+                    return;
+                }
+            }
+
+            _ra3MapFacade.GetBorders().Clear();
             foreach (var borderModel in _borderModels)
             {
-                _ra3MapWrap.AddBorder(borderModel.X1, borderModel.Y1, borderModel.X2, borderModel.Y2);
+                _ra3MapFacade.AddBorder(borderModel.X1, borderModel.Y1, borderModel.X2, borderModel.Y2);
             }
-            _ra3MapWrap.Save();
+            _ra3MapFacade.Save();
             
             ReloadBoards();
         }catch (Exception e)
@@ -99,7 +131,11 @@ public partial class BorderManagerWindowViewModel: ObservableObject
     {
         GlobalVarsModel.SetBorderManagerWindowOpenedMapName(null);
         GlobalVarsModel.BorderManagerWindowOpened = false;
-        _ra3MapWrap = null;
+        _ra3MapFacade = null;
+        _minX = -1;
+        _minY = -1;
+        _maxX = -1;
+        _maxY = -1;
     }
 
     [RelayCommand]
@@ -148,6 +184,12 @@ public partial class BorderManagerWindowViewModel: ObservableObject
     {
         if (SelectedBorderModel == null)
         {
+            return;
+        }
+
+        if (BorderModels.Count <= 1)
+        {
+            MessageBox.Show("无法删除, 至少需要一个边界");
             return;
         }
         var tmp = SelectedBorderModel;
