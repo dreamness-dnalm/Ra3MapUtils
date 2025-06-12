@@ -93,10 +93,10 @@
       <None Update="data\plugins_lib\UtilCoreLib.dll">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="lib\MapCoreLibMod.dll">
+      <None Update="lib\Ra3MapFacade.dll">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="lib\Ra3MapBridge.dll">
+      <None Update="lib\Ra3MapParser.dll">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
@@ -120,6 +120,12 @@
       </Reference>
       <Reference Include="Ra3MapBridge">
         <HintPath>lib\Ra3MapBridge.dll</HintPath>
+      </Reference>
+      <Reference Include="Ra3MapFacade">
+        <HintPath>lib\Ra3MapFacade.dll</HintPath>
+      </Reference>
+      <Reference Include="Ra3MapParser">
+        <HintPath>lib\Ra3MapParser.dll</HintPath>
       </Reference>
     </ItemGroup>
 

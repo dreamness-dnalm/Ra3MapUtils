@@ -57,7 +57,7 @@
         </ui:TitleBar>
         <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Orientation="Vertical" Margin="5, 0, 5, 5">
             <!-- <ui:HyperlinkButton Content="使用文档及常见错误" NavigateUri="https://www.yuque.com/muzeqaq/ra3mapwiki/ofa6ufyd9pmwwgnm" Icon="{ui:SymbolIcon Document20}"/> -->
-            <ui:InfoBar Message="导入的文件夹, 路径, 以及lua文件名, 请不要包含中中文, 否则会损坏地图文件." IsOpen="True"  /> 
+            <ui:InfoBar Message="现已经解决大部分因包含汉字而发生的文件损坏异常, 但是仍然建议先备份地图." IsOpen="True"  /> 
         </StackPanel>
         
         <Grid Grid.Row="2" Grid.Column="0">
@@ -150,6 +150,21 @@
         <Separator Grid.Row="2" Grid.Column="1" Width="5" FontWeight="Heavy"/>
         
         <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Vertical" Margin="10, 30, 10, 10">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="坐标范围: "/>
+                <TextBlock Text="("/>
+                <TextBlock Text="{Binding MinX}" Margin="0, 0, 5, 0"/>
+                <TextBlock Text=","/>
+                <TextBlock Text="{Binding MinY}" Margin="0, 0, 5, 0"/>
+                <TextBlock Text=") - ("/>
+                <TextBlock Text="{Binding MaxX}" Margin="0, 0, 5, 0"/>
+                <TextBlock Text=","/>
+                <TextBlock Text="{Binding MaxY}" Margin="0, 0, 5, 0"/>
+                <TextBlock Text=")"/>
+            </StackPanel>
+            <TextBlock Text="右上角坐标应大于左下角坐标" Margin="0, 10, 0, 0"/>
+            
+            <Separator Margin="0, 10, 0, 10"/>
             <TextBlock Text="边界左下角坐标" FontWeight="Bold" Margin="0, 0, 0, 5"/>
             <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 0">
                 <TextBlock Text="X: " VerticalAlignment="Center"  Margin="10, 5, 10, 0" FontWeight="Medium"/>
