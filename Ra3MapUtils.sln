@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ra3MapUtils", "Ra3MapUtils\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilCoreLib", "UtilCoreLib\UtilCoreLib.csproj", "{7F188A5E-1CA4-4F66-A7F5-0EA28AF24B56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapCoreLib", "MapCoreLib\MapCoreLib.csproj", "{8976A45D-2F41-423D-BC25-6B32A2BA2812}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test_field", "test_field\test_field.csproj", "{226F2A02-AA1E-4D00-B3CE-86982F85D8D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedFunctionLib", "SharedFunctionLib\SharedFunctionLib.csproj", "{2AEACE0F-A3A8-4CC9-BEF8-D5DCE72C4656}"
