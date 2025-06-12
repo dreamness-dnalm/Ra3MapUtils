@@ -108,4 +108,18 @@ public partial class App : Application
         settingPageViewModel.OnLoadNewWorldBuilderPart();
         settingPageViewModel.OnLoadLuaLibBindingPart();
     }
+
+    private APIService _apiService = new();
+
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        base.OnStartup(e);
+        _apiService.Start();
+    }
+    
+    protected override void OnExit(ExitEventArgs e)
+    {
+        _apiService.Stop();
+        base.OnExit(e);
+    }
 }

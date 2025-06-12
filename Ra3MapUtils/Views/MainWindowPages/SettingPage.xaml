@@ -20,15 +20,15 @@
             <ui:CardExpander IsExpanded="True" Margin="0, 5, 0, 5">
                 <ui:CardExpander.Header><ui:TextBlock Text="更新"/></ui:CardExpander.Header>
                 <StackPanel Orientation="Vertical">
-                                <ui:CardControl Margin="0, 0, 0, 5">
-                <ui:CardControl.Header>
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="自动更新"/>
-                        <TextBlock Text="程序初始化时会尝试自动更新,建议开启" FontSize="10" Foreground="LightGray"/>
-                    </StackPanel>
-                </ui:CardControl.Header>
-                <ui:ToggleSwitch IsChecked="{Binding SettingModel.IsAutoUpdate}"/>
-            </ui:CardControl>
+                    <ui:CardControl Margin="0, 0, 0, 5">
+                        <ui:CardControl.Header>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="自动更新"/>
+                                <TextBlock Text="程序初始化时会尝试自动更新,建议开启" FontSize="10" Foreground="LightGray"/>
+                            </StackPanel>
+                        </ui:CardControl.Header>
+                        <ui:ToggleSwitch IsChecked="{Binding SettingModel.IsAutoUpdate}"/>
+                    </ui:CardControl>
             <ui:CardControl Margin="0, 0, 0, 5">
                 <ui:CardControl.Header>
                     <Grid>
@@ -212,7 +212,28 @@
                 </StackPanel>
             </ui:CardExpander>
             
-            <ui:CardExpander Margin="0, 5, 0, 5" IsExpanded="True" >
+            <ui:CardExpander Margin="0, 5, 0, 5" IsExpanded="False" >
+                <ui:CardExpander.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <ui:TextBlock Text="API服务" Margin="0, 0, 10, 0"/>
+                        <ui:ToggleSwitch IsChecked="{Binding SettingModel.IsEnableApiService}" OnContent="已开启" OffContent="已关闭"/>
+                    </StackPanel>
+                </ui:CardExpander.Header>
+                <StackPanel Orientation="Vertical">
+                    <ui:CardControl Margin="0, 0, 0, 5">
+                        <ui:CardControl.Header>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="端口号"/>
+                                <!-- <TextBlock Text="程序初始化时会尝试自动更新,建议开启" FontSize="10" Foreground="LightGray"/> -->
+                            </StackPanel>
+                        </ui:CardControl.Header>
+                        <!-- <ui:ToggleSwitch IsChecked="{Binding SettingModel.IsAutoUpdate}"/> -->
+                        <ui:NumberBox MaxDecimalPlaces="0" Value="{Binding SettingModel.ApiServicePort}"/>
+                    </ui:CardControl>
+                </StackPanel>
+            </ui:CardExpander>
+            
+            <ui:CardExpander Margin="0, 5, 0, 5" IsExpanded="False"  Visibility="Collapsed">
                 <ui:CardExpander.Header><ui:TextBlock Text="知识库"></ui:TextBlock></ui:CardExpander.Header>
                 <StackPanel Orientation="Vertical">
             <!--         <ui:CardControl Margin="0, 0, 0, 5"> -->

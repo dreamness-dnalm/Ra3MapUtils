@@ -13,6 +13,10 @@ public partial class SettingModel: ObservableObject, INotify
     [ObservableProperty]private string _newWorldBuilderPath;
 
     [ObservableProperty] private bool _isEnableAutoBackup;
+    
+    [ObservableProperty] private bool _isEnableApiService;
+    
+    [ObservableProperty] private int _apiServicePort;
 
     partial void OnLuaRedundancyFactorChanged(int value)
     {
@@ -28,12 +32,24 @@ public partial class SettingModel: ObservableObject, INotify
     {
         NewWorldBuilderBusiness.NewWorldBuilderPath = value;
     }
+    
+    partial void OnIsEnableApiServiceChanged(bool value)
+    {
+        ApiServiceBusiness.IsApiServiceEnabled = value;
+    }
+    
+    partial void OnApiServicePortChanged(int value)
+    {
+        ApiServiceBusiness.ApiServicePort = value;
+    }
 
     public void Reload()
     {
         LuaRedundancyFactor = LuaImporterBusiness.LuaRedundancyFactor;
         IsAutoUpdate = UpdateBusiness.IsAutoUpdateEnabled;
         NewWorldBuilderPath = NewWorldBuilderBusiness.NewWorldBuilderPath;
+        IsEnableApiService = ApiServiceBusiness.IsApiServiceEnabled;
+        ApiServicePort = ApiServiceBusiness.ApiServicePort;
     }
 
     public SettingModel()
