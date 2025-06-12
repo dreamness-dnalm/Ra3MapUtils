@@ -212,7 +212,7 @@
                 </StackPanel>
             </ui:CardExpander>
             
-            <ui:CardExpander Margin="0, 5, 0, 5" IsExpanded="False" >
+            <ui:CardExpander Margin="0, 5, 0, 5" IsExpanded="True" >
                 <ui:CardExpander.Header>
                     <StackPanel Orientation="Horizontal">
                         <ui:TextBlock Text="API服务" Margin="0, 0, 10, 0"/>
@@ -228,7 +228,11 @@
                             </StackPanel>
                         </ui:CardControl.Header>
                         <!-- <ui:ToggleSwitch IsChecked="{Binding SettingModel.IsAutoUpdate}"/> -->
-                        <ui:NumberBox MaxDecimalPlaces="0" Value="{Binding SettingModel.ApiServicePort}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <ui:NumberBox MaxDecimalPlaces="0" Value="{Binding SettingModel.ApiServicePort ,Mode=OneWay}"/>
+                            <ui:Button Content="应用"/>
+                        </StackPanel>
+         
                     </ui:CardControl>
                 </StackPanel>
             </ui:CardExpander>

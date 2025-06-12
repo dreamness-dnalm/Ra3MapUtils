@@ -109,7 +109,7 @@ public partial class App : Application
         settingPageViewModel.OnLoadLuaLibBindingPart();
     }
 
-    private APIService _apiService = new();
+    public static APIService _apiService = new();
 
     protected override void OnStartup(StartupEventArgs e)
     {
