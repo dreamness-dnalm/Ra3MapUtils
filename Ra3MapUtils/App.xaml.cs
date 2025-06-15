@@ -78,8 +78,7 @@ public partial class App : Application
         services.AddSingleton<ISettingService, SettingService>();
         services.AddSingleton<IUpdateService, UpdateService>();
         services.AddSingleton<INewWorldBuilderPluginService, NewWorldBuilderPluginService>();
-        
-        
+        services.AddSingleton<IMapDataOperateService, MapDataOperateService>();
         
         return services.BuildServiceProvider();
     }
@@ -114,12 +113,12 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-        _apiService.Start();
+        // _apiService.Start();
     }
     
     protected override void OnExit(ExitEventArgs e)
     {
         _apiService.Stop();
-        base.OnExit(e);
+        // base.OnExit(e);
     }
 }

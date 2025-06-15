@@ -28,6 +28,7 @@
       <PackageReference Include="SemanticVersion" Version="2.1.0" />
       <PackageReference Include="SevenZipExtractor" Version="1.0.19" />
       <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
+      <PackageReference Include="System.Text.Json" Version="8.0.5" />
       <PackageReference Include="Velopack" Version="0.0.869" />
       <PackageReference Include="WPF-UI" Version="3.0.5" />
     </ItemGroup>
@@ -115,12 +116,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="MapCoreLibMod">
-        <HintPath>lib\MapCoreLibMod.dll</HintPath>
-      </Reference>
-      <Reference Include="Ra3MapBridge">
-        <HintPath>lib\Ra3MapBridge.dll</HintPath>
-      </Reference>
       <Reference Include="Ra3MapFacade">
         <HintPath>lib\Ra3MapFacade.dll</HintPath>
       </Reference>

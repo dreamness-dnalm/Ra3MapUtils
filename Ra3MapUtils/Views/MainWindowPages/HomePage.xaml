@@ -75,6 +75,10 @@
                         <StackPanel>
                             <ui:TextBlock Text="地图快速管理" Margin="10, 5, 0, 5" FontSize="15"/>
                             <ui:TextBlock Text="Lua脚本快速导入(针对日冕等mod)" Margin="10, 5, 0, 5" FontSize="15"/>
+                            <ui:TextBlock Text="地图边界管理" Margin="10, 5, 0, 5" FontSize="15"/>
+                            <ui:TextBlock Text="地图数据迁移" Margin="10, 5, 0, 5" FontSize="15"/>
+                            <ui:TextBlock Text="调试开发工具" Margin="10, 5, 0, 5" FontSize="15"/>
+                            <ui:TextBlock Text="Lua库更新(针对日冕等mod)" Margin="10, 5, 0, 5" FontSize="15"/>
                         </StackPanel>
                     </Border>
                 </StackPanel>

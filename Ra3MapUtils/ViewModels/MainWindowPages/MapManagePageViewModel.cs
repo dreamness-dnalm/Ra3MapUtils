@@ -11,6 +11,7 @@ using LinqToDB.Tools;
 using MapCoreLib.Core.Util;
 using Microsoft.Extensions.DependencyInjection;
 using Ra3MapUtils.Models;
+using Ra3MapUtils.Services.Interface;
 using Ra3MapUtils.Utils;
 using Ra3MapUtils.Views;
 using Ra3MapUtils.Views.SubWindows;
@@ -40,6 +41,8 @@ public partial class MapManagePageViewModel : ObservableObject
     private string _searchingKeyword = "";
 
     private SettingPageViewModel _settingPageViewModel = App.Current.Services.GetRequiredService<SettingPageViewModel>();
+    
+    private IMapDataOperateService _mapDataOperateService = App.Current.Services.GetRequiredService<IMapDataOperateService>();
 
     [ObservableProperty] private string _selectedMapViewName;
     
@@ -461,6 +464,278 @@ public partial class MapManagePageViewModel : ObservableObject
             MapStrFileHelper.SetMapName(_selectedMap, inputDialog.Input);
             
         }
+    }
+
+    [RelayCommand]
+    private void ImportMapPlayerDataFromDefaultFile()
+    {
+        if (_selectedMap == "")
+        {
+            MessageBox.Show("请先选择地图");
+            return;
+        }
+
+        try
+        {
+            var (mapPath, mapName) = MapFileHelper.TranslateMapPath(_selectedMap);
+
+            var jsonFilePath = Path.Combine(mapPath, "PlayersData.json");
+            if (!File.Exists(jsonFilePath))
+            {
+                MessageBox.Show("数据文件不存在: " + jsonFilePath);
+                return;
+            }
+            var jsonStr = File.ReadAllText(jsonFilePath);
+            _mapDataOperateService.ImportMapPlayerDataFromJsonStr(jsonStr, mapName);
+            MessageBox.Show("导入玩家数据成功");
+        }catch (Exception e)
+        {
+            MessageBox.Show("导入玩家数据失败, msg: " + e.Message);
+        }
+    }
+
+    [RelayCommand]
+    private void ImportMapPlayerDataFromFile()
+    {
+        if (_selectedMap == "")
+        {
+            MessageBox.Show("请先选择地图");
+            return;
+        }
+
+        try
+        {
+            var (mapPath, mapName) = MapFileHelper.TranslateMapPath(_selectedMap);
+
+            var openFileDialog = new OpenFileDialog()
+            {
+                Title = "选择玩家数据文件",
+                Filter = "JSON文件 (*.json)|*.json",
+                InitialDirectory = mapPath,
+                Multiselect = false
+            };
+
+            var dialogResult = openFileDialog.ShowDialog();
+            
+            if (dialogResult != System.Windows.Forms.DialogResult.OK)
+            {
+                return;
+            }
+
+            var jsonFilePath = openFileDialog.FileName;
+            if (!File.Exists(jsonFilePath))
+            {
+                MessageBox.Show("数据文件不存在: " + jsonFilePath);
+                return;
+            }
+            var jsonStr = File.ReadAllText(jsonFilePath);
+            _mapDataOperateService.ImportMapPlayerDataFromJsonStr(jsonStr, mapName);
+            MessageBox.Show("导入玩家数据成功");
+        }catch (Exception e)
+        {
+            MessageBox.Show("导入默认玩家数据失败, msg: " + e.Message);
+        }
+    }
+
+    [RelayCommand]
+    private void ExportMapPlayerDataToDefaultFile()
+    {
+        if (_selectedMap == "")
+        {
+            MessageBox.Show("请先选择地图");
+            return;
+        }
+        
+        try
+        {
+            var (mapPath, mapName) = MapFileHelper.TranslateMapPath(_selectedMap);
+
+            var jsonFilePath = Path.Combine(mapPath, "PlayersData.json");
+            var jsonStr = _mapDataOperateService.ExportMapPlayerDataAsJsonStr(mapName);
+            File.WriteAllText(jsonFilePath, jsonStr);
+            MessageBox.Show("导出成功: " + jsonFilePath);
+            ExplorerUtil.OpenExplorer(jsonFilePath, true);
+        }catch (Exception e)
+        {
+            MessageBox.Show("导出默认玩家数据失败, msg: " + e.Message);
+        }
+        
+    }
+    
+    [RelayCommand]
+    private void ExportMapPlayerDataToFile()
+    {
+        if (_selectedMap == "")
+        {
+            MessageBox.Show("请先选择地图");
+            return;
+        }
+
+        try
+        {
+            var (mapPath, mapName) = MapFileHelper.TranslateMapPath(_selectedMap);
+
+            var saveFileDialog = new SaveFileDialog()
+            {
+                Title = "保存玩家数据文件",
+                Filter = "JSON文件 (*.json)|*.json",
+                InitialDirectory = mapPath,
+                FileName = "PlayersData.json"
+            };
+
+            var dialogResult = saveFileDialog.ShowDialog();
+            
+            if (dialogResult != System.Windows.Forms.DialogResult.OK)
+            {
+                return;
+            }
+
+            var jsonFilePath = saveFileDialog.FileName;
+            var jsonStr = _mapDataOperateService.ExportMapPlayerDataAsJsonStr(mapName);
+            File.WriteAllText(jsonFilePath, jsonStr);
+            MessageBox.Show("导出成功: " + jsonFilePath);
+            ExplorerUtil.OpenExplorer(jsonFilePath, true);
+        }catch (Exception e)
+        {
+            MessageBox.Show("导出玩家数据失败, msg: " + e.Message);
+        }
+    }
+    
+    [RelayCommand]
+    private void ImportMapTeamDataFromDefaultFile()
+    {
+        if (_selectedMap == "")
+        {
+            MessageBox.Show("请先选择地图");
+            return;
+        }
+
+        try
+        {
+            var (mapPath, mapName) = MapFileHelper.TranslateMapPath(_selectedMap);
+
+            var jsonFilePath = Path.Combine(mapPath, "TeamsData.json");
+            if (!File.Exists(jsonFilePath))
+            {
+                MessageBox.Show("数据文件不存在: " + jsonFilePath);
+                return;
+            }
+            var jsonStr = File.ReadAllText(jsonFilePath);
+            _mapDataOperateService.ImportMapTeamDataFromJsonStr(jsonStr, mapName);
+            MessageBox.Show("导入队伍数据成功");
+        }catch (Exception e)
+        {
+            MessageBox.Show("导入队伍数据失败, msg: " + e.Message);
+        }
+    }
+    
+    [RelayCommand]
+    private void ImportMapTeamDataFromFile()
+    {
+        if (_selectedMap == "")
+        {
+            MessageBox.Show("请先选择地图");
+            return;
+        }
+
+        try
+        {
+            var (mapPath, mapName) = MapFileHelper.TranslateMapPath(_selectedMap);
+
+            var openFileDialog = new OpenFileDialog()
+            {
+                Title = "选择队伍数据文件",
+                Filter = "JSON文件 (*.json)|*.json",
+                InitialDirectory = mapPath,
+                Multiselect = false
+            };
+
+            var dialogResult = openFileDialog.ShowDialog();
+            
+            if (dialogResult != System.Windows.Forms.DialogResult.OK)
+            {
+                return;
+            }
+
+            var jsonFilePath = openFileDialog.FileName;
+            if (!File.Exists(jsonFilePath))
+            {
+                MessageBox.Show("数据文件不存在: " + jsonFilePath);
+                return;
+            }
+            var jsonStr = File.ReadAllText(jsonFilePath);
+            _mapDataOperateService.ImportMapTeamDataFromJsonStr(jsonStr, mapName);
+            MessageBox.Show("导入队伍数据成功");
+        }catch (Exception e)
+        {
+            MessageBox.Show("导入队伍数据失败, msg: " + e.Message);
+        }
+        
+    }
+    
+    [RelayCommand]
+    private void ExportMapTeamDataToDefaultFile()
+    {
+        if (_selectedMap == "")
+        {
+            MessageBox.Show("请先选择地图");
+            return;
+        }
+        
+        try
+        {
+            var (mapPath, mapName) = MapFileHelper.TranslateMapPath(_selectedMap);
+
+            var jsonFilePath = Path.Combine(mapPath, "TeamsData.json");
+            var jsonStr = _mapDataOperateService.ExportMapTeamDataAsJsonStr(mapName);
+            File.WriteAllText(jsonFilePath, jsonStr);
+            MessageBox.Show("导出成功: " + jsonFilePath);
+            ExplorerUtil.OpenExplorer(jsonFilePath, true);
+        }catch (Exception e)
+        {
+            MessageBox.Show("导出队伍数据失败, msg: " + e.Message);
+        }
+        
+    }
+    
+    [RelayCommand]
+    private void ExportMapTeamDataToFile()
+    {
+        if (_selectedMap == "")
+        {
+            MessageBox.Show("请先选择地图");
+            return;
+        }
+
+        try
+        {
+            var (mapPath, mapName) = MapFileHelper.TranslateMapPath(_selectedMap);
+
+            var saveFileDialog = new SaveFileDialog()
+            {
+                Title = "保存队伍数据文件",
+                Filter = "JSON文件 (*.json)|*.json",
+                InitialDirectory = mapPath,
+                FileName = "TeamsData.json"
+            };
+
+            var dialogResult = saveFileDialog.ShowDialog();
+            
+            if (dialogResult != System.Windows.Forms.DialogResult.OK)
+            {
+                return;
+            }
+
+            var jsonFilePath = saveFileDialog.FileName;
+            var jsonStr = _mapDataOperateService.ExportMapTeamDataAsJsonStr(mapName);
+            File.WriteAllText(jsonFilePath, jsonStr);
+            MessageBox.Show("导出成功: " + jsonFilePath);
+            ExplorerUtil.OpenExplorer(jsonFilePath, true);
+        }catch (Exception e)
+        {
+            MessageBox.Show("导出队伍数据失败, msg: " + e.Message);
+        }
+        
     }
 
 }

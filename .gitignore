@@ -7,3 +7,5 @@ riderModule.iml
 **/*.DotSettings
 Ra3MapUtils.sln.DotSettings.user
 .vs
+dev_tools/.cache
+dev_tools/publish
