@@ -1,4 +1,4 @@
-﻿$luaLibPath = "H:\Program Files (x86)\Red Alert 3(Incomplete)\ra3_map_workspace\RA3CoronaMapLuaLib"
+﻿$luaLibPath = "N:\Program Files (x86)\Red Alert 3(Incomplete)\ra3_map_workspace\RA3CoronaMapLuaLib"
 $excludeDirs = @(".git")
 
 $toolPath = Split-Path -parent $MyInvocation.MyCommand.Definition
