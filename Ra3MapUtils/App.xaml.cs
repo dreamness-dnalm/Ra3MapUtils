@@ -73,6 +73,9 @@ public partial class App : Application
 
         services.AddTransient<ChatLuaHelperViewWindow>();
         services.AddSingleton<ChatLuaHelperViewModel>();
+        
+        services.AddTransient<TerrainTransWindow>();
+        services.AddTransient<TerrainTransWindowViewModel>();
 
         services.AddSingleton<ILuaImportService, LuaImportService>();
         services.AddSingleton<ISettingService, SettingService>();
