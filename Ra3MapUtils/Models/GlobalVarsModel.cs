@@ -11,6 +11,8 @@ public static class GlobalVarsModel
     public static bool LuaManagerWindowOpened { get; set; } = false;
     
     public static bool BorderManagerWindowOpened { get; set; } = false;
+    
+    public static bool TerrainTransWindowOpened { get; set; } = false;
 
     public static void SetLuaManagerWindowOpenedMapName(string mapName)
     {

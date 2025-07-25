@@ -32,7 +32,6 @@
             <ui:MenuItem Icon="{ui:SymbolIcon BookCompass20}" ToolTip="map.str管理"  Visibility="Collapsed"/>
             <ui:MenuItem Icon="{ui:SymbolIcon CodeBlock20}" ToolTip="Lua导入工具" Command="{Binding ManageLuaCommand}" />
             <ui:MenuItem Icon="{ui:SymbolIcon BorderNone20}" ToolTip="边界管理" Command="{Binding ManageBorderCommand}" />
-            <!-- <ui:MenuItem Icon="{ui:SymbolIcon ArrowBetweenDown20}" ToolTip="地图数据迁移" Command="{Binding ManageBorderCommand}" /> -->
             <ui:MenuItem Icon="{ui:SymbolIcon ArrowBetweenDown20}" Header="数据迁移">
                 <MenuItem Header="导入数据前, 请先关闭Ra3地编" Background="DeepSkyBlue"/>
                 <Separator/>
@@ -48,6 +47,7 @@
                 <MenuItem Header="导入队伍数据从TeamsData.json" Command="{Binding ImportMapTeamDataFromDefaultFileCommand}"/>
                 <MenuItem Header="导入队伍数据从..." Command="{Binding ImportMapTeamDataFromFileCommand}"/>
             </ui:MenuItem>
+            <!-- <ui:MenuItem Icon="{ui:SymbolIcon Map20}" ToolTip="地形变换" Header="地形变换" Command="{Binding TransformMapTerrainCommand}" /> -->
         </Menu>
 
         <Grid Margin="5,5,5,5" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top">

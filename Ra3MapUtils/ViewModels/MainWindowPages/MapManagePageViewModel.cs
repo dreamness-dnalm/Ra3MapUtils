@@ -401,6 +401,29 @@ public partial class MapManagePageViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private void TransformMapTerrain()
+    {
+        if (_selectedMap == "")
+        {
+            MessageBox.Show("请先选择地图");
+            return;
+        }
+
+        if (GlobalVarsModel.TerrainTransWindowOpened)
+        {
+            MessageBox.Show("地形变换工具已打开");
+            return;
+        }
+        
+        var terrainTransWindow = App.Current.Services.GetRequiredService<TerrainTransWindow>();
+
+        terrainTransWindow._terrainTransWindowViewModel.MapName = _selectedMap;
+        terrainTransWindow.Show();
+        GlobalVarsModel.BorderManagerWindowOpened = true;
+        
+    }
+
+    [RelayCommand]
     private void SearchTextChanged(TextChangedEventArgs arg)
     {
         _searchingKeyword = ((TextBox)arg.Source).Text;
