@@ -104,6 +104,7 @@
 
     <ItemGroup>
       <Folder Include="data\test\" />
+      <Folder Include="Services\Impl\MapTransform\commands\" />
     </ItemGroup>
 
     <ItemGroup>

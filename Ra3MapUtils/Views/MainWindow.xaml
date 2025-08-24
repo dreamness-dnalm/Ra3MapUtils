@@ -15,8 +15,8 @@
         Foreground="{DynamicResource TextFillColorPrimaryBrush}"
         xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="{Binding WindowTitle}" Height="885" Width="1300"
-        ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow"
+        Title="{Binding WindowTitle}" Height="741" Width="1200"
+        ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         WindowCornerPreference="Round"
@@ -31,7 +31,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ui:TitleBar Grid.Row="0" Title="{Binding WindowTitle}" ShowMaximize="False">
+        <ui:TitleBar Grid.Row="0" Title="{Binding WindowTitle}" ShowMaximize="True">
             
         </ui:TitleBar>
         <ui:NavigationView Grid.Row="1"

@@ -14,9 +14,14 @@
       ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       mc:Ignorable="d"
-      Title="MapManagePage" VerticalAlignment="Top" HorizontalAlignment="Stretch" >
-    <Grid Margin="15, 15, 15, 15">
-        <Grid.RowDefinitions>
+      Title="MapManagePage" 
+      Width="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=ActualWidth}"
+        Height="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=ActualHeight}"
+      
+      >
+    <Grid Margin="15, 15, 15, 15" >
+        <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch" >
+                        <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -32,7 +37,7 @@
             <ui:MenuItem Icon="{ui:SymbolIcon BookCompass20}" ToolTip="map.str管理"  Visibility="Collapsed"/>
             <ui:MenuItem Icon="{ui:SymbolIcon CodeBlock20}" ToolTip="Lua导入工具" Command="{Binding ManageLuaCommand}" />
             <ui:MenuItem Icon="{ui:SymbolIcon BorderNone20}" ToolTip="边界管理" Command="{Binding ManageBorderCommand}" />
-            <ui:MenuItem Icon="{ui:SymbolIcon ArrowBetweenDown20}" Header="数据迁移">
+            <ui:MenuItem Icon="{ui:SymbolIcon ArrowBetweenDown20}" Header="数据迁移" ToolTip="数据迁移">
                 <MenuItem Header="导入数据前, 请先关闭Ra3地编" Background="DeepSkyBlue"/>
                 <Separator/>
                 <MenuItem Header="导出玩家列表数据到PlayersData.json" Command="{Binding ExportMapPlayerDataToDefaultFileCommand}"/>
@@ -47,7 +52,7 @@
                 <MenuItem Header="导入队伍数据从TeamsData.json" Command="{Binding ImportMapTeamDataFromDefaultFileCommand}"/>
                 <MenuItem Header="导入队伍数据从..." Command="{Binding ImportMapTeamDataFromFileCommand}"/>
             </ui:MenuItem>
-            <!-- <ui:MenuItem Icon="{ui:SymbolIcon Map20}" ToolTip="地形变换" Header="地形变换" Command="{Binding TransformMapTerrainCommand}" /> -->
+            <!-- <ui:MenuItem Icon="{ui:SymbolIcon Map20}" ToolTip="地形变换" Header="地形变换" Command="{Binding TransformMapTerrainCommand}" IsEnabled="False" /> -->
         </Menu>
 
         <Grid Margin="5,5,5,5" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top">
@@ -58,7 +63,7 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="710"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <ui:TextBox Grid.Column="0" Grid.Row="0" Style="{StaticResource WatermarkTextBox}">
@@ -124,6 +129,9 @@
             <TextBlock Text="   已选中: " FontSize="13"/>
             <TextBlock Text="{Binding SelectedMap}"  FontSize="13"/>
         </StackPanel>
+        </Grid>
+
     </Grid>
  
+
 </Page>
