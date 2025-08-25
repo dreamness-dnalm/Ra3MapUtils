@@ -1,4 +1,4 @@
-using Ra3MapParser.Core;
+using Dreamness.Ra3.Map.Parser.Core.Map;
 
 namespace Ra3MapUtils.Services.Impl.MapTransform;
 

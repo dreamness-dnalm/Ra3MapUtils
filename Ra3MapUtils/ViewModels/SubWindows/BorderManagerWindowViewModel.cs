@@ -4,8 +4,9 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Ra3MapFacade.Util;
-using Ra3MapParser.Exception;
+using Dreamness.Ra3.Map.Facade.Core;
+using Dreamness.Ra3.Map.Parser.Exception;
+using MapCoreLib.Core.Util;
 using Ra3MapUtils.Models;
 using MessageBox = System.Windows.Forms.MessageBox;
 
@@ -26,7 +27,7 @@ public partial class BorderManagerWindowViewModel: ObservableObject
     [ObservableProperty] private int _maxX;
     [ObservableProperty] private int _maxY;
 
-    private Ra3MapFacade.Ra3MapFacade _ra3MapFacade;
+    private Ra3MapFacade _ra3MapFacade;
     
     partial void OnMapNameChanged(string value)
     {
@@ -52,7 +53,7 @@ public partial class BorderManagerWindowViewModel: ObservableObject
                 return;
             }
 
-            _ra3MapFacade = Ra3MapFacade.Ra3MapFacade.Open(PathUtil.RA3MapFolder, _mapName);
+            _ra3MapFacade = Ra3MapFacade.Open(PathUtil.RA3MapFolder, _mapName);
             
             MinX = -_ra3MapFacade.MapBorderWidth;
             MinY = -_ra3MapFacade.MapBorderWidth;

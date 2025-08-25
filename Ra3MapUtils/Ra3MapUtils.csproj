@@ -20,6 +20,7 @@
       <PackageReference Include="linq2db" Version="5.4.1" />
       <PackageReference Include="linq2db.SQLite" Version="5.4.1" />
       <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="14.0.0" />
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.14.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
       <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1" />
       <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
@@ -94,12 +95,6 @@
       <None Update="data\plugins_lib\UtilCoreLib.dll">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="lib\Ra3MapFacade.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="lib\Ra3MapParser.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -117,11 +112,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Ra3MapFacade">
-        <HintPath>lib\Ra3MapFacade.dll</HintPath>
+      <Reference Include="Dreamness.RA3.Map.Facade">
+        <HintPath>lib\Dreamness.RA3.Map.Facade.dll</HintPath>
       </Reference>
-      <Reference Include="Ra3MapParser">
-        <HintPath>lib\Ra3MapParser.dll</HintPath>
+      <Reference Include="Dreamness.RA3.Map.Parser">
+        <HintPath>lib\Dreamness.RA3.Map.Parser.dll</HintPath>
+      </Reference>
+      <Reference Include="Dreamness.RA3.Map.Transform">
+        <HintPath>lib\Dreamness.RA3.Map.Transform.dll</HintPath>
       </Reference>
     </ItemGroup>
 

@@ -52,7 +52,7 @@
                 <MenuItem Header="导入队伍数据从TeamsData.json" Command="{Binding ImportMapTeamDataFromDefaultFileCommand}"/>
                 <MenuItem Header="导入队伍数据从..." Command="{Binding ImportMapTeamDataFromFileCommand}"/>
             </ui:MenuItem>
-            <!-- <ui:MenuItem Icon="{ui:SymbolIcon Map20}" ToolTip="地形变换" Header="地形变换" Command="{Binding TransformMapTerrainCommand}" IsEnabled="False" /> -->
+            <ui:MenuItem Icon="{ui:SymbolIcon Map20}" ToolTip="地形变换" Header="地形变换" Command="{Binding TransformMapTerrainCommand}" />
         </Menu>
 
         <Grid Margin="5,5,5,5" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top">
