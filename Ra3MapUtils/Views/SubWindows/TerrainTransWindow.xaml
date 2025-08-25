@@ -62,18 +62,38 @@
         </StackPanel>
         <Separator Grid.Row="1" Grid.Column="1"/>
         <TabControl Grid.Row="1" Grid.Column="2">
-            <TabItem IsSelected="True" >
+            <TabItem >
                 <TabItem.Header>
                     <TextBlock Text="裁剪与拓展"/>
                 </TabItem.Header>
                 <Grid>
+                    <ui:TextBlock Text="新地图尺寸: "/>
+                    <ui:TextBox Text="{Binding ResizeNewWidth}"/>
+                    <ui:TextBlock Text=" x "/>
+                    <ui:TextBox Text="{Binding ResizeNewHeight}"/>
+                    
+                    <ui:TextBlock Text="以原图的"/>
+                    <ui:TextBlock Text="("/>
+                    <ui:TextBox Text="{Binding ResizeNewPositionX}"/>
+                    <ui:TextBlock Text=","/>
+                    <ui:TextBox Text="{Binding ResizeNewPositionY}"/>
+                    <ui:TextBlock Text=")"/>
+                    <ui:TextBlock Text="为新地图的原点(左下角)"/>
+                    <ui:TextBlock Text="默认纹理"/>
+                    <ui:TextBox Text="{Binding ResizeDefaultTexture}"/>
+                    <ui:TextBlock Text="默认高度"/>
+                    <ui:NumberBox Text="{Binding ResizeDefaultHeight}"/>
                 </Grid>
             </TabItem>
-            <TabItem>
+            <TabItem IsSelected="True">
                 <TabItem.Header>
                     <TextBlock Text="旋转"/>
+                    
                 </TabItem.Header>
                 <Grid>
+                    <ui:Button Content="逆时针90°" Command="{Binding RotateClockwiseCommand}" CommandParameter="-90"/>
+                    <ui:Button Content="180°" Command="{Binding RotateClockwiseCommand}" CommandParameter="180"/>
+                    <ui:Button Content="顺时针90°" Command="{Binding RotateClockwiseCommand}" CommandParameter="90"/>
                 </Grid>
             </TabItem>
             <TabItem>

@@ -20,6 +20,8 @@ public partial class TerrainTransWindowViewModel: ObservableObject
     private List<BaseTransformCommand> _transformCommands = new List<BaseTransformCommand>();
     
     private int _currentCommandIndex = -1;
+    
+    private BaseTransformCommand CurrentCommand => _currentCommandIndex == -1 ? null : _transformCommands[_currentCommandIndex];
 
     private int CurrentCommandIndex
     {
@@ -114,6 +116,51 @@ public partial class TerrainTransWindowViewModel: ObservableObject
     private void Closed()
     {
         GlobalVarsModel.TerrainTransWindowOpened = false;
-        // others
+        Reset();
+    }
+    
+    // ------------------------ rotate -----------------------
+    [RelayCommand]
+    private void RotateClockwise(int angle)
+    {
+        var cmd = new RotateTransformCommand(CurrentCommand.DestinationRa3MapFacade, angle);
+        applyNewCmd(cmd);
+    }
+    
+    // ------------------------ resize -----------------------
+    
+    [ObservableProperty] private int _resizeNewWidth = 100;
+    
+    [ObservableProperty] private int _resizeNewHeight = 100;
+    
+    [ObservableProperty] private int _resizeNewPositionX = 0;
+    
+    [ObservableProperty] private int _resizeNewPositionY = 0;
+    
+    [ObservableProperty] private float _resizeDefaultHeight=200f;
+    
+    [ObservableProperty] private string _resizeDefaultTexture = "Dirt_Yucatan03";
+    
+    [RelayCommand]
+    private void _resize()
+    {
+        var cmd = new ResizeTransformCommand(CurrentCommand.DestinationRa3MapFacade, _resizeNewWidth, _resizeNewHeight, _resizeNewPositionX,
+            _resizeNewPositionY, _resizeDefaultHeight, _resizeDefaultTexture);
+        applyNewCmd(cmd);
+    }
+    
+    // ----------------- symmetry ------------------------
+    
+
+    [ObservableProperty] private int _symmetrySelectedDivideType = 0;
+    
+    
+    [ObservableProperty] private int _templateAreaIndex = 1;
+    
+    [RelayCommand]
+    private void _symmetry()
+    {
+        var cmd = new SymmetryTransformCommand(CurrentCommand.DestinationRa3MapFacade, _symmetrySelectedDivideType + 1, _templateAreaIndex, null);
+        applyNewCmd(cmd);
     }
 }
