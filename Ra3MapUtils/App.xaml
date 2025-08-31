@@ -9,6 +9,9 @@
             <ResourceDictionary.MergedDictionaries>
                 <ui:ThemesDictionary Theme="Light" />
                 <ui:ControlsDictionary />
+                
+                <!-- <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/> -->
+                <!-- <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/> -->
             </ResourceDictionary.MergedDictionaries>
             
             <VisualBrush x:Key="HelpBrush" TileMode="None" Opacity="0.5" Stretch="None" AlignmentX="Left">
@@ -27,6 +30,8 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
+            
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

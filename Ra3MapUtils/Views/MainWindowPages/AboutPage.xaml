@@ -70,6 +70,34 @@
                    </StackPanel>
                </ui:CardControl.Header>
            </ui:CardControl>
+                
+            <ui:CardControl Margin="4" Padding="20,10,20,10">
+                <ui:CardControl.Header>
+                    <StackPanel HorizontalAlignment="Left">
+                        <ui:HyperlinkButton Content="HandyControl" NavigateUri="https://github.com/HandyOrg/HandyControl" HorizontalAlignment="Center" />
+                        <ui:TextBlock Margin="0" Text="强大的UI库" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
+                    </StackPanel>
+                </ui:CardControl.Header>
+            </ui:CardControl>
+                
+            <ui:CardControl Margin="4" Padding="20,10,20,10">
+                <ui:CardControl.Header>
+                    <StackPanel HorizontalAlignment="Left">
+                        <ui:HyperlinkButton Content="Ra3Map" NavigateUri="https://www.nuget.org/packages/Ra3Map" HorizontalAlignment="Center" />
+                        <ui:TextBlock Margin="0" Text="RA3地图编程库" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
+                    </StackPanel>
+                </ui:CardControl.Header>
+            </ui:CardControl>
+                
+            <ui:CardControl Margin="4" Padding="20,10,20,10">
+                <ui:CardControl.Header>
+                    <StackPanel HorizontalAlignment="Left">
+                        <ui:HyperlinkButton Content="Ra3MapSharp" NavigateUri="https://github.com/dreamness-dnalm/Ra3MapSharp" HorizontalAlignment="Center" />
+                        <ui:TextBlock Margin="0" Text="重构的RA3地图编程库" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
+                    </StackPanel>
+                </ui:CardControl.Header>
+            </ui:CardControl>
+                
            <ui:CardControl Margin="4" Padding="20,10,20,10">
                <ui:CardControl.Header>
                    <StackPanel HorizontalAlignment="Left">
@@ -78,6 +106,7 @@
                    </StackPanel>
                </ui:CardControl.Header>
            </ui:CardControl>
+                
            <ui:CardControl Margin="4" Padding="20,10,20,10">
                <ui:CardControl.Header>
                    <StackPanel HorizontalAlignment="Left">
@@ -86,62 +115,72 @@
                    </StackPanel>
                </ui:CardControl.Header>
            </ui:CardControl>
-           <ui:CardControl Margin="4" Padding="20,10,20,10">
-               <ui:CardControl.Header>
-                   <StackPanel HorizontalAlignment="Left">
-                       <ui:HyperlinkButton Content="Ra3Map" NavigateUri="https://www.nuget.org/packages/Ra3Map" HorizontalAlignment="Center" />
-                       <ui:TextBlock Margin="0" Text="RA3地图编程库" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
-                   </StackPanel>
-               </ui:CardControl.Header>
-           </ui:CardControl>
-                <ui:CardControl Margin="4" Padding="20,10,20,10">
-                    <ui:CardControl.Header>
-                        <StackPanel HorizontalAlignment="Left">
-                            <ui:HyperlinkButton Content="Magick.NET" NavigateUri="https://github.com/dlemstra/Magick.NET" HorizontalAlignment="Center" />
-                            <ui:TextBlock Margin="0" Text="强大的图片库" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
-                        </StackPanel>
-                    </ui:CardControl.Header>
-                </ui:CardControl>
-                <ui:CardControl Margin="4" Padding="20,10,20,10">
-                    <ui:CardControl.Header>
-                        <StackPanel HorizontalAlignment="Left">
-                            <ui:HyperlinkButton Content="linq2db" NavigateUri="https://github.com/linq2db/linq2db" HorizontalAlignment="Center" />
-                            <ui:TextBlock Margin="0" Text="micro-ORM" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
-                        </StackPanel>
-                    </ui:CardControl.Header>
-                </ui:CardControl>
-                <ui:CardControl Margin="4" Padding="20,10,20,10">
-                    <ui:CardControl.Header>
-                        <StackPanel HorizontalAlignment="Left">
-                            <ui:HyperlinkButton Content="AvalonEdit" NavigateUri="https://github.com/icsharpcode/AvalonEdit" HorizontalAlignment="Center" />
-                            <ui:TextBlock Margin="0" Text="代码编辑器" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
-                        </StackPanel>
-                    </ui:CardControl.Header>
-                </ui:CardControl>
-                <ui:CardControl Margin="4" Padding="20,10,20,10">
-                    <ui:CardControl.Header>
-                        <StackPanel HorizontalAlignment="Left">
-                            <ui:HyperlinkButton Content="velopack" NavigateUri="https://github.com/velopack/velopack" HorizontalAlignment="Center" />
-                            <ui:TextBlock Margin="0" Text="软件自更新工具" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
-                        </StackPanel>
-                    </ui:CardControl.Header>
-                </ui:CardControl>
-                <ui:CardControl Margin="4" Padding="20,10,20,10">
-                    <ui:CardControl.Header>
-                        <StackPanel HorizontalAlignment="Left">
-                            <ui:HyperlinkButton Content="SevenZipExtractor" NavigateUri="https://github.com/adoconnection/SevenZipExtractor" HorizontalAlignment="Center" />
-                            <ui:TextBlock Margin="0" Text="7z.dll包装库" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
-                        </StackPanel>
-                    </ui:CardControl.Header>
-                </ui:CardControl>
-                <ui:CardControl Margin="4" Padding="20,10,20,10">
-                    <ui:CardControl.Header>
-                        <StackPanel HorizontalAlignment="Left">
-                            <ui:HyperlinkButton Content="Simple tokenizer" NavigateUri="https://github.com/wangfenjin/simple" HorizontalAlignment="Center" />
-                            <ui:TextBlock Margin="0" Text="SQLite fts5 全文搜索扩展" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
-                        </StackPanel>
-                    </ui:CardControl.Header>
-                </ui:CardControl>
+
+            <ui:CardControl Margin="4" Padding="20,10,20,10">
+                <ui:CardControl.Header>
+                    <StackPanel HorizontalAlignment="Left">
+                        <ui:HyperlinkButton Content="Magick.NET" NavigateUri="https://github.com/dlemstra/Magick.NET" HorizontalAlignment="Center" />
+                        <ui:TextBlock Margin="0" Text="强大的图片库" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
+                    </StackPanel>
+                </ui:CardControl.Header>
+            </ui:CardControl>
+            
+            <ui:CardControl Margin="4" Padding="20,10,20,10">
+                <ui:CardControl.Header>
+                    <StackPanel HorizontalAlignment="Left">
+                        <ui:HyperlinkButton Content="SixLabors.ImageSharp" NavigateUri="https://github.com/SixLabors/ImageSharp" HorizontalAlignment="Center" />
+                        <ui:TextBlock Margin="0" Text="图片处理库" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
+                    </StackPanel>
+                </ui:CardControl.Header>
+            </ui:CardControl>
+            
+            <ui:CardControl Margin="4" Padding="20,10,20,10">
+                <ui:CardControl.Header>
+                    <StackPanel HorizontalAlignment="Left">
+                        <ui:HyperlinkButton Content="linq2db" NavigateUri="https://github.com/linq2db/linq2db" HorizontalAlignment="Center" />
+                        <ui:TextBlock Margin="0" Text="micro-ORM" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
+                    </StackPanel>
+                </ui:CardControl.Header>
+            </ui:CardControl>
+                
+            <ui:CardControl Margin="4" Padding="20,10,20,10">
+                <ui:CardControl.Header>
+                    <StackPanel HorizontalAlignment="Left">
+                        <ui:HyperlinkButton Content="AvalonEdit" NavigateUri="https://github.com/icsharpcode/AvalonEdit" HorizontalAlignment="Center" />
+                        <ui:TextBlock Margin="0" Text="代码编辑器" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
+                    </StackPanel>
+                </ui:CardControl.Header>
+            </ui:CardControl>
+                
+            <ui:CardControl Margin="4" Padding="20,10,20,10">
+                <ui:CardControl.Header>
+                    <StackPanel HorizontalAlignment="Left">
+                        <ui:HyperlinkButton Content="velopack" NavigateUri="https://github.com/velopack/velopack" HorizontalAlignment="Center" />
+                        <ui:TextBlock Margin="0" Text="软件自更新工具" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
+                    </StackPanel>
+                </ui:CardControl.Header>
+            </ui:CardControl>
+                
+            <ui:CardControl Margin="4" Padding="20,10,20,10">
+                <ui:CardControl.Header>
+                    <StackPanel HorizontalAlignment="Left">
+                        <ui:HyperlinkButton Content="SevenZipExtractor" NavigateUri="https://github.com/adoconnection/SevenZipExtractor" HorizontalAlignment="Center" />
+                        <ui:TextBlock Margin="0" Text="7z.dll包装库" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
+                    </StackPanel>
+                </ui:CardControl.Header>
+            </ui:CardControl>
+                
+            <ui:CardControl Margin="4" Padding="20,10,20,10">
+                <ui:CardControl.Header>
+                    <StackPanel HorizontalAlignment="Left">
+                        <ui:HyperlinkButton Content="Simple tokenizer" NavigateUri="https://github.com/wangfenjin/simple" HorizontalAlignment="Center" />
+                        <ui:TextBlock Margin="0" Text="SQLite fts5 全文搜索扩展" Foreground="Gray" HorizontalAlignment="Center" FontSize="10"/>
+                    </StackPanel>
+                </ui:CardControl.Header>
+            </ui:CardControl>
+
+
+
        </WrapPanel>
         </StackPanel>
         </ui:CardExpander>

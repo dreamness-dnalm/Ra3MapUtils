@@ -6,6 +6,8 @@ using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Dreamness.Ra3.Map.Facade.Core;
+using Dreamness.Ra3.Map.Facade.Util;
 using ImageMagick;
 using LinqToDB.Tools;
 using MapCoreLib.Core.Util;
@@ -412,6 +414,16 @@ public partial class MapManagePageViewModel : ObservableObject
         if (GlobalVarsModel.TerrainTransWindowOpened)
         {
             MessageBox.Show("地形变换工具已打开");
+            return;
+        }
+
+        try
+        {
+            Ra3MapFacade.Open(Ra3PathUtil.RA3MapFolder, _selectedMap);
+        }
+        catch(Exception e)
+        {
+            MessageBox.Show("加载地图失败: " + e.Message);
             return;
         }
         

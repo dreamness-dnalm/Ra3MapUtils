@@ -7,6 +7,7 @@
                  xmlns:vm="clr-namespace:Ra3MapUtils.ViewModels"
                  d:DataContext="{d:DesignInstance Type=vm:TerrainTransWindowViewModel, IsDesignTimeCreatable=True}"
                  xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 xmlns:hc="https://handyorg.github.io/handycontrol"
                  d:DesignHeight="1650"
                  d:DesignWidth="1000"
                  ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
@@ -18,7 +19,7 @@
                  xmlns:controls="clr-namespace:Ra3MapUtils.Services.Controls"
                  xmlns:models="clr-namespace:Ra3MapUtils.Models"
                  mc:Ignorable="d"
-                 Title="{Binding WindowTitle}" Height="600" Width="1200" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"
+                 Title="{Binding WindowTitle}" Height="495" Width="800" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"
                  ExtendsContentIntoTitleBar="True"
                  WindowBackdropType="Mica"
                  WindowCornerPreference="Round"
@@ -42,68 +43,262 @@
         </Grid.RowDefinitions>
         
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         
         <ui:TitleBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Title="{Binding WindowTitle}" ShowMaximize="False"/>
         
-        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0">
-            <ui:TextBlock Text="高度图预览" FontWeight="Heavy" FontSize="15" Margin="0, 5"/>
-            <Image x:Name="HeightMapPreviewImage" Width="100" HorizontalAlignment="Center"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <ui:Button Content="撤销" Icon="{ui:SymbolIcon ArrowUndo20}" Margin="0, 0, 10, 0"/>
-                <ui:Button Content="重做" Icon="{ui:SymbolIcon ArrowRedo20}"/>
-            </StackPanel>
-
-            <ui:Button Content="生成地形" Icon="{ui:SymbolIcon Checkmark20}"  HorizontalAlignment="Center"/>
+        <Grid  Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Border Grid.Row="0" Grid.Column="0" 
+                    BorderThickness="1,1,1,0" BorderBrush="LightGray" CornerRadius="5" Padding="10" 
+                    Margin="5, 5, 5, 5" Background="White">
+                <StackPanel Orientation="Vertical">
+                    <ui:TextBlock Text="操作" FontWeight="Heavy" Margin="5, 0, 0, 5"/>
+                    <ui:Button Content="撤销" Icon="{ui:SymbolIcon ArrowUndo20}" Margin="0, 0, 10, 0" Command="{Binding UndoCommand}"/>
+                    <ui:Button Content="重做" Icon="{ui:SymbolIcon ArrowRedo20}" Command="{Binding RedoCommand }"/>
+                    <ui:Button Appearance="Primary" Content="生成地形" Icon="{ui:SymbolIcon Checkmark20}"  HorizontalAlignment="Left" Command="{Binding GenerateMapCommand}"/>
+                </StackPanel>
+            </Border>
+            
+            <Border Grid.Row="0" Grid.Column="1" 
+                    BorderThickness="1,1,1,0" BorderBrush="LightGray" CornerRadius="5" Padding="10" Margin="0, 5, 5, 5"  Background="White">
+                <StackPanel Orientation="Vertical">
+                    <ui:TextBlock Text="信息" FontWeight="Heavy" Margin="5, 0, 0, 5"/>
+            
+                </StackPanel>
+            </Border>
+            
+            
+            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="1,1,1,0" BorderBrush="LightGray" CornerRadius="5" Padding="10" Margin="5, 5, 5, 5"  Background="White">
+                <StackPanel Orientation="Vertical">
+                    <ui:TextBlock Text="预览" FontWeight="Heavy" Margin="5, 0, 0, 5"/>
+                    
+                    <Image MaxWidth="280" MaxHeight="280" HorizontalAlignment="Center" Source="{Binding MapPreviewImage}"/>
+                </StackPanel>
+            </Border>
+        </Grid> 
         
-        </StackPanel>
         <Separator Grid.Row="1" Grid.Column="1"/>
-        <TabControl Grid.Row="1" Grid.Column="2">
-            <TabItem >
-                <TabItem.Header>
-                    <TextBlock Text="裁剪与拓展"/>
-                </TabItem.Header>
-                <Grid>
-                    <ui:TextBlock Text="新地图尺寸: "/>
-                    <ui:TextBox Text="{Binding ResizeNewWidth}"/>
-                    <ui:TextBlock Text=" x "/>
-                    <ui:TextBox Text="{Binding ResizeNewHeight}"/>
+        
+        <ScrollViewer Grid.Row="1" Grid.Column="2" >
+        
+        <hc:WaterfallPanel  Margin="5, 0, 5, 5" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <!-- <Border BorderThickness="1,1,1,0" BorderBrush="LightGray" CornerRadius="5" Padding="10" Margin="0, 5, 5, 5"  Background="White"> -->
+            <!--     <StackPanel Orientation="Vertical"> -->
+            <!--         <ui:TextBlock Text="预览" FontWeight="Heavy" Margin="5, 0, 0, 5"/> -->
+            <!--     </StackPanel> -->
+            <!-- </Border> -->
+            
+            <Border BorderThickness="1,1,1,0" BorderBrush="LightGray" CornerRadius="5" Padding="10" Margin="0, 5, 5, 5"  Background="White">
+                <StackPanel Orientation="Vertical">
+                    <ui:TextBlock Text="裁剪与拓展" FontWeight="Heavy" Margin="5, 0, 0, 5"/>
+                    <StackPanel Orientation="Vertical" Margin="10,0,5,5">
+                        <ui:TextBlock Text="新地图尺寸" FontWeight="Light" Margin="0, 0, 0, 5"/>
+                        <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 5">
+                            <ui:TextBlock Text="W 宽度: " VerticalAlignment="Center"/>
+                            <ui:TextBox Text="{Binding ResizeNewWidth}" VerticalAlignment="Center" MinWidth="100"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 5">
+                            <ui:TextBlock Text="H 高度: " VerticalAlignment="Center"/>
+                            <ui:TextBox Text="{Binding ResizeNewHeight}" VerticalAlignment="Center" MinWidth="100"/>
+                        </StackPanel>
+                    </StackPanel>
                     
-                    <ui:TextBlock Text="以原图的"/>
-                    <ui:TextBlock Text="("/>
-                    <ui:TextBox Text="{Binding ResizeNewPositionX}"/>
-                    <ui:TextBlock Text=","/>
-                    <ui:TextBox Text="{Binding ResizeNewPositionY}"/>
-                    <ui:TextBlock Text=")"/>
-                    <ui:TextBlock Text="为新地图的原点(左下角)"/>
-                    <ui:TextBlock Text="默认纹理"/>
-                    <ui:TextBox Text="{Binding ResizeDefaultTexture}"/>
-                    <ui:TextBlock Text="默认高度"/>
-                    <ui:NumberBox Text="{Binding ResizeDefaultHeight}"/>
-                </Grid>
-            </TabItem>
-            <TabItem IsSelected="True">
-                <TabItem.Header>
-                    <TextBlock Text="旋转"/>
+                    <StackPanel Orientation="Vertical" Margin="10,0,5,5">
+                        <ui:TextBlock Text="新地图原点(相对于原地图)" FontWeight="Light" Margin="0, 0, 0, 5"/>
+                        <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 5">
+                            <ui:TextBlock Text="Y: " VerticalAlignment="Center"/>
+                            <ui:TextBox Text="{Binding ResizeNewPositionX}" VerticalAlignment="Center" MinWidth="100"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 5">
+                            <ui:TextBlock Text="X: " VerticalAlignment="Center"/>
+                            <ui:TextBox Text="{Binding ResizeNewPositionY}" VerticalAlignment="Center" MinWidth="100"/>
+                        </StackPanel>
+                    </StackPanel>
                     
-                </TabItem.Header>
-                <Grid>
-                    <ui:Button Content="逆时针90°" Command="{Binding RotateClockwiseCommand}" CommandParameter="-90"/>
-                    <ui:Button Content="180°" Command="{Binding RotateClockwiseCommand}" CommandParameter="180"/>
-                    <ui:Button Content="顺时针90°" Command="{Binding RotateClockwiseCommand}" CommandParameter="90"/>
-                </Grid>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <TextBlock Text="对称"/>
-                </TabItem.Header>
-                <Grid>
-                </Grid>
-            </TabItem>
-        </TabControl>
+                    <StackPanel Orientation="Vertical" Margin="10,0,5,5">
+                        <ui:TextBlock Text="默认纹理" FontWeight="Light" Margin="0, 0, 0, 5"/>
+                        <ui:TextBox Text="{Binding ResizeDefaultTexture}" VerticalAlignment="Center" MinWidth="100"/>
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Vertical" Margin="10,0,5,5">
+                        <ui:TextBlock Text="默认高度" FontWeight="Light" Margin="0, 0, 0, 5"/>
+                        <ui:NumberBox Text="{Binding ResizeDefaultHeight}" VerticalAlignment="Center" MinWidth="100"/>
+                    </StackPanel>
+                    
+                    <ui:Button Content="应用" Command="{Binding ResizeCommand}" Margin="10, 5, 0, 0" HorizontalAlignment="Left"/>
+                </StackPanel>
+            </Border>
+            
+            <Border BorderThickness="1,1,1,0" BorderBrush="LightGray" CornerRadius="5" Padding="10" Margin="0, 5, 5, 5"  Background="White">
+                <StackPanel Orientation="Vertical">
+                    <ui:TextBlock Text="旋转" FontWeight="Heavy" Margin="5, 0, 0, 5"/>
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5, 5, 5, 5">
+                        <ui:Button Icon="{ui:SymbolIcon ArrowRotateCounterclockwise20}" Content="逆时针90°" Command="{Binding RotateClockwiseCommand}" CommandParameter="270" Margin="0, 0, 0, 15"/>
+                        <ui:Button Icon="{ui:SymbolIcon ArrowBidirectionalUpDown20}" Content="180°" Command="{Binding RotateClockwiseCommand}" CommandParameter="180" Margin="0, 0, 0, 15"/>
+                        <ui:Button Icon="{ui:SymbolIcon ArrowRotateClockwise20}" Content="顺时针90°" Command="{Binding RotateClockwiseCommand}" CommandParameter="90" Margin="0, 0, 0, 15"/>
+                    </StackPanel>
+                </StackPanel>
+                
+            </Border>
+            
+            <Border BorderThickness="1,1,1,0" BorderBrush="LightGray" CornerRadius="5" Padding="10" Margin="0, 5, 5, 5"  Background="White">
+                <StackPanel Orientation="Vertical">
+                    <ui:TextBlock Text="旋转" FontWeight="Heavy" Margin="5, 0, 0, 5"/>
+                    <StackPanel Orientation="Vertical" Margin="10,0,5,5">
+                        <ui:TextBlock Text="对称类型" FontWeight="Light" Margin="0, 0, 0, 5"/>
+                        <ComboBox ItemsSource="{Binding SymmetryDivideTypes}"
+                                  SelectedIndex="0" SelectedItem="{Binding SelectedSymmetryDivideType}"
+                                  MaxWidth="130"
+                        >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding Source}" MaxHeight="128" IsEnabled="{Binding Enabled}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Vertical" Margin="10,0,5,5">
+                        <ui:TextBlock Text="模板区域" FontWeight="Light" Margin="0, 0, 0, 5"/>
+                        <StackPanel Orientation="Horizontal">
+                            <ui:TextBlock Text="{Binding TemplateAreaId}" Margin="0, 0, 5, 0"/>
+                            <Slider Minimum="1" Maximum="{Binding SelectedSymmetryDivideType.AreaCnt}"
+                                    Value="{Binding TemplateAreaId}"
+                                    IsSnapToTickEnabled="True"
+                            />
+                            </StackPanel>
+                        
+                    </StackPanel>
+                    
+                    <ui:Button Content="应用" Command="{Binding SymmetryCommand}" Margin="0, 5, 0, 0"/> 
+                    
+                </StackPanel>
+            </Border>
+            
+        </hc:WaterfallPanel>
+        </ScrollViewer>
+        
     </Grid>
+        
+        <!-- <TabControl Grid.Row="1" Grid.Column="2"> -->
+        <!--     <TabItem  Width="80"> -->
+        <!--         <TabItem.Header> -->
+        <!--             <TextBlock Text="裁剪与拓展"/> -->
+        <!--         </TabItem.Header> -->
+        <!--          -->
+        <!--         <StackPanel Orientation="Vertical" Margin="5, 5, 5, 0"> -->
+        <!--         <ui:CardControl Margin="0, 0, 0,5"> -->
+        <!--             <ui:CardControl.Header> -->
+        <!--                 <ui:TextBlock Text="新地图尺寸"/> -->
+        <!--             </ui:CardControl.Header> -->
+        <!--             <StackPanel Orientation="Vertical"> -->
+        <!--                 <StackPanel Orientation="Horizontal"> -->
+        <!--                     <ui:TextBlock Text="W 宽度: " VerticalAlignment="Center"/> -->
+        <!--                     <ui:TextBox Text="{Binding ResizeNewWidth}" VerticalAlignment="Center"/> -->
+        <!--                 </StackPanel> -->
+        <!--                 <StackPanel Orientation="Horizontal"> -->
+        <!--                     <ui:TextBlock Text="H 高度: " VerticalAlignment="Center"/> -->
+        <!--                     <ui:TextBox Text="{Binding ResizeNewHeight}" VerticalAlignment="Center"/> -->
+        <!--                 </StackPanel> -->
+        <!--             </StackPanel> -->
+        <!--         </ui:CardControl> -->
+        <!--          -->
+        <!--         <ui:CardControl Margin="0, 0, 0,5"> -->
+        <!--             <ui:CardControl.Header> -->
+        <!--                 <ui:TextBlock Text="以原图的某坐标作为新地图原点(左下角)"/> -->
+        <!--             </ui:CardControl.Header> -->
+        <!--             <StackPanel Orientation="Vertical"> -->
+        <!--                 <StackPanel Orientation="Horizontal"> -->
+        <!--                     <ui:TextBlock Text="X: " VerticalAlignment="Center"/> -->
+        <!--                     <ui:TextBox Text="{Binding ResizeNewPositionX}" VerticalAlignment="Center"/> -->
+        <!--                 </StackPanel> -->
+        <!--                 <StackPanel Orientation="Horizontal"> -->
+        <!--                     <ui:TextBlock Text="Y: " VerticalAlignment="Center"/> -->
+        <!--                     <ui:TextBox Text="{Binding ResizeNewPositionY}" VerticalAlignment="Center"/> -->
+        <!--                 </StackPanel> -->
+        <!--             </StackPanel> -->
+        <!--         </ui:CardControl> -->
+        <!--          -->
+        <!--         <ui:CardControl Margin="0, 0, 0,5"> -->
+        <!--             <ui:CardControl.Header> -->
+        <!--                 <ui:TextBlock Text="默认纹理"/> -->
+        <!--             </ui:CardControl.Header> -->
+        <!--             <ui:TextBox Text="{Binding ResizeDefaultTexture}"/> -->
+        <!--         </ui:CardControl> -->
+        <!--          -->
+        <!--         <ui:CardControl Margin="0, 0, 0,5"> -->
+        <!--             <ui:CardControl.Header> -->
+        <!--                 <ui:TextBlock Text="默认高度"/> -->
+        <!--             </ui:CardControl.Header> -->
+        <!--             <ui:NumberBox Text="{Binding ResizeDefaultHeight}"/> -->
+        <!--         </ui:CardControl> -->
+        <!--              -->
+        <!--         <ui:Button Content="应用" Command="{Binding ResizeCommand}" Margin="0, 5, 0, 0"/> -->
+        <!--         </StackPanel> -->
+        <!--     </TabItem> -->
+        <!--     <TabItem IsSelected="True" Width="40"> -->
+        <!--         <TabItem.Header> -->
+        <!--             <TextBlock Text="旋转"/> -->
+        <!--              -->
+        <!--         </TabItem.Header> -->
+        <!--         <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5, 5, 5, 5"> -->
+        <!--             <ui:Button Icon="{ui:SymbolIcon ArrowRotateCounterclockwise20}" Content="逆时针90°" Command="{Binding RotateClockwiseCommand}" CommandParameter="270" Margin="0, 0, 0, 15"/> -->
+        <!--             <ui:Button Icon="{ui:SymbolIcon ArrowBidirectionalUpDown20}" Content="180°" Command="{Binding RotateClockwiseCommand}" CommandParameter="180" Margin="0, 0, 0, 15"/> -->
+        <!--             <ui:Button Icon="{ui:SymbolIcon ArrowRotateClockwise20}" Content="顺时针90°" Command="{Binding RotateClockwiseCommand}" CommandParameter="90" Margin="0, 0, 0, 15"/> -->
+        <!--         </StackPanel> -->
+        <!--     </TabItem> -->
+        <!--     <TabItem Width="40"> -->
+        <!--         <TabItem.Header> -->
+        <!--             <TextBlock Text="对称"/> -->
+        <!--         </TabItem.Header> -->
+        <!--         <StackPanel Orientation="Vertical" Margin="5, 5, 5, 0"> -->
+        <!--             <ui:CardControl Margin="0, 0, 0,5"> -->
+        <!--                 <ui:CardControl.Header> -->
+        <!--                     <ui:TextBlock Text="对称类型"/> -->
+        <!--                 </ui:CardControl.Header> -->
+        <!--                  -->
+        <!--                 <ComboBox ItemsSource="{Binding SymmetryDivideTypes}"  -->
+        <!--                           SelectedIndex="0" SelectedItem="{Binding SelectedSymmetryDivideType}" -->
+        <!--                           MaxWidth="130" -->
+        <!--                 > -->
+        <!--                     <ComboBox.ItemTemplate> -->
+        <!--                         <DataTemplate> -->
+        <!--                             <Image Source="{Binding Source}" MaxHeight="128" IsEnabled="{Binding Enabled}"/> -->
+        <!--                         </DataTemplate> -->
+        <!--                     </ComboBox.ItemTemplate> -->
+        <!--                 </ComboBox> -->
+        <!--             </ui:CardControl> -->
+        <!--              -->
+        <!--             <ui:CardControl Margin="0, 0, 0,5"> -->
+        <!--                 <ui:CardControl.Header> -->
+        <!--                     <ui:TextBlock Text="模板区域"/> -->
+        <!--                 </ui:CardControl.Header> -->
+        <!--                 <StackPanel Orientation="Horizontal"> -->
+        <!--                     <ui:TextBlock Text="{Binding TemplateAreaId}" Margin="0, 0, 5, 0"/> -->
+        <!--                     <Slider Minimum="1" Maximum="{Binding SelectedSymmetryDivideType.AreaCnt}" -->
+        <!--                             Value="{Binding TemplateAreaId}" -->
+        <!--                             IsSnapToTickEnabled="True" -->
+        <!--                     /> -->
+        <!--                 </StackPanel> -->
+        <!--             </ui:CardControl> -->
+        <!--              -->
+        <!--             <ui:Button Content="应用" Command="{Binding SymmetryCommand}" Margin="0, 5, 0, 0"/> -->
+        <!--                  -->
+        <!--         </StackPanel> -->
+        <!--     </TabItem> -->
+        <!-- </TabControl> -->
         
 </ui:FluentWindow>

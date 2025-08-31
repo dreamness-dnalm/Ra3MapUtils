@@ -1,4 +1,7 @@
+using System.IO;
 using System.Windows.Forms;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Dreamness.Ra3.Map.Facade.Core;
@@ -22,6 +25,8 @@ public partial class TerrainTransWindowViewModel: ObservableObject
     private int _currentCommandIndex = -1;
     
     private BaseTransformCommand CurrentCommand => _currentCommandIndex == -1 ? null : _transformCommands[_currentCommandIndex];
+    
+    [ObservableProperty] private ImageSource _mapPreviewImage = new BitmapImage();
 
     private int CurrentCommandIndex
     {
@@ -52,7 +57,7 @@ public partial class TerrainTransWindowViewModel: ObservableObject
     }
 
     [RelayCommand]
-    private void _undo()
+    private void Undo()
     {
         if (_currentCommandIndex > 0)
         {
@@ -61,7 +66,7 @@ public partial class TerrainTransWindowViewModel: ObservableObject
     }
 
     [RelayCommand]
-    private void _redo()
+    private void Redo()
     {
         if (_currentCommandIndex < _transformCommands.Count - 1)
         {
@@ -70,7 +75,7 @@ public partial class TerrainTransWindowViewModel: ObservableObject
     }
 
     [RelayCommand]
-    private void _generageMap()
+    private void GenerateMap()
     {
         var cmd = _transformCommands[_currentCommandIndex];
         var ra3Map = cmd.DestinationRa3MapFacade;
@@ -103,13 +108,27 @@ public partial class TerrainTransWindowViewModel: ObservableObject
         _transformCommands.Add(cmd);
         cmd.Transform();
         CurrentCommandIndex += 1;
-        // todo 生成预览图
+
+        var imageBytes = CurrentCommand.DestinationRa3MapFacade.GetPreviewImage();
         
+        var img = new BitmapImage();
+        using (var ms = new MemoryStream(imageBytes))
+        {
+            img.BeginInit();
+            img.CacheOption = BitmapCacheOption.OnLoad;
+            img.StreamSource = ms;
+            img.EndInit();
+            img.Freeze();
+        }
+        
+        MapPreviewImage = img;
     }
 
     public void Reset()
     {
         _transformCommands.Clear();
+        _currentCommandIndex = -1;
+        MapPreviewImage = new BitmapImage();
     }
 
     [RelayCommand]
@@ -121,9 +140,9 @@ public partial class TerrainTransWindowViewModel: ObservableObject
     
     // ------------------------ rotate -----------------------
     [RelayCommand]
-    private void RotateClockwise(int angle)
+    private void RotateClockwise(string angle)
     {
-        var cmd = new RotateTransformCommand(CurrentCommand.DestinationRa3MapFacade, angle);
+        var cmd = new RotateTransformCommand(CurrentCommand.DestinationRa3MapFacade, Convert.ToInt32(angle));
         applyNewCmd(cmd);
     }
     
@@ -137,12 +156,12 @@ public partial class TerrainTransWindowViewModel: ObservableObject
     
     [ObservableProperty] private int _resizeNewPositionY = 0;
     
-    [ObservableProperty] private float _resizeDefaultHeight=200f;
+    [ObservableProperty] private int _resizeDefaultHeight=200;
     
     [ObservableProperty] private string _resizeDefaultTexture = "Dirt_Yucatan03";
     
     [RelayCommand]
-    private void _resize()
+    private void Resize()
     {
         var cmd = new ResizeTransformCommand(CurrentCommand.DestinationRa3MapFacade, _resizeNewWidth, _resizeNewHeight, _resizeNewPositionX,
             _resizeNewPositionY, _resizeDefaultHeight, _resizeDefaultTexture);
@@ -151,16 +170,65 @@ public partial class TerrainTransWindowViewModel: ObservableObject
     
     // ----------------- symmetry ------------------------
     
+    public class SymmetryDivideType
+    {
+        public int Id { get; private set; }
+        public ImageSource Source { get; private set; }
+        public int AreaCnt { get; private set; }
+        public bool Enabled { get; private set; }
+        
+        public SymmetryDivideType(int id, int areaCnt, bool enabled)
+        {
+            Id = id;
+            AreaCnt = areaCnt;
+            Source = new BitmapImage(new Uri($"pack://application:,,,/data/imgs/SymmetryTransform_{id}.png"));
+            Enabled = enabled;
+        }
+    }
+    
+    
+    [ObservableProperty] private List<SymmetryDivideType> _symmetryDivideTypes = new List<SymmetryDivideType>()
+    {
+        new SymmetryDivideType(1, 2, true),
+        // new SymmetryDivideType(2, 2, false),
+        new SymmetryDivideType(3, 2, true),
+        // new SymmetryDivideType(4, 2, false),
+        // new SymmetryDivideType(5, 2, false),
+        // new SymmetryDivideType(6, 2, false),
+        // new SymmetryDivideType(7, 2, false),
+        // new SymmetryDivideType(8, 2, false),
+        // new SymmetryDivideType(9, 4, false),
+        // new SymmetryDivideType(10, 4, false),
+        // new SymmetryDivideType(11, 8, false)
+    };
 
-    [ObservableProperty] private int _symmetrySelectedDivideType = 0;
+
+    
+
+    // [ObservableProperty] private int _symmetrySelectedDivideType = 0;
     
     
-    [ObservableProperty] private int _templateAreaIndex = 1;
+    [ObservableProperty] private int _templateAreaId = 1;
+    
+    [ObservableProperty] private SymmetryDivideType _selectedSymmetryDivideType; 
+    
+    partial void OnSelectedSymmetryDivideTypeChanged(SymmetryDivideType value)
+    {
+        if (value != null && _templateAreaId > value.AreaCnt)
+        {
+            TemplateAreaId = 1;
+        }
+    }
     
     [RelayCommand]
-    private void _symmetry()
+    private void Symmetry()
     {
-        var cmd = new SymmetryTransformCommand(CurrentCommand.DestinationRa3MapFacade, _symmetrySelectedDivideType + 1, _templateAreaIndex, null);
+        if (SelectedSymmetryDivideType == null)
+        {
+            MessageBox.Show("请先选择对称类型");
+            return;
+        }
+        var cmd = new SymmetryTransformCommand(CurrentCommand.DestinationRa3MapFacade, SelectedSymmetryDivideType.Id, _templateAreaId);
         applyNewCmd(cmd);
     }
 }
