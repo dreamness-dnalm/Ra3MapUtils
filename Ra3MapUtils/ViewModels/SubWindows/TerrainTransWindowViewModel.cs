@@ -122,6 +122,8 @@ public partial class TerrainTransWindowViewModel: ObservableObject
         }
         
         MapPreviewImage = img;
+        
+        UpdateInfo();
     }
 
     public void Reset()
@@ -137,6 +139,17 @@ public partial class TerrainTransWindowViewModel: ObservableObject
         GlobalVarsModel.TerrainTransWindowOpened = false;
         Reset();
     }
+    
+    // ------------------------ info ----------------------
+    [ObservableProperty] private string _infoSize = "";
+
+    private void UpdateInfo()
+    {
+        var ra3map = CurrentCommand.DestinationRa3MapFacade;
+        InfoSize = $"{ra3map.MapWidth} x {ra3map.MapHeight}";
+    }
+    
+    
     
     // ------------------------ rotate -----------------------
     [RelayCommand]

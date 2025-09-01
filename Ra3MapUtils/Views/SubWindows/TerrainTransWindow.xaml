@@ -76,6 +76,11 @@
                     BorderThickness="1,1,1,0" BorderBrush="LightGray" CornerRadius="5" Padding="10" Margin="0, 5, 5, 5"  Background="White">
                 <StackPanel Orientation="Vertical">
                     <ui:TextBlock Text="信息" FontWeight="Heavy" Margin="5, 0, 0, 5"/>
+                        <StackPanel Orientation="Horizontal" Margin="5, 0, 0, 5">
+                            <ui:TextBlock Text="尺寸 " VerticalAlignment="Center"/>
+                            <ui:TextBlock Text="{Binding InfoSize}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    
             
                 </StackPanel>
             </Border>
@@ -145,10 +150,10 @@
             <Border BorderThickness="1,1,1,0" BorderBrush="LightGray" CornerRadius="5" Padding="10" Margin="0, 5, 5, 5"  Background="White">
                 <StackPanel Orientation="Vertical">
                     <ui:TextBlock Text="旋转" FontWeight="Heavy" Margin="5, 0, 0, 5"/>
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5, 5, 5, 5">
-                        <ui:Button Icon="{ui:SymbolIcon ArrowRotateCounterclockwise20}" Content="逆时针90°" Command="{Binding RotateClockwiseCommand}" CommandParameter="270" Margin="0, 0, 0, 15"/>
-                        <ui:Button Icon="{ui:SymbolIcon ArrowBidirectionalUpDown20}" Content="180°" Command="{Binding RotateClockwiseCommand}" CommandParameter="180" Margin="0, 0, 0, 15"/>
-                        <ui:Button Icon="{ui:SymbolIcon ArrowRotateClockwise20}" Content="顺时针90°" Command="{Binding RotateClockwiseCommand}" CommandParameter="90" Margin="0, 0, 0, 15"/>
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5, 5, 5, 0">
+                        <ui:Button Icon="{ui:SymbolIcon ArrowRotateCounterclockwise20}" Content="逆时针90°" Command="{Binding RotateClockwiseCommand}" CommandParameter="270" Margin="0, 0, 0, 10"/>
+                        <ui:Button Icon="{ui:SymbolIcon ArrowBidirectionalUpDown20}" Content="180°" Command="{Binding RotateClockwiseCommand}" CommandParameter="180" Margin="0, 0, 0, 10"/>
+                        <ui:Button Icon="{ui:SymbolIcon ArrowRotateClockwise20}" Content="顺时针90°" Command="{Binding RotateClockwiseCommand}" CommandParameter="90" Margin="0, 0, 0, 10"/>
                     </StackPanel>
                 </StackPanel>
                 
