@@ -140,7 +140,7 @@
                     
                     <StackPanel Orientation="Vertical" Margin="10,0,5,5">
                         <ui:TextBlock Text="默认高度" FontWeight="Light" Margin="0, 0, 0, 5"/>
-                        <ui:NumberBox Text="{Binding ResizeDefaultHeight}" VerticalAlignment="Center" MinWidth="100"/>
+                        <ui:NumberBox Value="{Binding ResizeDefaultHeight}" VerticalAlignment="Center" MinWidth="100"/>
                     </StackPanel>
                     
                     <ui:Button Content="应用" Command="{Binding ResizeCommand}" Margin="10, 5, 0, 0" HorizontalAlignment="Left"/>
@@ -161,7 +161,7 @@
             
             <Border BorderThickness="1,1,1,0" BorderBrush="LightGray" CornerRadius="5" Padding="10" Margin="0, 5, 5, 5"  Background="White">
                 <StackPanel Orientation="Vertical">
-                    <ui:TextBlock Text="旋转" FontWeight="Heavy" Margin="5, 0, 0, 5"/>
+                    <ui:TextBlock Text="对称" FontWeight="Heavy" Margin="5, 0, 0, 5"/>
                     <StackPanel Orientation="Vertical" Margin="10,0,5,5">
                         <ui:TextBlock Text="对称类型" FontWeight="Light" Margin="0, 0, 0, 5"/>
                         <ComboBox ItemsSource="{Binding SymmetryDivideTypes}"
@@ -170,7 +170,7 @@
                         >
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <Image Source="{Binding Source}" MaxHeight="128" IsEnabled="{Binding Enabled}"/>
+                                    <Image Source="{Binding Source}" MaxHeight="128" IsEnabled="{Binding Square}"/>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>

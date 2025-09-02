@@ -41,6 +41,9 @@ public partial class TerrainTransWindowViewModel: ObservableObject
             if (CurrentCommandIndex != value)
             {
                 _currentCommandIndex = value;
+                
+                UpdatePreview();
+                UpdateInfo();
             }
             
         }
@@ -109,6 +112,12 @@ public partial class TerrainTransWindowViewModel: ObservableObject
         cmd.Transform();
         CurrentCommandIndex += 1;
 
+        UpdatePreview();
+        UpdateInfo();
+    }
+
+    private void UpdatePreview()
+    {
         var imageBytes = CurrentCommand.DestinationRa3MapFacade.GetPreviewImage();
         
         var img = new BitmapImage();
@@ -122,8 +131,6 @@ public partial class TerrainTransWindowViewModel: ObservableObject
         }
         
         MapPreviewImage = img;
-        
-        UpdateInfo();
     }
 
     public void Reset()
@@ -188,28 +195,28 @@ public partial class TerrainTransWindowViewModel: ObservableObject
         public int Id { get; private set; }
         public ImageSource Source { get; private set; }
         public int AreaCnt { get; private set; }
-        public bool Enabled { get; private set; }
+        public bool Square { get; private set; }
         
-        public SymmetryDivideType(int id, int areaCnt, bool enabled)
+        public SymmetryDivideType(int id, int areaCnt, bool square)
         {
             Id = id;
             AreaCnt = areaCnt;
             Source = new BitmapImage(new Uri($"pack://application:,,,/data/imgs/SymmetryTransform_{id}.png"));
-            Enabled = enabled;
+            Square = square;
         }
     }
     
     
     [ObservableProperty] private List<SymmetryDivideType> _symmetryDivideTypes = new List<SymmetryDivideType>()
     {
-        new SymmetryDivideType(1, 2, true),
-        // new SymmetryDivideType(2, 2, false),
-        new SymmetryDivideType(3, 2, true),
-        // new SymmetryDivideType(4, 2, false),
-        // new SymmetryDivideType(5, 2, false),
-        // new SymmetryDivideType(6, 2, false),
-        // new SymmetryDivideType(7, 2, false),
-        // new SymmetryDivideType(8, 2, false),
+        new SymmetryDivideType(1, 2, false),
+        new SymmetryDivideType(2, 2, false),
+        new SymmetryDivideType(3, 2, false),
+        new SymmetryDivideType(4, 2, false),
+        new SymmetryDivideType(5, 2, false),
+        new SymmetryDivideType(6, 2, true),
+        new SymmetryDivideType(7, 2, false),
+        new SymmetryDivideType(8, 2, true),
         // new SymmetryDivideType(9, 4, false),
         // new SymmetryDivideType(10, 4, false),
         // new SymmetryDivideType(11, 8, false)
@@ -241,7 +248,15 @@ public partial class TerrainTransWindowViewModel: ObservableObject
             MessageBox.Show("请先选择对称类型");
             return;
         }
-        var cmd = new SymmetryTransformCommand(CurrentCommand.DestinationRa3MapFacade, SelectedSymmetryDivideType.Id, _templateAreaId);
+
+        var ra3map = CurrentCommand.DestinationRa3MapFacade;
+        if(SelectedSymmetryDivideType.Square && ra3map.MapWidth != ra3map.MapHeight)
+        {
+            MessageBox.Show("请选择正方形地图进行此对称变换");
+            return;
+        }
+        
+        var cmd = new SymmetryTransformCommand(ra3map, SelectedSymmetryDivideType.Id, _templateAreaId);
         applyNewCmd(cmd);
     }
 }
