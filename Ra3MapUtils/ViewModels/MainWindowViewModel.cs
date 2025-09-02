@@ -6,8 +6,10 @@ using System.Windows.Forms;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using hospital_pc_client.Utils;
 using Microsoft.Extensions.DependencyInjection;
+using Ra3MapUtils.Messages;
 using Ra3MapUtils.Models;
 using Ra3MapUtils.Utils;
 using Ra3MapUtils.ViewModels.MainWindowPages;
@@ -28,7 +30,8 @@ namespace Ra3MapUtils.ViewModels
         [RelayCommand]
         private void CloseWindow()
         {
-            Environment.Exit(0);
+            // Environment.Exit(0);
+            WeakReferenceMessenger.Default.Send(new HideWindowMessage());
         }
 
         private static string GetWindowTitle()
@@ -55,6 +58,18 @@ namespace Ra3MapUtils.ViewModels
                     SettingPageInfoBadgeVisibility = Visibility.Collapsed;
                 }
             }
+        }
+
+        [RelayCommand]
+        private void Exit()
+        {
+            Environment.Exit(0);
+        }
+
+        [RelayCommand]
+        private void ShowWindow()
+        {
+            WeakReferenceMessenger.Default.Send(new ShowWindowMessage());
         }
     }
 }

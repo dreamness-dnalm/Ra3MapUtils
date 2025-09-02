@@ -8,6 +8,7 @@
         d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=True}"
         xmlns:mainWindowPages="clr-namespace:Ra3MapUtils.Views.MainWindowPages"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
         d:DesignHeight="650"
         d:DesignWidth="800"
         ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
@@ -20,12 +21,14 @@
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         WindowCornerPreference="Round"
+        Closing="MainWindow_OnClosing"
         >
     <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="Closing" >
             <behaviors:InvokeCommandAction Command="{Binding CloseWindowCommand }"  PassEventArgsToCommand="False"/>
         </behaviors:EventTrigger>
     </behaviors:Interaction.Triggers>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -34,6 +37,15 @@
         <ui:TitleBar Grid.Row="0" Title="{Binding WindowTitle}" ShowMaximize="True">
             
         </ui:TitleBar>
+        <hc:NotifyIcon Text="{Binding WindowTitle}" IsBlink="False" Visibility="Visible" Icon="pack://application:,,,/data/imgs/icon.png">
+            <hc:NotifyIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{Binding WindowTitle}"/>
+                    <MenuItem Header="显示" Command="{Binding ShowWindowCommand}"/>
+                    <MenuItem Header="退出" Command="{Binding ExitCommand}"/>
+                </ContextMenu>
+            </hc:NotifyIcon.ContextMenu>
+        </hc:NotifyIcon>
         <ui:NavigationView Grid.Row="1"
             x:Name="MainNavigationView"
                VerticalAlignment="Stretch"

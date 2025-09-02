@@ -133,6 +133,8 @@
       <Resource Include="data\imgs\SymmetryTransform_10.png" />
       <None Remove="data\imgs\SymmetryTransform_11.png" />
       <Resource Include="data\imgs\SymmetryTransform_11.png" />
+      <None Remove="data\imgs\icon.png" />
+      <Resource Include="data\imgs\icon.png" />
     </ItemGroup>
 
     <ItemGroup>
