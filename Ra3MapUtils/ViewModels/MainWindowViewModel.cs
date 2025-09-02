@@ -15,6 +15,7 @@ using Ra3MapUtils.Utils;
 using Ra3MapUtils.ViewModels.MainWindowPages;
 using Ra3MapUtils.Views;
 using UtilLib.mapFileHelper;
+using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 
 namespace Ra3MapUtils.ViewModels
@@ -63,7 +64,8 @@ namespace Ra3MapUtils.ViewModels
         [RelayCommand]
         private void Exit()
         {
-            Environment.Exit(0);
+            // Environment.Exit(0);
+            WeakReferenceMessenger.Default.Send(new CloseWindowMessage());
         }
 
         [RelayCommand]
