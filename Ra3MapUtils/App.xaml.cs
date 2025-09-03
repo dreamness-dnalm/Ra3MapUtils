@@ -2,6 +2,7 @@
 using System.Data;
 using System.IO;
 using System.Windows;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Ra3MapUtils.Services.Controls;
 using Ra3MapUtils.Services.Impl;
@@ -29,6 +30,8 @@ public partial class App : Application
     public IServiceProvider Services { get; }
 
     public new static App Current => (App)Application.Current;
+
+    private WebApplication? _webApp;
 
     private static IServiceProvider ConfigureServices()
     {
@@ -113,15 +116,38 @@ public partial class App : Application
 
     public static APIService _apiService = new();
 
-    protected override void OnStartup(StartupEventArgs e)
+    protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
         // _apiService.Start();
+
+
+        var builder = WebApplication.CreateBuilder();
+
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+        
+        _webApp = builder.Build();
+        
+        _webApp.Urls.Add("http://127.0.0.1:30033");
+        _webApp.UseSwagger();
+        _webApp.UseSwaggerUI();
+        
+        _webApp.MapGet("/api/ping", () => "Pong");
+
+        await _webApp.StartAsync();
+
     }
     
-    protected override void OnExit(ExitEventArgs e)
+    protected override async void OnExit(ExitEventArgs e)
     {
-        _apiService.Stop();
+        // _apiService.Stop();
         // base.OnExit(e);
+        if (_webApp is not null)
+        {
+            await _webApp.StopAsync();
+            _webApp.DisposeAsync();
+        }
+        base.OnExit(e);
     }
 }
