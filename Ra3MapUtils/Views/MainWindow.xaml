@@ -55,27 +55,45 @@
                 IsBackButtonVisible="Auto"
                 IsPaneToggleVisible="True"
                 PaneDisplayMode="Left"
-            OpenPaneLength="315"
-                PaneTitle="">
+            OpenPaneLength="200"
+                PaneTitle=""  IsPaneOpen="False">
                 <ui:NavigationView.MenuItems>
                     <ui:NavigationViewItem
                         Content="首页"
                         TargetPageTag="HomePage"
-                        Icon="{ui:SymbolIcon Home24}"
                         TargetPageType="{x:Type mainWindowPages:HomePage}"
-                        />
+                        >
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="Home24" Foreground="OrangeRed"/>
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
                     <ui:NavigationViewItem
                         Content="地图"
-                        Icon="{ui:SymbolIcon Map20}"
                         TargetPageTag="MapManagePage"
                         TargetPageType="{x:Type mainWindowPages:MapManagePage}"
-                        />
+                        >
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="Map20" Foreground="Green"/>
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
                     <ui:NavigationViewItem
                         Content="工具箱"
-                        Icon="{ui:SymbolIcon Briefcase20}"
                         TargetPageTag="ToolBoxPage"
                         TargetPageType="{x:Type mainWindowPages:ToolBoxPage}"
-                    />
+                    >
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="Briefcase20" Foreground="BlueViolet"/>
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
+                    <ui:NavigationViewItem
+                        Content="C#脚本"
+                        TargetPageTag="ScriptListPage"
+                        TargetPageType="{x:Type mainWindowPages:ScriptListPage}"
+                    >
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="WindowConsole20" Foreground="DeepPink"/>
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
                     <!-- <ui:NavigationViewItem -->
                     <!--     Content="知识库" -->
                     <!--     Icon="{ui:SymbolIcon Library20}" -->
@@ -98,10 +116,13 @@
                 </ui:NavigationViewItem>
                 <ui:NavigationViewItem
                     Content="关于"
-                    Icon="{ui:SymbolIcon Info12}"
                     TargetPageTag="AboutPage"
                     TargetPageType="{x:Type mainWindowPages:AboutPage}"
-                />
+                >
+                    <ui:NavigationViewItem.Icon>
+                        <ui:SymbolIcon Symbol="Info12" Foreground="Green"/>
+                    </ui:NavigationViewItem.Icon>
+                </ui:NavigationViewItem>
             </ui:NavigationView.FooterMenuItems>
 
             </ui:NavigationView>

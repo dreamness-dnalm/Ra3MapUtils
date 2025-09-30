@@ -58,6 +58,9 @@ public partial class App : Application
         
         services.AddSingleton<SettingPage>();
         services.AddSingleton<SettingPageViewModel>();
+        
+        services.AddSingleton<ScriptListPage>();
+        services.AddSingleton<ScriptListPageViewModel>();
 
         services.AddTransient<LuaManagerWindow>();
         services.AddTransient<LuaManagerWindowViewModel>();
