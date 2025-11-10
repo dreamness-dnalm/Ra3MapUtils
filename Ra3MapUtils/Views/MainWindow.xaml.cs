@@ -27,18 +27,9 @@ public partial class MainWindow : FluentWindow
 {
     public MainWindowViewModel _mainWindowViewModel { get => (MainWindowViewModel)DataContext; }
     
-    private static Mutex _mutex;
 
     public MainWindow()
     {
-        _mutex = new Mutex(true, "Dreamness.RA3.Ra3MapUtils", out bool createdNew);
-        if (!createdNew)
-        {
-            MessageBox.Show("地编伴侣已经请启动");
-            Environment.Exit(0);
-        }
-        
-        
         DataContext = App.Current.Services.GetRequiredService<MainWindowViewModel>();
         InitializeComponent();
         Loaded += (_, _) => MainNavigationView.Navigate("HomePage");
@@ -55,7 +46,7 @@ public partial class MainWindow : FluentWindow
         WeakReferenceMessenger.Default.Register<CloseWindowMessage>(this, (r, m) =>
         {
             // Close();
-            _mutex?.ReleaseMutex();
+            // _mutex?.ReleaseMutex();
             Environment.Exit(0);
         });
     }

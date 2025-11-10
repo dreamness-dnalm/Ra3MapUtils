@@ -61,6 +61,9 @@ public partial class App : Application
         
         services.AddSingleton<ScriptListPage>();
         services.AddSingleton<ScriptListPageViewModel>();
+        
+        services.AddSingleton<AIPage>();
+        services.AddSingleton<AIPageViewModel>();
 
         services.AddTransient<LuaManagerWindow>();
         services.AddTransient<LuaManagerWindowViewModel>();
@@ -117,27 +120,42 @@ public partial class App : Application
         settingPageViewModel.OnLoadLuaLibBindingPart();
     }
 
-    public static APIService _apiService = new();
+    // public static APIService _apiService = new();
 
+    private static Mutex _mutex;
+    
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
         // _apiService.Start();
+        
+        _mutex = new Mutex(true, "Dreamness.RA3.Ra3MapUtils", out bool createdNew);
+        if (!createdNew)
+        {
+            MessageBox.Show("地编伴侣已经请启动. \n右键点击系统托盘图标可显示菜单.\n如果没有, 可通过任务管理器结束进程后重新启动.", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+            Environment.Exit(0);
+        }
 
 
         var builder = WebApplication.CreateBuilder();
 
+        builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Services.AddMcpServer()
+            .WithHttpTransport()
+            .WithToolsFromAssembly();
         
         _webApp = builder.Build();
         
         _webApp.Urls.Add("http://127.0.0.1:30033");
+        
         _webApp.UseSwagger();
         _webApp.UseSwaggerUI();
         
-        _webApp.MapGet("/api/ping", () => "Pong");
-
+        _webApp.MapControllers();
+        _webApp.MapMcp("/mcp");
+        
         await _webApp.StartAsync();
 
     }
@@ -151,6 +169,12 @@ public partial class App : Application
             await _webApp.StopAsync();
             _webApp.DisposeAsync();
         }
+
+        if (_mutex is not null)
+        {
+            _mutex.ReleaseMutex();
+        }
+        
         base.OnExit(e);
     }
 }

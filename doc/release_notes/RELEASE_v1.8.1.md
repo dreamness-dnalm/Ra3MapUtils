@@ -1,5 +1,8 @@
-# v1.8.0 Release Notes
+# v1.8.1 Release Notes
 RA3地编助手(RA3MapUtils)
+mcp service bug fix
+
+## v1.8.x 功能
 - 提供MCP服务, 可接入大模型
 - 运行cs脚本的能力
 - 托盘图标

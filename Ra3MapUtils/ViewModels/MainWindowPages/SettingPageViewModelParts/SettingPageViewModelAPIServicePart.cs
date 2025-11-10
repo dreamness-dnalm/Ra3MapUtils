@@ -9,14 +9,14 @@ public partial class SettingPageViewModel: ObservableObject, IObserver, INotify
     [RelayCommand]
     private async Task<bool> SwitchApiServiceEnabledAsync()
     {
-        if (SettingModel.IsEnableApiService)
-        {
-            App._apiService.Start();
-        }
-        else
-        {
-            App._apiService.Stop();
-        }
+        // if (SettingModel.IsEnableApiService)
+        // {
+        //     App._apiService.Start();
+        // }
+        // else
+        // {
+        //     App._apiService.Stop();
+        // }
         return true;
     }
 

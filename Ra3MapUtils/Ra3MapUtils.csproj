@@ -26,10 +26,17 @@
       <PackageReference Include="linq2db" Version="5.4.1" />
       <PackageReference Include="linq2db.SQLite" Version="5.4.1" />
       <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="14.0.0" />
+      <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="5.0.0-1.25277.114">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
       <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.14.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
       <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1" />
       <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+      <PackageReference Include="ModelContextProtocol" Version="0.4.0-preview.3" />
+      <PackageReference Include="ModelContextProtocol.AspNetCore" Version="0.4.0-preview.3" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
       <PackageReference Include="NLog" Version="5.3.4" />
       <PackageReference Include="Ookii.Dialogs.WinForms" Version="4.0.0" />
       <PackageReference Include="SemanticVersion" Version="2.1.0" />
@@ -107,7 +114,6 @@
 
     <ItemGroup>
       <Folder Include="data\test\" />
-      <Folder Include="Services\Impl\MapTransform\commands\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -155,6 +161,9 @@
       </Reference>
       <Reference Include="Dreamness.Ra3.Map.Visualization">
         <HintPath>lib\Dreamness.Ra3.Map.Visualization.dll</HintPath>
+      </Reference>
+      <Reference Include="Dreamness.ScriptExecutor">
+        <HintPath>lib\Dreamness.ScriptExecutor.dll</HintPath>
       </Reference>
     </ItemGroup>
 
