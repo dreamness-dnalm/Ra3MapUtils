@@ -16,6 +16,7 @@ public class ApiResponse<T>
     public  ApiResponse(ApiResponseCode code, string message)
     {
         Code = (int)code;
+        Message = message;
     }
 
     public static ApiResponse<T> Success(T data)

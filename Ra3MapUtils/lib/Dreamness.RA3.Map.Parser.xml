@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Dreamness.RA3.Map.Parser</name>
+    </assembly>
+    <members>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.ObjectWrap.Position">
+            <summary>
+            物体位置坐标 (世界坐标)
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.UnitObjectWrap.Angle">
+            <summary>
+            角度
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.UnitObjectWrap.TypeName">
+            <summary>
+            单位类型名称 (对应Thing)
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.UnitObjectWrap.InitialHealth">
+            <summary>
+            生命值
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.UnitObjectWrap.Enable">
+            <summary>
+            可用
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.UnitObjectWrap.Unsellable">
+            <summary>
+            不可售卖
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.UnitObjectWrap.Targetable">
+            <summary>
+            为有效目标
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.UnitObjectWrap.ObjName">
+            <summary>
+            单位名称
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.WaypointWrap.WaypointID">
+            <summary>
+            路径点ID
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.WaypointWrap.WaypointName">
+            <summary>
+            路径点名称
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.WaypointWrap.WaypointType">
+            <summary>
+            路径点类型
+            </summary>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Parser.Asset.Impl.Player.PlayerData.OfForDefault(System.String,Dreamness.Ra3.Map.Parser.Core.Base.BaseContext)">
+            <summary>
+            新建玩家数据对象
+            </summary>
+            <param name="playerName"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.Player.PlayerData.Name">
+            <summary>
+            玩家名
+            </summary>
+            <exception cref="T:System.NullReferenceException"></exception>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.Player.PlayerData.BaseBuilder">
+            <summary>
+            基地建造
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.Player.PlayerData.UnitBuilder">
+            <summary>
+            单位建造
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.Player.PlayerData.TeamBuilder">
+            <summary>
+            队伍建造 (Party Builder)
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.Player.PlayerData.EconomyBuilder">
+            <summary>
+            经济建造
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.Player.PlayerData.WallBuilder">
+            <summary>
+            围墙建造
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.Player.PlayerData.UnitUpgrader">
+            <summary>
+            单位改善 (单位升级)
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.Player.PlayerData.ScienceUpgrader">
+            <summary>
+            科技改善 (科技升级)
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.Player.PlayerData.Tactical">
+            <summary>
+            策略AI
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.Player.PlayerData.OpeningMover">
+            <summary>
+            开局移动
+            </summary>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Parser.Asset.Impl.Team.TeamAsset.Of(System.String,System.String,Dreamness.Ra3.Map.Parser.Core.Base.BaseContext)">
+            <summary>
+            新建TeamAsset对象
+            </summary>
+            <param name="teamName">队伍名(短)</param>
+            <param name="ownerPlayerName">所有者的玩家名</param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.Team.TeamAsset.Name">
+            <summary>
+            队伍名(短)
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.Team.TeamAsset.OwnerPlayerName">
+            <summary>
+            所有者的玩家名
+            </summary>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.Team.TeamAsset.FullName">
+            <summary>
+            队伍全名，格式为 "OwnerPlayerName/Name"
+            </summary>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Parser.Util.DictionaryExtension.Put``2(System.Collections.Generic.Dictionary{``0,``1},``0,``1)">
+            <summary>
+            Adds a key-value pair to the dictionary or updates the value if the key already exists.
+            </summary>
+            <param name="dictionary">The dictionary to operate on.</param>
+            <param name="key">The key to add or update.</param>
+            <param name="value">The value to set.</param>
+            <typeparam name="TKey">The type of the key.</typeparam>
+            <typeparam name="TValue">The type of the value.</typeparam>
+        </member>
+    </members>
+</doc>

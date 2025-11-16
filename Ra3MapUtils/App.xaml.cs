@@ -16,6 +16,8 @@ using SharedFunctionLib.Utils;
 using Velopack;
 using Wpf.Ui;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Ra3MapUtils.MCP;
 using Ra3MapUtils.ViewModels.toolbox;
 using Ra3MapUtils.Views.SubWindows.toolbox;
 using SettingPageViewModel = Ra3MapUtils.ViewModels.MainWindowPages.SettingPageViewModel;
@@ -138,8 +140,15 @@ public partial class App : Application
 
 
         var builder = WebApplication.CreateBuilder();
+        
+        builder.Services.AddControllers().AddNewtonsoftJson(options =>
+        {
+            options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        });
+        
+        CSharpScriptService.AssemblyAutoLoader.LoadAllAssembliesFromDirectory(AppContext.BaseDirectory);
 
-        builder.Services.AddControllers();
+        // builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddMcpServer()

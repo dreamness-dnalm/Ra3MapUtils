@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Dreamness.RA3.Map.Transform</name>
+    </assembly>
+    <members>
+        <member name="T:Dreamness.RA3.Map.Transform.Ra3MapTransform.Commands.SymmetryStrategy.Symmetry1TwoPartsH">
+             ** ********
+                * * 1    *
+                * ********
+                * * 2    *
+                * ********
+        </member>
+        <member name="T:Dreamness.RA3.Map.Transform.Ra3MapTransform.Commands.SymmetryStrategy.Symmetry2TwoPartsHCenter">
+             ** ********
+                * * 1    *
+                * ********
+                * *    2 *
+                * ********
+        </member>
+        <member name="T:Dreamness.RA3.Map.Transform.Ra3MapTransform.Commands.SymmetryStrategy.Symmetry3TwoPartsV">
+            3
+            *********
+            * 1 * 2 *
+            *   *   *
+            *   *   *
+            *********
+        </member>
+        <member name="T:Dreamness.RA3.Map.Transform.Ra3MapTransform.Commands.SymmetryStrategy.Symmetry4TwoPartsVCenter">
+            3
+            *********
+            * 1 *   *
+            *   *   *
+            *   * 2 *
+            *********
+        </member>
+        <member name="T:Dreamness.RA3.Map.Transform.Ra3MapTransform.Commands.SymmetryStrategy.Symmetry5TwoPartsBackslashCenter">
+            *********
+            *       *
+            * *     *
+            * 1*    *
+            *   *   *
+            *    * 2*
+            *     * *
+            **********
+        </member>
+        <member name="T:Dreamness.RA3.Map.Transform.Ra3MapTransform.Commands.SymmetryStrategy.Symmetry6TwoPartsBackslash">
+            *********
+            *  2    *
+            * *     *
+            * 1*    *
+            *   *   *
+            *    *  *
+            *     * *
+            **********
+        </member>
+        <member name="T:Dreamness.RA3.Map.Transform.Ra3MapTransform.Commands.SymmetryStrategy.Symmetry7TwoPartsSlashCenter">
+            *********
+            *       *
+            *      **
+            *     *2*
+            *    *  *
+            *   *   *
+            * 1*    *
+            * *     *
+            **********
+        </member>
+        <member name="T:Dreamness.RA3.Map.Transform.Ra3MapTransform.Commands.SymmetryStrategy.Symmetry8TwoPartsSlash">
+            *********
+            *       *
+            *      **
+            *     * *
+            *    *  *
+            *   *   *
+            * 1* 2  *
+            * *     *
+            **********
+        </member>
+    </members>
+</doc>

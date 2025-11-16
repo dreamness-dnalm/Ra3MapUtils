@@ -26,6 +26,7 @@
       <PackageReference Include="linq2db" Version="5.4.1" />
       <PackageReference Include="linq2db.SQLite" Version="5.4.1" />
       <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="14.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.22" />
       <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="5.0.0-1.25277.114">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -39,6 +40,7 @@
       <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
       <PackageReference Include="NLog" Version="5.3.4" />
       <PackageReference Include="Ookii.Dialogs.WinForms" Version="4.0.0" />
+      <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.11.0.20250507" />
       <PackageReference Include="SemanticVersion" Version="2.1.0" />
       <PackageReference Include="SevenZipExtractor" Version="1.0.19" />
       <PackageReference Include="SixLabors.ImageSharp" Version="3.1.11" />
@@ -108,6 +110,9 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="data\plugins_lib\UtilCoreLib.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\RA3_MapLib_AI_Guide.md">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

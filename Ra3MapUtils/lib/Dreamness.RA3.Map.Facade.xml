@@ -1,0 +1,332 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Dreamness.RA3.Map.Facade</name>
+    </assembly>
+    <members>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.NewMap(System.Int32,System.Int32,System.Int32,System.Int32,System.String)">
+            <summary>
+            创建新地图, 地图实际尺寸 = 可游玩区域尺寸 + 2 * 边界尺寸
+            </summary>
+            <param name="playableWidth">可游玩区域宽度</param>
+            <param name="playableHeight">可游玩区域高度</param>
+            <param name="border">边界</param>
+            <param name="initPlayerStartWaypointCnt">初始化玩家出生点数量</param>
+            <param name="defaultTexture">默认纹理</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.Open(System.String,System.String)">
+            <summary>
+            加载地图
+            </summary>
+            <param name="parentPath">地图所在父目录, 一般情况下请调用Ra3PathUtil.RA3MapFolder</param>
+            <param name="mapName">地图名字</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.Save(System.Boolean)">
+            <summary>
+            保存地图
+            </summary>
+            <param name="compress">是否压缩,非特殊情况请保持压缩</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.SaveAs(System.String,System.String,System.Boolean)">
+            <summary>
+            另存为地图
+            </summary>
+            <param name="outputPath">输出目录</param>
+            <param name="mapName">地图名字</param>
+            <param name="compress">是否压缩,非特殊情况请保持压缩</param>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.MapWidth">
+            <summary>
+            地图宽度（包含边界）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.MapHeight">
+            <summary>
+            地图高度（包含边界）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.MapBorderWidth">
+            <summary>
+            边界宽度
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.MapPlayableWidth">
+            <summary>
+            可游玩区域宽度
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.MapPlayableHeight">
+            <summary>
+            可游玩区域高度
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.Area">
+            <summary>
+            地图面积
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.HeightData">
+            <summary>
+            高度数据
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.Borders">
+            <summary>
+            边界数据
+            </summary>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.SetTerrainHeight(System.Int32,System.Int32,System.Single)">
+            <summary>
+            设置地形高度 (使用网格坐标)
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="height"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetTerrainHeight(System.Int32,System.Int32)">
+            <summary>
+            获取地形高度 (使用网格坐标)
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetBorders">
+            <summary>
+            获取所有边界
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.SetBorder(Dreamness.Ra3.Map.Parser.Asset.Impl.Terrain.BorderData,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            设置边界, 左下角(x1, y1), 右上角(x2, y2), (使用网格坐标)
+            </summary>
+            <param name="border"></param>
+            <param name="x1">左下角x</param>
+            <param name="y1">左下角y</param>
+            <param name="x2">右上角x</param>
+            <param name="y2">右上角y</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddBorder(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            添加边界, 左下角(x1, y1), 右上角(x2, y2), (使用网格坐标)
+            </summary>
+            <param name="x1">左下角x</param>
+            <param name="y1">左下角y</param>
+            <param name="x2">右上角x</param>
+            <param name="y2">右上角y</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.RemoveBorder(Dreamness.Ra3.Map.Parser.Asset.Impl.Terrain.BorderData)">
+            <summary>
+            移除边界
+            </summary>
+            <param name="border"></param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.RemoveByUniqueId(System.String)">
+            <summary>
+            移除指定 UniqueId 的物体/路径点
+            </summary>
+            <param name="uniqueId"></param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.Remove(System.Object)">
+            <summary>
+            移除物体/路径点/玩家/队伍
+            </summary>
+            <param name="o"></param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetUnitObjects">
+            <summary>
+            获取所有单位物体
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddUnitObject(System.String,System.Single,System.Single,System.Single)">
+            <summary>
+            添加单位物体
+            </summary>
+            <param name="typeName">单位类型名称, 坐标使用世界坐标</param>
+            <param name="x">X 坐标</param>
+            <param name="y">Y 坐标</param>
+            <param name="z">Z 坐标</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetWaypoints">
+            <summary>
+            获取所有路径点
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddWaypoint(System.String,System.Single,System.Single,System.Single)">
+            <summary>
+            添加路径点, 指定名称, 坐标使用世界坐标
+            </summary>
+            <param name="name"></param>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="z"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddWaypoint(System.Single,System.Single,System.Single)">
+            <summary>
+            添加路径点, 坐标使用世界坐标
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="z"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddPlayerStartWaypoint(System.Int32,System.Single,System.Single,System.Single)">
+            <summary>
+            添加玩家起始点路径点, 坐标使用世界坐标
+            </summary>
+            <param name="playerIndex"></param>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="z"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetPlayers">
+            <summary>
+            获取所有玩家数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.ExportPlayersToJsonStr">
+            <summary>
+            将玩家数据导出为 JSON 字符串
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.ImportPlayersFromJsonStr(System.String)">
+            <summary>
+            从 JSON 字符串导入玩家数据
+            </summary>
+            <param name="jsonStr"></param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddPlayer(System.String)">
+            <summary>
+            添加玩家
+            </summary>
+            <param name="playerName">玩家名字</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetPlayer(System.String)">
+            <summary>
+            根据玩家名称获取玩家数据
+            </summary>
+            <param name="playerName">玩家名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetTeams">
+            <summary>
+            获取所有队伍
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.ExportTeamsToJsonStr">
+            <summary>
+            将队伍数据导出为json字符串
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.ImportTeamsFromJsonStr(System.String)">
+            <summary>
+            从json字符串导入队伍数据
+            </summary>
+            <param name="jsonStr"></param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddTeam(System.String,System.String)">
+            <summary>
+            添加一个队伍
+            </summary>
+            <param name="teamName">队伍名(短名)</param>
+            <param name="owerPlayerName">所有者的玩家名</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetTileTexture(System.Int32,System.Int32)">
+            <summary>
+            获取指定坐标的地形纹理名称, 使用网格坐标
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <returns>枚举值参考TextureEnum</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.SetTileTexture(System.Int32,System.Int32,System.String)">
+            <summary>
+            设置指定坐标的地形纹理名称, 使用网格坐标
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="texture">枚举值参考TextureEnum</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.RegisterSupportedTexture(System.String,System.String,System.String)">
+            <summary>
+            注册支持的地形纹理
+            </summary>
+            <param name="textureName"></param>
+            <param name="tgaFileName"></param>
+            <param name="nrmFileName"></param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.SetPassability(System.Int32,System.Int32,System.String)">
+            <summary>
+            设置指定坐标的地形通行属性, 使用网格坐标
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="passability">枚举值参考Passability</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetPassability(System.Int32,System.Int32)">
+            <summary>
+            获取指定坐标的地形通行属性, 使用网格坐标
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <returns>枚举值参考Passability</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.UpdatePassabilityMap">
+            <summary>
+            根据高度信息, 更新地图的通行属性数据, 建议在修改完高度图后调用
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.CameraGroundMinHeight">
+            <summary>
+            摄像机距离地面的最小高度
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.CameraGroundMaxHeight">
+            <summary>
+            摄像机距离地面的最大高度
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.CameraMinHeight">
+            <summary>
+            摄像机的最小高度
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.CameraMaxHeight">
+            <summary>
+            摄像机的最大高度
+            </summary>
+        </member>
+        <member name="T:Dreamness.Ra3.Map.Facade.enums.TextureEnum">
+            <summary>
+            纹理枚举
+            </summary>
+        </member>
+        <member name="T:Dreamness.Ra3.Map.Facade.Util.Ra3PathUtil">
+            <summary>
+            Ra3路径工具类
+            </summary>
+        </member>
+        <member name="F:Dreamness.Ra3.Map.Facade.Util.Ra3PathUtil.RA3MapFolder">
+            <summary>
+            RA3地图文件夹路径
+            </summary>
+        </member>
+    </members>
+</doc>
