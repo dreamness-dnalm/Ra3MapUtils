@@ -40,7 +40,6 @@
       <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
       <PackageReference Include="NLog" Version="5.3.4" />
       <PackageReference Include="Ookii.Dialogs.WinForms" Version="4.0.0" />
-      <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.11.0.20250507" />
       <PackageReference Include="SemanticVersion" Version="2.1.0" />
       <PackageReference Include="SevenZipExtractor" Version="1.0.19" />
       <PackageReference Include="SixLabors.ImageSharp" Version="3.1.11" />
