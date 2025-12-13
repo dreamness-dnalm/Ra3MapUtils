@@ -1,0 +1,6 @@
+{
+  "ID": "1f7f9fa8-7602-4a45-8a40-ea69fbd10214",
+  "Name": "UUID生成器",
+  "Description": "可以生成随机的UUID（通用唯一识别码）。",
+  "Author": "dreamness"
+}

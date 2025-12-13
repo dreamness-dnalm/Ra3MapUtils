@@ -114,6 +114,10 @@
       <None Update="data\RA3_MapLib_AI_Guide.md">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <Compile Remove="data\nano_programs\UUID_Generator\Main.cs" />
+      <None Include="data\nano_programs\UUID_Generator\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
