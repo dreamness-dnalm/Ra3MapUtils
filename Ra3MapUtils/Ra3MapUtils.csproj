@@ -118,6 +118,9 @@
       <None Include="data\nano_programs\UUID_Generator\Main.cs">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="data\nano_programs\UUID_Generator\info.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>

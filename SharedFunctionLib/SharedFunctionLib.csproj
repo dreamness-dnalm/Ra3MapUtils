@@ -74,13 +74,16 @@
         <Compile Include="Business\ChatLuaHelperBusiness.cs" />
         <Compile Include="Business\LuaImporterBusiness.cs" />
         <Compile Include="Business\LuaLibBindingBusiness.cs" />
+        <Compile Include="Business\NanoProgramMetaBusiness.cs" />
         <Compile Include="Business\NewWorldBuilderBusiness.cs" />
         <Compile Include="Business\UpdateBusiness.cs" />
         <Compile Include="Class1.cs" />
         <Compile Include="DAO\LuaLibConfigDAO.cs" />
+        <Compile Include="DAO\NanoProgramMetaDAO.cs" />
         <Compile Include="DAO\SettingsDAO.cs" />
         <Compile Include="Models\SimpleLibFileModel.cs" />
         <Compile Include="Models\SimpleLuaLibConfigModel.cs" />
+        <Compile Include="Models\SimpleNanoProgramMetaModel.cs" />
         <Compile Include="Models\SimpleSettingModel.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Utils\Ra3MapUtilsPathUtil.cs" />

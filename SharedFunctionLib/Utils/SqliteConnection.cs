@@ -18,4 +18,5 @@ public class SqliteConnection: DataConnection
     
     public ITable<SimpleLuaLibConfigModel> LuaLibConfigModels => this.GetTable<SimpleLuaLibConfigModel>();
     public ITable<SimpleSettingModel> Settings => this.GetTable<SimpleSettingModel>();
+    public ITable<SimpleNanoProgramMetaModel> NanoProgramMetaModels => this.GetTable<SimpleNanoProgramMetaModel>();
 }

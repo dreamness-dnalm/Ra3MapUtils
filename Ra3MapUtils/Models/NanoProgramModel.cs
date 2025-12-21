@@ -9,4 +9,7 @@ public class NanoProgramModel
     public bool IsWbVisible { get; set; }
 
     public int Order { get; set; } = -1;
+    
+
 }
+

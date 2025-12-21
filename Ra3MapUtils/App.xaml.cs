@@ -93,6 +93,7 @@ public partial class App : Application
         services.AddSingleton<IUpdateService, UpdateService>();
         services.AddSingleton<INewWorldBuilderPluginService, NewWorldBuilderPluginService>();
         services.AddSingleton<IMapDataOperateService, MapDataOperateService>();
+        services.AddSingleton<INanoProgramService, NanoProgramService>();
         
         return services.BuildServiceProvider();
     }
@@ -147,6 +148,7 @@ public partial class App : Application
         });
         
         CSharpScriptService.AssemblyAutoLoader.LoadAllAssembliesFromDirectory(AppContext.BaseDirectory);
+        CSharpScriptService.AssemblyAutoLoader.LoadAllAssembliesFromDirectory(Path.Combine(Ra3MapUtilsPathUtil.UserDataPath, "Libs"));
 
         // builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
