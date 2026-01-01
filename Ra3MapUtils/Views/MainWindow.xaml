@@ -86,6 +86,15 @@
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
                     <ui:NavigationViewItem
+                        Content="微程序"
+                        TargetPageTag="NanoProgramPage"
+                        TargetPageType="{x:Type mainWindowPages:NanoProgramPage}"
+                    >
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="WindowConsole20" Foreground="Blue"/>
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
+                    <ui:NavigationViewItem
                         Content="大模型"
                         TargetPageTag="AIPage"
                         TargetPageType="{x:Type mainWindowPages:AIPage}"
@@ -94,6 +103,7 @@
                             <ui:SymbolIcon Symbol="BrainCircuit20" Foreground="DeepPink"/>
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
+
                     <!-- <ui:NavigationViewItem -->
                     <!--     Content="C#脚本" -->
                     <!--     TargetPageTag="ScriptListPage" -->

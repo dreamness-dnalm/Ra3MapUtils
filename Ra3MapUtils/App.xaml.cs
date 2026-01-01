@@ -66,6 +66,9 @@ public partial class App : Application
         
         services.AddSingleton<AIPage>();
         services.AddSingleton<AIPageViewModel>();
+        
+        services.AddSingleton<NanoProgramPage>();
+        services.AddSingleton<NanoProgramPageViewModel>();
 
         services.AddTransient<LuaManagerWindow>();
         services.AddTransient<LuaManagerWindowViewModel>();
