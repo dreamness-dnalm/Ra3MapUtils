@@ -1,4 +1,5 @@
 using System.IO;
+using System.Windows;
 using Dreamness.ScriptExecutor;
 using Ra3MapUtils.Models;
 using Ra3MapUtils.Services.Interface;
@@ -12,8 +13,8 @@ public class NanoProgramService: INanoProgramService
     private Dictionary<NanoProgramInstallType, string> _nanoProgramDir = new Dictionary<NanoProgramInstallType, string>
     {
         [NanoProgramInstallType.Official] = Path.Combine(AppContext.BaseDirectory, "data", "nano_programs"),
-        [NanoProgramInstallType.User] = Path.Combine(SharedFunctionLib.Utils.Ra3MapUtilsPathUtil.UserDataPath, "nano_programs", "user"),
-        [NanoProgramInstallType.Store] = Path.Combine(SharedFunctionLib.Utils.Ra3MapUtilsPathUtil.UserDataPath, "nano_programs", "store")
+        [NanoProgramInstallType.User] = Path.Combine(SharedFunctionLib.Utils.Ra3MapUtilsPathUtil.UserDataPath, "nano_programs", "user")
+        // [NanoProgramInstallType.Store] = Path.Combine(SharedFunctionLib.Utils.Ra3MapUtilsPathUtil.UserDataPath, "nano_programs", "store")
     };
     
     
@@ -51,6 +52,12 @@ public class NanoProgramService: INanoProgramService
                     }
 
                     NanoProgramMetaBusiness.AddOrUpdate(info.ID, isEnabled, isWbVisible, order);
+                    if(usedIds.Contains(info.ID))
+                    {
+                        
+                        // MessageBox.Show("发现重复的微程序ID("+ info.ID +")，路径：" + dir, "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        continue;
+                    }
                     usedIds.Add(info.ID);
                     
                     resList.Add(new NanoProgramModel
@@ -61,6 +68,10 @@ public class NanoProgramService: INanoProgramService
                         Order = order
                     });
                 }
+            }
+            else
+            {
+                Directory.CreateDirectory(p.Value);
             }
         }
         NanoProgramMetaBusiness.DeleteUnused(usedIds.ToList());

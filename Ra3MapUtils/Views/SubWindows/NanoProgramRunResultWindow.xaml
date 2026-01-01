@@ -1,0 +1,113 @@
+<ui:FluentWindow x:Class="Ra3MapUtils.Views.SubWindows.NanoProgramRunResultWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 xmlns:vm="clr-namespace:Ra3MapUtils.ViewModels.SubWindows"
+                 d:DataContext="{d:DesignInstance Type=vm:NanoProgramRunResultWindowViewModel, IsDesignTimeCreatable=True}"
+                 mc:Ignorable="d"
+                 Title="微程序运行结果"
+                 Width="720" Height="520"
+                 ResizeMode="CanResizeWithGrip"
+                 WindowStartupLocation="CenterOwner"
+                 ExtendsContentIntoTitleBar="True"
+                 WindowBackdropType="Mica"
+                 WindowCornerPreference="Round"
+                 WindowStyle="SingleBorderWindow">
+
+    <Grid Margin="10,0,10,4">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar Grid.Row="0" Title="微程序运行结果" ShowMaximize="True" ShowMinimize="True" ShowClose="True"/>
+
+        <Grid Grid.Row="1" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="{Binding ProgramName}" FontSize="20" FontWeight="SemiBold"/>
+            <Border Grid.Column="1" Margin="12,0,0,0" Padding="8,3" CornerRadius="6">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Background" Value="Firebrick"/>
+                        <Setter Property="BorderBrush" Value="White"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Success}" Value="True">
+                                <Setter Property="Background" Value="Green"/>
+                                <Setter Property="BorderBrush" Value="White"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <TextBlock Text="{Binding StatusText}" FontWeight="SemiBold" Foreground="White"/>
+            </Border>
+            <TextBlock Grid.Column="2" Text="{Binding TimeText}" HorizontalAlignment="Right" VerticalAlignment="Center"
+                       Foreground="Black"/>
+        </Grid>
+
+        <ui:InfoBar Grid.Row="2" Margin="0,10,0,10"
+                    x:Name="ResultInfoBar"
+                    Title="{Binding StatusText}"
+                    Message="{Binding ErrorText}">
+            <ui:InfoBar.Style>
+                <Style TargetType="ui:InfoBar" BasedOn="{StaticResource {x:Type ui:InfoBar}}">
+                    <Setter Property="Severity" Value="Success"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Success}" Value="False">
+                            <Setter Property="Severity" Value="Error"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ui:InfoBar.Style>
+        </ui:InfoBar>
+
+        <Grid Grid.Row="3" Margin="0,0,0,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Text="返回值" FontWeight="SemiBold"/>
+            <ui:TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Height="60" AcceptsReturn="True"
+                        Text="{Binding ReturnValueText, Mode=OneWay}" IsReadOnly="True" TextWrapping="Wrap"
+                        VerticalScrollBarVisibility="Auto">
+            </ui:TextBox>
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4,0,0">
+                <ui:Button Content="复制" Command="{Binding CopyCommand}" CommandParameter="{Binding ReturnValueText}" Width="60"/>
+            </StackPanel>
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="输出" FontWeight="SemiBold"/>
+            <TextBlock Grid.Row="2" Grid.Column="1" Text="错误 / 异常" FontWeight="SemiBold"/>
+
+            <ui:TextBox Grid.Row="3" Grid.Column="0" Margin="0,4,0,0"
+                        Text="{Binding OutputText, Mode=OneWay}" IsReadOnly="True" TextWrapping="Wrap"
+                        AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+
+            <ui:TextBox Grid.Row="3" Grid.Column="1" Margin="0,4,0,0"
+                        Text="{Binding ErrorAndExceptionText, Mode=OneWay}"
+                        IsReadOnly="True" TextWrapping="Wrap"
+                        AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+
+            <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,6,0,0">
+                <ui:Button Content="复制输出" Command="{Binding CopyCommand}" CommandParameter="{Binding OutputText}" Width="80"/>
+            </StackPanel>
+            <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,6,0,0">
+                <ui:Button Content="复制错误" Command="{Binding CopyCommand}" CommandParameter="{Binding ErrorAndExceptionText}" Width="100"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>
+

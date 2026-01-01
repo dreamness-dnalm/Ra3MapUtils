@@ -23,6 +23,13 @@
             <param name="mapName">地图名字</param>
             <returns></returns>
         </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.Open(System.String)">
+            <summary>
+            加载地图
+            </summary>
+            <param name="mapFilePath">地图文件路径</param>
+            <returns></returns>
+        </member>
         <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.Save(System.Boolean)">
             <summary>
             保存地图
@@ -35,6 +42,13 @@
             </summary>
             <param name="outputPath">输出目录</param>
             <param name="mapName">地图名字</param>
+            <param name="compress">是否压缩,非特殊情况请保持压缩</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.SaveAs(System.String,System.Boolean)">
+            <summary>
+            另存为地图
+            </summary>
+            <param name="mapFilePath">地图文件路径</param>
             <param name="compress">是否压缩,非特殊情况请保持压缩</param>
         </member>
         <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.MapWidth">

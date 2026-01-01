@@ -9,6 +9,7 @@
       d:DataContext="{d:DesignInstance Type=vm:NanoProgramPageViewModel, IsDesignTimeCreatable=True}"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:xamlConverters="clr-namespace:Ra3MapUtils.Utils.XamlConverters"
       d:DesignHeight="1650"
       d:DesignWidth="1000"
       ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
@@ -19,7 +20,164 @@
       Width="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=ActualWidth}"
       Height="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=ActualHeight}"
       >
-    <Grid>
-        
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <xamlConverters:BooleanNotConverter x:Key="BooleanNotConverter"/>
+    </Page.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 顶部标题与快捷操作 -->
+        <DockPanel Grid.Row="0" Margin="0,0,0,8">
+            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="微程序管理" FontSize="20" FontWeight="SemiBold"/>
+                <TextBlock Text="拖动即可调整顺序" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                <ui:HyperlinkButton Margin="12,0,0,0"
+                                    Content="微程序开发指南"
+                                    NavigateUri="https://www.yuque.com/muzeqaq/ra3mapwiki/lfrhsfxdsib3ha0c"
+                                    VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <!-- <ui:Button Content="新建微程序" Icon="{ui:SymbolIcon Add20}" Command="{Binding CreateCommand}" Margin="0,0,8,0"/> -->
+                <!-- <ui:Button Content="导入微程序" Icon="{ui:SymbolIcon FolderOpen20}" Command="{Binding ImportCommand}" Margin="0,0,8,0"/> -->
+                <ui:Button Content="打开自定义目录" Icon="{ui:SymbolIcon FolderOpen20}" Command="{Binding OpenUserNanoProgramFolderCommand}" Margin="0,0,8,0"/>
+                <ui:Button Content="刷新" Icon="{ui:SymbolIcon ArrowSync20}" Command="{Binding RefreshCommand}"/>
+            </StackPanel>
+        </DockPanel>
+
+        <!-- 筛选与搜索 -->
+        <Grid Grid.Row="1" Margin="0,0,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ui:TextBox Grid.Column="0"
+                        PlaceholderText="搜索名称或描述"
+                        Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                        Icon="{ui:SymbolIcon Search20}"
+                        Margin="0,0,12,0"/>
+
+            <ui:ToggleSwitch Grid.Column="2"
+                             Content="排除禁用"
+                             IsChecked="{Binding OnlyEnabled, Mode=TwoWay}"/>
+
+            <ui:ToggleSwitch Grid.Column="3"
+                             Content="排除隐藏"
+                             IsChecked="{Binding OnlyWbVisible, Mode=TwoWay}"/>
+        </Grid>
+
+        <!-- 主列表 -->
+        <Border Grid.Row="2"
+                BorderThickness="1"
+                CornerRadius="8"
+                Padding="4">
+            <ui:ListView x:Name="NanoProgramList"
+                         ItemsSource="{Binding NanoProgramsView}"
+                         SelectedItem="{Binding SelectedProgram, Mode=TwoWay}"
+                         SelectionMode="Single"
+                         AllowDrop="True"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         PreviewMouseLeftButtonDown="NanoProgramList_OnPreviewMouseLeftButtonDown"
+                         PreviewMouseMove="NanoProgramList_OnPreviewMouseMove"
+                         Drop="NanoProgramList_OnDrop">
+                <ui:ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="0,0,0,6"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ui:ListView.ItemContainerStyle>
+                <ui:ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="6"
+                                Margin="0"
+                                CornerRadius="4">
+                            <Grid VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="32"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- 拖拽手柄 -->
+                                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <ui:SymbolIcon Symbol="Drag20" />
+                                </StackPanel>
+
+                                <!-- 主文本与标签 -->
+                                <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" Margin="4,0,8,0">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="SemiBold"/>
+                                        <Border Margin="8,0,0,0" Padding="6,2"  CornerRadius="4">
+                                            <TextBlock Text="{Binding InstallTypeLabel}" FontSize="12"/>
+                                        </Border>
+                                        <Border Margin="8,0,0,0" Padding="6,2"  CornerRadius="4">
+                                            <TextBlock Text="{Binding Id}" FontSize="12"/>
+                                        </Border>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding Description}" TextWrapping="NoWrap" Margin="0,2,0,0"/>
+                                </StackPanel>
+
+                                <!-- 开关 -->
+                                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,0">
+                                    <ui:ToggleSwitch Content="启用" IsChecked="{Binding IsEnabled, Mode=TwoWay}" Margin="0,0,8,0" Width="96"/>
+                                    <ui:ToggleSwitch Content="展示" IsChecked="{Binding IsWbVisible, Mode=TwoWay}" Width="110"/>
+                                </StackPanel>
+
+                                <!-- 操作按钮 -->
+                                <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                    <ui:Button Margin="0,0,6,0" Height="35" Padding="10,0"
+                                               Command="{Binding DataContext.ToggleRunCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                               CommandParameter="{Binding}"
+                                               IsEnabled="{Binding IsRunning, Converter={StaticResource BooleanNotConverter}}">
+                                        <ui:Button.Style>
+                                            <Style TargetType="ui:Button" BasedOn="{StaticResource {x:Type ui:Button}}">
+                                                <Setter Property="Content" Value="运行"/>
+                                                <Setter Property="Icon" Value="{ui:SymbolIcon Play16}"/>
+                                                <Setter Property="Appearance" Value="Primary"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsRunning}" Value="True">
+                                                        <Setter Property="Content" Value="运行中"/>
+                                                        <Setter Property="Icon" Value="{ui:SymbolIcon ArrowSync16}"/>
+                                                        <Setter Property="Appearance" Value="Secondary"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ui:Button.Style>
+                                    </ui:Button>
+                                    <ui:Button Icon="{ui:SymbolIcon FolderOpen16}" ToolTip="打开文件夹"
+                                               Command="{Binding DataContext.OpenFolderCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                               CommandParameter="{Binding}" Margin="0,0,6,0" Width="35" Height="32"/>
+                                    <!-- <ui:Button Icon="{ui:SymbolIcon Delete16}" ToolTip="删除" Appearance="Danger" -->
+                                    <!--            Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=Page}}" -->
+                                    <!--            CommandParameter="{Binding}" Width="35" Height="32"/> -->
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ui:ListView.ItemTemplate>
+            </ui:ListView>
+        </Border>
+
+        <!-- 底部状态 -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="4,10,4,0" HorizontalAlignment="Stretch">
+            <ProgressBar Width="120" Height="6" IsIndeterminate="True" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <TextBlock Margin="8,0,0,0" Text="{Binding StatusText}"  VerticalAlignment="Center"/>
+        </StackPanel>
     </Grid>
 </Page>

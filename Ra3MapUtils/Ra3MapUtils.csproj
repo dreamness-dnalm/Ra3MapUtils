@@ -122,6 +122,21 @@
       <None Update="data\nano_programs\UUID_Generator\info.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <Compile Remove="data\nano_programs\rect_height\Main.cs" />
+      <None Include="data\nano_programs\rect_height\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\nano_programs\rect_height\info.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\nano_programs\COR_FORCE_LOOSE_ORE\info.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Include="data\nano_programs\COR_FORCE_LOOSE_ORE\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <Compile Remove="data\nano_programs\COR_FORCE_LOOSE_ORE\Main.cs" />
+      <None Include="data\nano_programs\COR_FORCE_LOOSE_ORE\Main.cs" />
     </ItemGroup>
 
     <ItemGroup>
