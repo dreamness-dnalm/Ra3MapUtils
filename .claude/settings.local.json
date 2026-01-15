@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs:*)",
+      "Bash(where:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -File generate_lua_metadata.ps1:*)",
+      "Bash(Test-Path \"Ra3MapUtils\\\\data\\\\ra3_lua_lib_metadata.json\")",
+      "Bash(powershell -Command:*)",
+      "Bash(dotnet build:*)"
+    ]
+  }
+}
