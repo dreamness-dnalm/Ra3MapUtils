@@ -229,6 +229,13 @@
             <param name="playerName">玩家名字</param>
             <returns></returns>
         </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddPlayer(Dreamness.Ra3.Map.Parser.Asset.Impl.Player.PlayerData)">
+            <summary>
+            添加玩家
+            </summary>
+            <param name="playerData">玩家数据</param>
+            <returns></returns>
+        </member>
         <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetPlayer(System.String)">
             <summary>
             根据玩家名称获取玩家数据
@@ -260,6 +267,13 @@
             </summary>
             <param name="teamName">队伍名(短名)</param>
             <param name="owerPlayerName">所有者的玩家名</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddTeam(Dreamness.Ra3.Map.Parser.Asset.Impl.Team.TeamAsset)">
+            <summary>
+            添加一个队伍
+            </summary>
+            <param name="teamAsset">队伍数据</param>
             <returns></returns>
         </member>
         <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetTileTexture(System.Int32,System.Int32)">

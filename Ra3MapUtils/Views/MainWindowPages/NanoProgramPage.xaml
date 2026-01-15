@@ -23,6 +23,7 @@
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <xamlConverters:BooleanNotConverter x:Key="BooleanNotConverter"/>
+        <xamlConverters:BooleanAndNotConverter x:Key="BooleanAndNotConverter"/>
     </Page.Resources>
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -143,8 +144,13 @@
                                 <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                                     <ui:Button Margin="0,0,6,0" Height="35" Padding="10,0"
                                                Command="{Binding DataContext.ToggleRunCommand, RelativeSource={RelativeSource AncestorType=Page}}"
-                                               CommandParameter="{Binding}"
-                                               IsEnabled="{Binding IsRunning, Converter={StaticResource BooleanNotConverter}}">
+                                               CommandParameter="{Binding}">
+                                        <ui:Button.IsEnabled>
+                                            <MultiBinding Converter="{StaticResource BooleanAndNotConverter}">
+                                                <Binding Path="IsEnabled"/>
+                                                <Binding Path="IsRunning"/>
+                                            </MultiBinding>
+                                        </ui:Button.IsEnabled>
                                         <ui:Button.Style>
                                             <Style TargetType="ui:Button" BasedOn="{StaticResource {x:Type ui:Button}}">
                                                 <Setter Property="Content" Value="运行"/>

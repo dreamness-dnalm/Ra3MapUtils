@@ -167,6 +167,12 @@ public partial class NanoProgramPageViewModel : ObservableObject
             return;
         }
 
+        if (!item.IsEnabled)
+        {
+            StatusText = $"{item.Name} 已被禁用，无法运行";
+            return;
+        }
+
         try
         {
             item.IsRunning = true;
@@ -228,6 +234,12 @@ public partial class NanoProgramPageViewModel : ObservableObject
 
         if (item.IsRunning)
         {
+            return;
+        }
+
+        if (!item.IsEnabled)
+        {
+            StatusText = $"{item.Name} 已被禁用，无法运行";
             return;
         }
 
