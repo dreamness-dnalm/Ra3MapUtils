@@ -157,6 +157,9 @@
       <None Include="data\nano_programs\STAT_TEAM\Main.cs">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="data\ra3_lua_lib_metadata.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
