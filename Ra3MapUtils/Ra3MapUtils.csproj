@@ -20,6 +20,7 @@
     </ItemGroup>
   
     <ItemGroup>
+      <PackageReference Include="Antlr4.Runtime" Version="4.6.6" />
       <PackageReference Include="AvalonEdit" Version="6.3.0.90" />
       <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
       <PackageReference Include="HandyControl" Version="3.6.0-rc2" />
@@ -81,6 +82,10 @@
       <None Remove="lua4.xshd" />
       <EmbeddedResource Include="lua4.xshd" />
       <Compile Remove="data\plugins\RA3MapUtil_LuaImporter\Main.cs" />
+      <None Include="data\nano_programs\COPY_TEAM\Main.cs" />
+      <None Include="data\nano_programs\NAMED_UNIT_STAT\Main.cs" />
+      <None Include="data\nano_programs\STAT_TEAM\Main.cs" />
+      <None Include="data\nano_programs\STAT_TEXTURE\Main.cs" />
       <None Include="data\plugins\RA3MapUtil_LuaImporter\Main.cs">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
@@ -119,6 +124,37 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="data\nano_programs\UUID_Generator\info.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <Compile Remove="data\nano_programs\rect_height\Main.cs" />
+      <None Include="data\nano_programs\rect_height\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\nano_programs\rect_height\info.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\nano_programs\COR_FORCE_LOOSE_ORE\info.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Include="data\nano_programs\COR_FORCE_LOOSE_ORE\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <Compile Remove="data\nano_programs\COR_FORCE_LOOSE_ORE\Main.cs" />
+      <None Include="data\nano_programs\COR_FORCE_LOOSE_ORE\Main.cs" />
+      <Compile Remove="data\nano_programs\COPY_TEAM\Main.cs" />
+      <None Include="data\nano_programs\COPY_TEAM\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <Compile Remove="data\nano_programs\NAMED_UNIT_STAT\Main.cs" />
+      <None Include="data\nano_programs\NAMED_UNIT_STAT\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <Compile Remove="data\nano_programs\STAT_TEXTURE\Main.cs" />
+      <None Include="data\nano_programs\STAT_TEXTURE\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <Compile Remove="data\nano_programs\STAT_TEAM\Main.cs" />
+      <None Include="data\nano_programs\STAT_TEAM\Main.cs">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
@@ -163,6 +199,9 @@
     <ItemGroup>
       <Reference Include="Dreamness.RA3.Map.Facade">
         <HintPath>lib\Dreamness.RA3.Map.Facade.dll</HintPath>
+      </Reference>
+      <Reference Include="Dreamness.RA3.Map.Lua">
+        <HintPath>lib\Dreamness.RA3.Map.Lua.dll</HintPath>
       </Reference>
       <Reference Include="Dreamness.RA3.Map.Parser">
         <HintPath>lib\Dreamness.RA3.Map.Parser.dll</HintPath>

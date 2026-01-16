@@ -10,7 +10,6 @@ namespace Ra3MapUtils.MCP;
 public class NewMapService
 {
     [McpServerTool, Description("新建一张ra3地图")]
-    ///
     public static void CreateNewMap(string mapName, int playableWidth, int playableHeight, int border=0)
     {
         var ra3MapFacade = Ra3MapFacade.NewMap(playableWidth, playableHeight, border);

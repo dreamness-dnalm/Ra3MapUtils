@@ -24,7 +24,7 @@ using TextBox = System.Windows.Controls.TextBox;
 
 namespace Ra3MapUtils.ViewModels.MainWindowPages;
 
-public partial class MapManagePageViewModel : ObservableObject
+public partial class MapManagePageViewModel: ObservableObject
 {
     [ObservableProperty] private ObservableCollection<string> _mapList = new();
 

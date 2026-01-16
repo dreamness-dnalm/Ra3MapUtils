@@ -51,7 +51,8 @@ vpk pack `
 --outputDir $packageOutPath `
 --delta BestSize `
 --releaseNotes $releaseNotesPath `
---noInst
+--framework net8.0-x64-sdk
+# --noInst
 ##--icon {path}
 # `
 
@@ -62,7 +63,15 @@ Remove-Item -Recurse -Force "$packageOutPath\assets.win.json"
 Remove-Item -Recurse -Force "$packageOutPath\$softwareName\.portable"
 Remove-Item -Recurse -Force "$packageOutPath\$vpkPackId-win-Portable.zip"
 
-7z a -t7z "$packageOutPath\$vpkPackId-v$version.7z" "$packageOutPath\$softwareName" -mx=9
+# 写文本到$packageOutPath\$softwareName\如果运行失败请阅读本文件.txt 
+# 文本内容为: 如果报错: You must install or update .NET to run this application.
+#　请下载并安装：　https://builds.dotnet.microsoft.com/dotnet/Sdk/8.0.415/dotnet-sdk-8.0.415-win-x64.exe
+# 可入QQ群获取帮助:  513118543  /  613550502
+# 可参考在线帮助文档: https://www.yuque.com/muzeqaq/ra3mapwiki/vppua7qbrig4emxd
+
+Set-Content -Path "$packageOutPath\$softwareName\如果运行失败请阅读本文件.txt" -Value "如果报错: You must install or update .NET to run this application.`r`n请下载并安装：　https://builds.dotnet.microsoft.com/dotnet/Sdk/8.0.415/dotnet-sdk-8.0.415-win-x64.exe`r`n可入QQ群获取帮助:  513118543  /  613550502`r`n可参考在线帮助文档: https://www.yuque.com/muzeqaq/ra3mapwiki/vppua7qbrig4emxd" -Encoding UTF8
+
+7z a -t7z "$packageOutPath\$vpkPackId-v$version-Portable.7z" "$packageOutPath\$softwareName" -mx=9
 #Remove-Item -Recurse -Force "$packageOutPath\$softwareName"
 
 # 输出

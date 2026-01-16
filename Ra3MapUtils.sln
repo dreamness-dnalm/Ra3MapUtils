@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnowledgeBaseLib", "Knowled
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnowledgeBaseCli", "KnowledgeBaseCli\KnowledgeBaseCli.csproj", "{46612BDF-4E71-407A-8438-439E497B1FFD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WBLegacy", "WBLegacy\WBLegacy.csproj", "{0C2F2D08-467E-4200-8CC7-4C7725738DB2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,5 +65,9 @@ Global
 		{46612BDF-4E71-407A-8438-439E497B1FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46612BDF-4E71-407A-8438-439E497B1FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46612BDF-4E71-407A-8438-439E497B1FFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C2F2D08-467E-4200-8CC7-4C7725738DB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C2F2D08-467E-4200-8CC7-4C7725738DB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C2F2D08-467E-4200-8CC7-4C7725738DB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C2F2D08-467E-4200-8CC7-4C7725738DB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

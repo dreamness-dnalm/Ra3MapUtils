@@ -11,6 +11,8 @@ public static class Ra3MapUtilsPathUtil
     
     public static string SqliteDBPath = Path.Combine(UserDataPath, "Ra3MapUtils.db");
     
+    public static string BackupFolderPath = Path.Combine(UserDataPath, "backup");
+    
     public static string SimpleExtensionBasePath = Path.Combine(UserDataPath, "simple");
     
     public static string KnowledgeBasePath = Path.Combine(UserDataPath, "knowledge_base", "knowledge_base.db");
