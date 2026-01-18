@@ -75,15 +75,15 @@ if (playerNames.Count == 0)
 var dialogWindow = EasyDialog.Create("批量复制队伍", 620, 360, true);
 dialogWindow.StartPosition = FormStartPosition.CenterScreen;
 
-var warningLabel = new Label
-{
-    Dock = DockStyle.Top,
-    Height = 44,
-    ForeColor = Color.Red,
-    Text = "队伍配置中不要包含任何中文, 如队伍名,脚本名等; 否则100%会损坏地图文件!",
-    TextAlign = ContentAlignment.MiddleLeft,
-    Padding = new Padding(8, 8, 8, 0)
-};
+// var warningLabel = new Label
+// {
+//     Dock = DockStyle.Top,
+//     Height = 44,
+//     ForeColor = Color.Red,
+//     Text = "队伍配置中不要包含任何中文, 如队伍名,脚本名等; 否则100%会损坏地图文件!",
+//     TextAlign = ContentAlignment.MiddleLeft,
+//     Padding = new Padding(8, 8, 8, 0)
+// };
 
 var templateCombo = new ComboBox
 {
@@ -186,11 +186,11 @@ startButton.Click += (sender, e) =>
         return;
     }
 
-    if (ContainsChinese(prefix))
-    {
-        ShowMessage("前缀包含中文，可能会损坏地图文件，请修改。");
-        return;
-    }
+    // if (ContainsChinese(prefix))
+    // {
+    //     ShowMessage("前缀包含中文，可能会损坏地图文件，请修改。");
+    //     return;
+    // }
 
     var existingFullNames = new HashSet<string>(
         originTeams.Select(t => t.FullName),
@@ -200,11 +200,11 @@ startButton.Click += (sender, e) =>
     for (int i = 1; i <= count; i++)
     {
         var teamName = $"{prefix}{i}";
-        if (ContainsChinese(teamName) || ContainsChinese(selectedPlayer))
-        {
-            ShowMessage("生成的队伍名或玩家名包含中文，可能会损坏地图文件，请修改。");
-            return;
-        }
+        // if (ContainsChinese(teamName) || ContainsChinese(selectedPlayer))
+        // {
+        //     ShowMessage("生成的队伍名或玩家名包含中文，可能会损坏地图文件，请修改。");
+        //     return;
+        // }
 
         var fullName = $"{selectedPlayer}/{teamName}";
         newFullNames.Add(fullName);
@@ -266,7 +266,7 @@ buttonPanel.Controls.Add(startButton);
 dialogWindow.Controls.Add(buttonPanel);
 dialogWindow.Controls.Add(backupLabel);
 dialogWindow.Controls.Add(formTable);
-dialogWindow.Controls.Add(warningLabel);
+// dialogWindow.Controls.Add(warningLabel);
 
 dialogWindow.AcceptButton = startButton;
 dialogWindow.CancelButton = closeButton;

@@ -82,10 +82,18 @@
       <None Remove="lua4.xshd" />
       <EmbeddedResource Include="lua4.xshd" />
       <Compile Remove="data\plugins\RA3MapUtil_LuaImporter\Main.cs" />
-      <None Include="data\nano_programs\COPY_TEAM\Main.cs" />
-      <None Include="data\nano_programs\NAMED_UNIT_STAT\Main.cs" />
-      <None Include="data\nano_programs\STAT_TEAM\Main.cs" />
-      <None Include="data\nano_programs\STAT_TEXTURE\Main.cs" />
+      <None Include="data\nano_programs\COPY_TEAM\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Include="data\nano_programs\NAMED_UNIT_STAT\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Include="data\nano_programs\STAT_TEAM\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Include="data\nano_programs\STAT_TEXTURE\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
       <None Include="data\plugins\RA3MapUtil_LuaImporter\Main.cs">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
@@ -127,12 +135,6 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <Compile Remove="data\nano_programs\rect_height\Main.cs" />
-      <None Include="data\nano_programs\rect_height\Main.cs">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="data\nano_programs\rect_height\info.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
       <None Update="data\nano_programs\COR_FORCE_LOOSE_ORE\info.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
@@ -158,6 +160,18 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="data\ra3_lua_lib_metadata.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\nano_programs\COPY_TEAM\info.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\nano_programs\NAMED_UNIT_STAT\info.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\nano_programs\STAT_TEAM\info.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\nano_programs\STAT_TEXTURE\info.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
