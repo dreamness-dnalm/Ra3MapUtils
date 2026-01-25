@@ -773,4 +773,144 @@ public partial class MapManagePageViewModel: ObservableObject
         
     }
 
+    [RelayCommand]
+    private void ExportMapScriptsDataToDefaultFile()
+    {
+        if (_selectedMap == "")
+        {
+            MessageBox.Show("请先选择地图");
+            return;
+        }
+
+        try
+        {
+            var (mapPath, mapName) = MapFileHelper.TranslateMapPath(_selectedMap);
+
+            var jsonFilePath = Path.Combine(mapPath, "ScriptsData.json");
+            var jsonStr = _mapDataOperateService.ExportMapScriptsDataAsJsonStr(mapName);
+            File.WriteAllText(jsonFilePath, jsonStr);
+            MessageBox.Show("导出成功: " + jsonFilePath);
+            ExplorerUtil.OpenExplorer(jsonFilePath, true);
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show("导出脚本数据失败, msg: " + e.Message);
+        }
+    }
+
+    [RelayCommand]
+    private void ExportMapScriptsDataToFile()
+    {
+        if (_selectedMap == "")
+        {
+            MessageBox.Show("请先选择地图");
+            return;
+        }
+
+        try
+        {
+            var (mapPath, mapName) = MapFileHelper.TranslateMapPath(_selectedMap);
+
+            var saveFileDialog = new SaveFileDialog()
+            {
+                Title = "保存脚本数据文件",
+                Filter = "JSON文件 (*.json)|*.json",
+                InitialDirectory = mapPath,
+                FileName = "ScriptsData.json"
+            };
+
+            var dialogResult = saveFileDialog.ShowDialog();
+
+            if (dialogResult != System.Windows.Forms.DialogResult.OK)
+            {
+                return;
+            }
+
+            var jsonFilePath = saveFileDialog.FileName;
+            var jsonStr = _mapDataOperateService.ExportMapScriptsDataAsJsonStr(mapName);
+            File.WriteAllText(jsonFilePath, jsonStr);
+            MessageBox.Show("导出成功: " + jsonFilePath);
+            ExplorerUtil.OpenExplorer(jsonFilePath, true);
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show("导出脚本数据失败, msg: " + e.Message);
+        }
+    }
+
+    [RelayCommand]
+    private void ImportMapScriptsDataFromDefaultFile()
+    {
+        if (_selectedMap == "")
+        {
+            MessageBox.Show("请先选择地图");
+            return;
+        }
+
+        try
+        {
+            var (mapPath, mapName) = MapFileHelper.TranslateMapPath(_selectedMap);
+
+            var jsonFilePath = Path.Combine(mapPath, "ScriptsData.json");
+            if (!File.Exists(jsonFilePath))
+            {
+                MessageBox.Show("数据文件不存在: " + jsonFilePath);
+                return;
+            }
+
+            var jsonStr = File.ReadAllText(jsonFilePath);
+            _mapDataOperateService.ImportMapScriptsDataFromJsonStr(jsonStr, mapName);
+            MessageBox.Show("导入脚本数据成功");
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show("导入脚本数据失败, msg: " + e.Message);
+        }
+    }
+
+    [RelayCommand]
+    private void ImportMapScriptsDataFromFile()
+    {
+        if (_selectedMap == "")
+        {
+            MessageBox.Show("请先选择地图");
+            return;
+        }
+
+        try
+        {
+            var (mapPath, mapName) = MapFileHelper.TranslateMapPath(_selectedMap);
+
+            var openFileDialog = new OpenFileDialog()
+            {
+                Title = "选择脚本数据文件",
+                Filter = "JSON文件 (*.json)|*.json",
+                InitialDirectory = mapPath,
+                Multiselect = false
+            };
+
+            var dialogResult = openFileDialog.ShowDialog();
+
+            if (dialogResult != System.Windows.Forms.DialogResult.OK)
+            {
+                return;
+            }
+
+            var jsonFilePath = openFileDialog.FileName;
+            if (!File.Exists(jsonFilePath))
+            {
+                MessageBox.Show("数据文件不存在: " + jsonFilePath);
+                return;
+            }
+
+            var jsonStr = File.ReadAllText(jsonFilePath);
+            _mapDataOperateService.ImportMapScriptsDataFromJsonStr(jsonStr, mapName);
+            MessageBox.Show("导入脚本数据成功");
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show("导入脚本数据失败, msg: " + e.Message);
+        }
+    }
+
 }

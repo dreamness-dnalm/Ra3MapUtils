@@ -1,0 +1,6 @@
+{
+    "ID": "da70c4b3-c9db-4506-9874-174b61aba3c7",
+    "Name": "导入玩家数据JSON",
+    "Description": "可以从PlayersData.json文件导入并覆盖玩家配置。",
+    "Author": "dreamness"
+}

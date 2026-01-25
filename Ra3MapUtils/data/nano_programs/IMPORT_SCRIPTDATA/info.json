@@ -1,0 +1,6 @@
+{
+    "ID": "79325ba2-ae58-4c0e-b9af-004b0a629a34",
+    "Name": "导入脚本数据JSON",
+    "Description": "可以从ScriptsData.json文件导入并覆盖地图脚本。",
+    "Author": "dreamness"
+}

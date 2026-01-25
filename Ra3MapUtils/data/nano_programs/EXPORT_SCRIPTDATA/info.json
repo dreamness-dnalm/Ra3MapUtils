@@ -1,0 +1,6 @@
+{
+    "ID": "04dc7bbc-258e-43f8-8996-ad38c835ec98",
+    "Name": "导出脚本数据JSON",
+    "Description": "可以导出脚本数据为ScriptssData.json文件，方便修改和导入。",
+    "Author": "dreamness"
+}

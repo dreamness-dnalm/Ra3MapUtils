@@ -145,6 +145,82 @@
             </summary>
             <exception cref="T:System.ArgumentException"></exception>
         </member>
+        <member name="M:Dreamness.Ra3.Map.Parser.Asset.Impl.Texture.BlendInfo.Create(System.Int32,Dreamness.Ra3.Map.Parser.Asset.Impl.Texture.BlendInfo.BlendDirectionEnum,System.UInt32,System.UInt32)">
+            <summary>
+            Creates a new BlendInfo instance.
+            </summary>
+            <param name="secondaryTextureTile">Secondary texture tile index</param>
+            <param name="direction">Blend direction flags</param>
+            <param name="i3">Magic number field (must be 0xFFFFFFFF)</param>
+            <param name="i4">Magic number field (must be 0x7ACDCD00)</param>
+            <returns>New BlendInfo instance</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Parser.Asset.Impl.Texture.BlendTileDataAsset.GetSubTilePosition(System.Int32,System.Int32)">
+            <summary>
+            Gets the sub-tile position within the 8x8 texture grid for a given cell.
+            Each texture has 64 sub-tiles arranged in an 8x8 pattern.
+            </summary>
+            <param name="x">Cell X coordinate</param>
+            <param name="y">Cell Y coordinate</param>
+            <returns>Tuple of (subX, subY) coordinates in range 0-7</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Parser.Asset.Impl.Texture.BlendTileDataAsset.GetBlendInfo(System.Int32,System.Int32)">
+            <summary>
+            Retrieves blend information at a specific cell position.
+            </summary>
+            <param name="x">Cell X coordinate</param>
+            <param name="y">Cell Y coordinate</param>
+            <returns>BlendInfo object if blend exists, null otherwise</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Parser.Asset.Impl.Texture.BlendTileDataAsset.AddBlend(System.Int32,System.Int32,System.Int32,Dreamness.Ra3.Map.Parser.Asset.Impl.Texture.BlendInfo.BlendDirectionEnum)">
+            <summary>
+            Adds or updates a texture blend at the specified position.
+            Reuses existing BlendInfo if one exists with matching properties.
+            </summary>
+            <param name="x">Cell X coordinate</param>
+            <param name="y">Cell Y coordinate</param>
+            <param name="secondaryTextureIndex">Index of secondary texture</param>
+            <param name="direction">Blend direction flags</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Parser.Asset.Impl.Texture.BlendTileDataAsset.AddBlend(System.Int32,System.Int32,System.String,Dreamness.Ra3.Map.Parser.Asset.Impl.Texture.BlendInfo.BlendDirectionEnum,Dreamness.Ra3.Map.Parser.Core.Base.BaseContext)">
+            <summary>
+            Adds or updates a texture blend using texture name.
+            </summary>
+            <param name="x">Cell X coordinate</param>
+            <param name="y">Cell Y coordinate</param>
+            <param name="secondaryTextureName">Name of secondary texture</param>
+            <param name="direction">Blend direction flags</param>
+            <param name="context">Map context</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Parser.Asset.Impl.Texture.BlendTileDataAsset.RemoveBlend(System.Int32,System.Int32)">
+            <summary>
+            Removes blend at the specified position.
+            </summary>
+            <param name="x">Cell X coordinate</param>
+            <param name="y">Cell Y coordinate</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Parser.Asset.Impl.Texture.BlendTileDataAsset.AutoDetectBlend(System.Int32,System.Int32)">
+            <summary>
+            Analyzes neighboring cells and automatically applies appropriate blend.
+            Uses priority: corners with adjacent sides > sides > single diagonal corners.
+            </summary>
+            <param name="x">Cell X coordinate</param>
+            <param name="y">Cell Y coordinate</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Parser.Asset.Impl.Texture.BlendTileDataAsset.AutoDetectBlendsInRegion(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Applies auto-detect to a rectangular region.
+            </summary>
+            <param name="startX">Start X coordinate (inclusive)</param>
+            <param name="startY">Start Y coordinate (inclusive)</param>
+            <param name="endX">End X coordinate (exclusive)</param>
+            <param name="endY">End Y coordinate (exclusive)</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Parser.Asset.Impl.Texture.BlendTileDataAsset.AutoDetectBlendsEntireMap">
+            <summary>
+            Applies auto-detect to entire map (excluding 1-cell border).
+            </summary>
+        </member>
         <member name="M:Dreamness.Ra3.Map.Parser.Util.DictionaryExtension.Put``2(System.Collections.Generic.Dictionary{``0,``1},``0,``1)">
             <summary>
             Adds a key-value pair to the dictionary or updates the value if the key already exists.

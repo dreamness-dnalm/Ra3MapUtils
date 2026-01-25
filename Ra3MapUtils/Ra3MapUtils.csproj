@@ -85,6 +85,12 @@
       <None Include="data\nano_programs\COPY_TEAM\Main.cs">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Include="data\nano_programs\EXPORT_PLAYERDATA\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Include="data\nano_programs\IMPORT_PLAYERDATA\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
       <None Include="data\nano_programs\NAMED_UNIT_STAT\Main.cs">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
@@ -172,6 +178,48 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="data\nano_programs\STAT_TEXTURE\info.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\nano_programs\EXPORT_PLAYERDATA\info.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <Compile Remove="data\nano_programs\EXPORT_PLAYERDATA\Main.cs" />
+      <None Include="data\nano_programs\EXPORT_PLAYERDATA\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\nano_programs\IMPORT_PLAYERDATA\info.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <Compile Remove="data\nano_programs\IMPORT_PLAYERDATA\Main.cs" />
+      <None Include="data\nano_programs\IMPORT_PLAYERDATA\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\nano_programs\EXPORT_SCRIPTDATA\info.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <Compile Remove="data\nano_programs\EXPORT_SCRIPTDATA\Main.cs" />
+      <None Include="data\nano_programs\EXPORT_SCRIPTDATA\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\nano_programs\EXPORT_TEAMDATA\info.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <Compile Remove="data\nano_programs\EXPORT_TEAMDATA\Main.cs" />
+      <None Include="data\nano_programs\EXPORT_TEAMDATA\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\nano_programs\IMPORT_SCRIPTDATA\info.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <Compile Remove="data\nano_programs\IMPORT_SCRIPTDATA\Main.cs" />
+      <None Include="data\nano_programs\IMPORT_SCRIPTDATA\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <Compile Remove="data\nano_programs\IMPORT_TEAMDATA\Main.cs" />
+      <None Include="data\nano_programs\IMPORT_TEAMDATA\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\nano_programs\IMPORT_TEAMDATA\info.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

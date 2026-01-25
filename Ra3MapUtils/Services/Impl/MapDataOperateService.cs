@@ -21,6 +21,12 @@ public class MapDataOperateService: IMapDataOperateService
         return ra3MapFacade.ExportTeamsToJsonStr();
     }
 
+    public string ExportMapScriptsDataAsJsonStr(string sourceMapName)
+    {
+        var ra3MapFacade = Ra3MapFacade.Open(PathUtil.RA3MapFolder, sourceMapName);
+        return ra3MapFacade.ExportPlayerScriptsListToJsonStr();
+    }
+
     public void ImportMapPlayerDataFromJsonStr(string jsonStr, string targetMapName)
     {
         var ra3MapFacade = Ra3MapFacade.Open(PathUtil.RA3MapFolder, targetMapName);
@@ -32,6 +38,13 @@ public class MapDataOperateService: IMapDataOperateService
     {
         var ra3MapFacade = Ra3MapFacade.Open(PathUtil.RA3MapFolder, targetMapName);
         ra3MapFacade.ImportTeamsFromJsonStr(jsonStr);
+        ra3MapFacade.Save();
+    }
+
+    public void ImportMapScriptsDataFromJsonStr(string jsonStr, string targetMapName)
+    {
+        var ra3MapFacade = Ra3MapFacade.Open(PathUtil.RA3MapFolder, targetMapName);
+        ra3MapFacade.ImportPlayerScriptsListFromJsonStr(jsonStr);
         ra3MapFacade.Save();
     }
 }

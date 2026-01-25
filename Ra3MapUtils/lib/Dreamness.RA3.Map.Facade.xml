@@ -300,6 +300,70 @@
             <param name="tgaFileName"></param>
             <param name="nrmFileName"></param>
         </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetSubTilePosition(System.Int32,System.Int32)">
+            <summary>
+            获取纹理在8x8子瓦片网格中的位置
+            </summary>
+            <param name="x">网格X坐标</param>
+            <param name="y">网格Y坐标</param>
+            <returns>子瓦片坐标(subX, subY), 范围0-7</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetBlendInfo(System.Int32,System.Int32)">
+            <summary>
+            获取指定坐标的纹理混合信息
+            </summary>
+            <param name="x">网格X坐标</param>
+            <param name="y">网格Y坐标</param>
+            <returns>混合信息对象, 如果不存在混合则返回null</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddBlend(System.Int32,System.Int32,System.Int32,Dreamness.Ra3.Map.Parser.Asset.Impl.Texture.BlendInfo.BlendDirectionEnum)">
+            <summary>
+            添加或更新纹理混合（使用纹理索引）
+            </summary>
+            <param name="x">网格X坐标</param>
+            <param name="y">网格Y坐标</param>
+            <param name="secondaryTextureIndex">次要纹理索引</param>
+            <param name="direction">混合方向</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddBlend(System.Int32,System.Int32,System.String,Dreamness.Ra3.Map.Parser.Asset.Impl.Texture.BlendInfo.BlendDirectionEnum)">
+            <summary>
+            添加或更新纹理混合（使用纹理名称）
+            </summary>
+            <param name="x">网格X坐标</param>
+            <param name="y">网格Y坐标</param>
+            <param name="secondaryTextureName">次要纹理名称，参考TextureEnum</param>
+            <param name="direction">混合方向</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.RemoveBlend(System.Int32,System.Int32)">
+            <summary>
+            移除指定坐标的纹理混合
+            </summary>
+            <param name="x">网格X坐标</param>
+            <param name="y">网格Y坐标</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AutoDetectBlend(System.Int32,System.Int32)">
+            <summary>
+            自动检测并应用纹理混合（单个网格）
+            分析周围8个邻居，自动确定合适的混合方向
+            </summary>
+            <param name="x">网格X坐标</param>
+            <param name="y">网格Y坐标</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AutoDetectBlendsInRegion(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            自动检测并应用纹理混合（矩形区域）
+            </summary>
+            <param name="startX">起始X坐标（包含）</param>
+            <param name="startY">起始Y坐标（包含）</param>
+            <param name="endX">结束X坐标（不包含）</param>
+            <param name="endY">结束Y坐标（不包含）</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AutoDetectBlendsEntireMap">
+            <summary>
+            自动检测并应用纹理混合（整个地图）
+            会跳过地图边缘的1格边界
+            </summary>
+        </member>
         <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.SetPassability(System.Int32,System.Int32,System.String)">
             <summary>
             设置指定坐标的地形通行属性, 使用网格坐标
@@ -320,6 +384,85 @@
             <summary>
             根据高度信息, 更新地图的通行属性数据, 建议在修改完高度图后调用
             </summary>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetBlendDetailInfo(System.Int32,System.Int32)">
+            <summary>
+            获取指定位置的详细混合信息
+            </summary>
+            <param name="x">网格X坐标</param>
+            <param name="y">网格Y坐标</param>
+            <returns>详细混合信息，如果不存在混合则返回null</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetBlendDirectionInfo(Dreamness.Ra3.Map.Parser.Asset.Impl.Texture.BlendInfo.BlendDirectionEnum)">
+            <summary>
+            获取混合方向的友好名称和描述
+            </summary>
+            <param name="direction">混合方向枚举</param>
+            <returns>(英文名称, 中文描述)</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetAllBlendPositions">
+            <summary>
+            获取所有有混合的位置列表
+            </summary>
+            <returns>混合位置列表</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetBlendsInRegion(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            获取指定区域内的混合位置列表
+            </summary>
+            <param name="startX">起始X坐标（包含）</param>
+            <param name="startY">起始Y坐标（包含）</param>
+            <param name="endX">结束X坐标（不包含）</param>
+            <param name="endY">结束Y坐标（不包含）</param>
+            <returns>混合位置列表</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetBlendStatistics">
+            <summary>
+            获取地图的混合统计信息
+            </summary>
+            <returns>混合统计信息</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetTexturesInvolved(System.Int32,System.Int32)">
+            <summary>
+            获取某个位置涉及的纹理名称
+            </summary>
+            <param name="x">网格X坐标</param>
+            <param name="y">网格Y坐标</param>
+            <returns>(主纹理名称, 次要纹理名称)，如果没有混合则次要纹理为null</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetBlendsByTexturePair(System.String,System.String)">
+            <summary>
+            获取使用特定纹理对的所有混合位置
+            </summary>
+            <param name="primaryTextureName">主纹理名称</param>
+            <param name="secondaryTextureName">次要纹理名称</param>
+            <returns>混合位置列表</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetBlendMapSnapshot">
+            <summary>
+            获取整个地图的混合数据快照（用于可视化）
+            </summary>
+            <returns>混合地图快照</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetTotalBlendCount">
+            <summary>
+            获取总混合数量（有混合的网格数）
+            </summary>
+            <returns>混合网格数量</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetUniqueBlendInfoCount">
+            <summary>
+            获取唯一BlendInfo对象的数量
+            </summary>
+            <returns>BlendInfo数量</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.HasBlendAt(System.Int32,System.Int32)">
+            <summary>
+            检查指定位置是否有混合
+            </summary>
+            <param name="x">网格X坐标</param>
+            <param name="y">网格Y坐标</param>
+            <returns>true表示有混合，false表示无混合</returns>
         </member>
         <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.CameraGroundMinHeight">
             <summary>
@@ -344,6 +487,196 @@
         <member name="T:Dreamness.Ra3.Map.Facade.enums.TextureEnum">
             <summary>
             纹理枚举
+            </summary>
+        </member>
+        <member name="T:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo">
+            <summary>
+            纹理混合详细信息 - 用于地图编辑器展示
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.X">
+            <summary>
+            X坐标
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.Y">
+            <summary>
+            Y坐标
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.PrimaryTextureName">
+            <summary>
+            主纹理名称
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.SecondaryTextureName">
+            <summary>
+            次要纹理名称
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.PrimaryTextureIndex">
+            <summary>
+            主纹理索引
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.SecondaryTextureIndex">
+            <summary>
+            次要纹理索引
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.BlendDirection">
+            <summary>
+            混合方向
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.BlendDirectionName">
+            <summary>
+            混合方向名称（英文）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.BlendDirectionDescription">
+            <summary>
+            混合方向描述（中文）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.SecondaryTextureTile">
+            <summary>
+            次要纹理瓦片索引
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.SubTileX">
+            <summary>
+            子瓦片X坐标（0-7）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.SubTileY">
+            <summary>
+            子瓦片Y坐标（0-7）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.MagicI3">
+            <summary>
+            魔数字段I3（通常为0xFFFFFFFF）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.MagicI4">
+            <summary>
+            魔数字段I4（通常为0x7ACDCD00）
+            </summary>
+        </member>
+        <member name="T:Dreamness.Ra3.Map.Facade.Models.BlendStatistics">
+            <summary>
+            纹理混合统计信息
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendStatistics.TotalBlendCount">
+            <summary>
+            总混合数量
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendStatistics.UniqueBlendInfoCount">
+            <summary>
+            唯一的BlendInfo对象数量
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendStatistics.BlendsByDirection">
+            <summary>
+            按混合方向分类的统计（方向名称 -> 数量）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendStatistics.BlendsByTexturePair">
+            <summary>
+            按纹理对分类的统计（"主纹理-次要纹理" -> 数量）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendStatistics.TexturesInvolved">
+            <summary>
+            涉及混合的纹理列表
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendStatistics.BlendCoveragePercentage">
+            <summary>
+            混合覆盖率（有混合的网格数/总网格数）
+            </summary>
+        </member>
+        <member name="T:Dreamness.Ra3.Map.Facade.Models.BlendPosition">
+            <summary>
+            混合位置信息（轻量级）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendPosition.X">
+            <summary>
+            X坐标
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendPosition.Y">
+            <summary>
+            Y坐标
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendPosition.Direction">
+            <summary>
+            混合方向
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendPosition.BlendInfoIndex">
+            <summary>
+            BlendInfo在列表中的索引（0-based）
+            </summary>
+        </member>
+        <member name="T:Dreamness.Ra3.Map.Facade.Models.BlendMapSnapshot">
+            <summary>
+            混合地图快照数据 - 用于可视化
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendMapSnapshot.Width">
+            <summary>
+            地图宽度
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendMapSnapshot.Height">
+            <summary>
+            地图高度
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendMapSnapshot.BlendIndices">
+            <summary>
+            混合索引数组（0表示无混合，非0表示BlendInfo索引+1）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendMapSnapshot.PrimaryTextureIndices">
+            <summary>
+            主纹理索引数组
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendMapSnapshot.BlendInfos">
+            <summary>
+            所有BlendInfo的快照
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendMapSnapshot.TextureNames">
+            <summary>
+            纹理名称列表（索引对应纹理索引）
+            </summary>
+        </member>
+        <member name="T:Dreamness.Ra3.Map.Facade.Models.BlendInfoSnapshot">
+            <summary>
+            BlendInfo快照（简化版本）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendInfoSnapshot.SecondaryTextureIndex">
+            <summary>
+            次要纹理索引
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendInfoSnapshot.Direction">
+            <summary>
+            混合方向
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendInfoSnapshot.SecondaryTextureTile">
+            <summary>
+            次要纹理瓦片索引
             </summary>
         </member>
         <member name="T:Dreamness.Ra3.Map.Facade.Util.Ra3PathUtil">

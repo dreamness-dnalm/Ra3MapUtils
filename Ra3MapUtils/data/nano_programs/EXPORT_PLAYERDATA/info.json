@@ -1,0 +1,6 @@
+{
+    "ID": "006d8202-c64e-44be-8332-7262015bffd6",
+    "Name": "导出玩家数据JSON",
+    "Description": "可以导出玩家数据为PlayersData.json文件，方便修改和导入。",
+    "Author": "dreamness"
+}

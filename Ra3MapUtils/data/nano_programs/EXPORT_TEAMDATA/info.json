@@ -1,0 +1,6 @@
+{
+    "ID": "63d36e8a-b73b-46e6-a754-748f91b774d3",
+    "Name": "导出队伍数据JSON",
+    "Description": "可以导出队伍数据为TeamsData.json文件，方便修改和导入。",
+    "Author": "dreamness"
+}

@@ -1,0 +1,6 @@
+{
+    "ID": "0ef9846a-3cf7-4449-806c-95470c02c0ea",
+    "Name": "导入队伍数据JSON",
+    "Description": "可以从TeamsData.json文件导入并覆盖队伍配置。",
+    "Author": "dreamness"
+}
