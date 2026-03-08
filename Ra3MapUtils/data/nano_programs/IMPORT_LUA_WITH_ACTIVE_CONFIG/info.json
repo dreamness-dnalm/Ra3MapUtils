@@ -1,0 +1,6 @@
+{
+    "ID": "c98978bb-52b4-4f58-90f2-b817b8b8350b",
+    "Name": "导入LUA脚本,使用当前配置",
+    "Description": "根据正在活跃的配置,导入LUA脚本",
+    "Author": "dreamness"
+}

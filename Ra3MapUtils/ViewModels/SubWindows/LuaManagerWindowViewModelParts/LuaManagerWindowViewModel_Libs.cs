@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using Ra3MapUtils.Models;
 using Ra3MapUtils.Services.Interface;
+using Ra3MapUtils.Utils;
 
 namespace Ra3MapUtils.ViewModels;
 
@@ -29,7 +30,7 @@ public partial class LuaManagerWindowViewModel
             orderNum = _luaLibConfigs.Max(o => o.OrderNum) + 1;
         }
 
-        var model = new LuaLibConfigModel(_mapName, "lib_" + (_luaLibConfigs.Count + 1), "", orderNum, true);
+        var model = new LuaLibConfigModel(_mapFilePath, "lib_" + (_luaLibConfigs.Count + 1), "", orderNum, true);
         _luaImportService.SaveMapLuaLibConfig(model);
         LuaLibConfigs.Add(model);
         SelectedLuaLibConfig = model;
@@ -175,6 +176,16 @@ public partial class LuaManagerWindowViewModel
         _luaLibConfigs[index + 1].Upsert();
         
         _luaLibConfigs.Move(index, index + 1);
+    }
+
+    [RelayCommand]
+    private void DoImport()
+    {
+        if(_luaLibConfigs.Count == 0)
+        {
+            return;
+        }
+        MapLuaImporterUtil.ImportLuaWithActiveConfig(_mapFilePath);
     }
 
     // [RelayCommand]

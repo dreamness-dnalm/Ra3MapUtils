@@ -16,21 +16,28 @@ public partial class LuaManagerWindowViewModel: ObservableObject
     private readonly ILuaImportService _luaImportService = App.Current.Services.GetRequiredService<ILuaImportService>();
     
     [ObservableProperty] private string _mapName = "";
+    
+    [ObservableProperty] private string _mapFilePath = "";
 
     [ObservableProperty] private string _windowTitle = "";
     
-    partial void OnMapNameChanged(string value)
+    partial void OnMapFilePathChanged(string value)
     {
-        WindowTitle = $"Lua导入工具 - {value}";
         _luaLibConfigs.Clear();
         _luaImportService.LoadMapLuaLibConfig(value)
             .ForEach(o => _luaLibConfigs.Add(o));
+    }
+
+    partial void OnMapNameChanged(string value)
+    {
+        WindowTitle = $"Lua导入工具 - {value}";
     }
 
     [RelayCommand]
     private void Closed()
     {
         GlobalVarsModel.SetLuaManagerWindowOpenedMapName(null);
+        GlobalVarsModel.SetLuaManagerWindowOpenedMapFilePath(null);
         GlobalVarsModel.LuaManagerWindowOpened = false;
     }
     

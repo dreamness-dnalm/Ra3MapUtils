@@ -375,9 +375,12 @@ public partial class MapManagePageViewModel: ObservableObject
         var luaManagerWindow = App.Current.Services.GetRequiredService<LuaManagerWindow>();
         
         luaManagerWindow._luaManagerWindowViewModel.MapName = _selectedMap;
+        luaManagerWindow._luaManagerWindowViewModel.MapFilePath =
+            Path.Combine(PathUtil.RA3MapFolder, _selectedMap, _selectedMap + ".map");
         luaManagerWindow.Show();
         GlobalVarsModel.LuaManagerWindowOpened = true;
         GlobalVarsModel.SetLuaManagerWindowOpenedMapName(_selectedMap);
+        GlobalVarsModel.SetLuaManagerWindowOpenedMapFilePath(luaManagerWindow._luaManagerWindowViewModel.MapFilePath);
     }
     
     [RelayCommand]

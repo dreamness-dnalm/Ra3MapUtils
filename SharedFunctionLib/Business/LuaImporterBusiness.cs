@@ -34,6 +34,23 @@ public static class LuaImporterBusiness
         }
     }
     
+    public static string? ActiveMapFilePath
+    {
+        get => SettingsDAO.GetSetting("LuaImporter_ActiveMapFilePath");
+        set
+        {
+            if (value == null)
+            {
+                SettingsDAO.DeleteSetting("LuaImporter_ActiveMapFilePath");
+            }
+            else
+            {
+                SettingsDAO.SetSetting("LuaImporter_ActiveMapName", value);
+            }
+            
+        }
+    }
+    
     public static int LuaRedundancyFactor
     {
         get
@@ -63,6 +80,17 @@ public static class LuaImporterBusiness
         Logger.WriteLog("LoadLuaLibConfigModels Finished.");
         return luaLibConfigModels;
     }
+    
+    public static List<SimpleLuaLibConfigModel> LoadLuaLibConfigModels(string mapName)
+    {
+        Logger.WriteLog("ActiveMapName: " + mapName);
+        var luaLibConfigModels = Load(mapName)
+            .Where(i => i.LibPath != null && i.LibPath != "")
+            .OrderBy(i => i.OrderNum).ToList();
+        Logger.WriteLog("LoadLuaLibConfigModels Finished.");
+        return luaLibConfigModels;
+    }
+    
     
     public static void Save(string mapName, string showingName, string libPath, int orderNum, bool isEnabled)
     {

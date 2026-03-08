@@ -49,7 +49,7 @@
         </ui:TitleBar>
             <StackPanel Grid.Row="1" Orientation="Vertical" Margin="5, 0, 5, 5">
                 <ui:HyperlinkButton Content="使用文档及常见错误" NavigateUri="https://www.yuque.com/muzeqaq/ra3mapwiki/ofa6ufyd9pmwwgnm" Icon="{ui:SymbolIcon Document20}"/>
-                <ui:InfoBar Message="导入的文件夹, 路径, 以及lua文件名, 请不要包含中中文, 否则会损坏地图文件." IsOpen="True"  /> 
+                <ui:InfoBar Message="建议将新地编更新至21或更新, 使用`地编伴侣`菜单中`导入LUA脚本`选项; 旧方案依旧可用,但不推荐,会择时下线." IsOpen="True"  /> 
             </StackPanel>
             
         <Grid Grid.Row="2" >
@@ -97,6 +97,11 @@
                         ToolTip="向下移动"
                         Icon="{ui:SymbolIcon ArrowDown20}"
                         Command="{Binding DownPositionLuaLibConfigCommand}"
+                    />
+                    <ui:MenuItem
+                        ToolTip="开始导入"
+                        Icon="{ui:SymbolIcon TriangleRight20}"
+                        Command="{Binding DoImportCommand}"
                     />
                 </Menu>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">

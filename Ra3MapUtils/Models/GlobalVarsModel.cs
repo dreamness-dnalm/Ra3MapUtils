@@ -14,6 +14,11 @@ public static class GlobalVarsModel
     
     public static bool TerrainTransWindowOpened { get; set; } = false;
 
+    public static void SetLuaManagerWindowOpenedMapFilePath(string mapFilePath)
+    {
+        LuaImporterBusiness.ActiveMapFilePath = mapFilePath;
+    }
+
     public static void SetLuaManagerWindowOpenedMapName(string mapName)
     {
         LuaImporterBusiness.ActiveMapName = mapName;
