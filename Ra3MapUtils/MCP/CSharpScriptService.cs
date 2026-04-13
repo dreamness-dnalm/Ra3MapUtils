@@ -33,11 +33,11 @@ public class CSharpScriptService
     }
     
     
-    [McpServerTool, Description("获取用于操作Ra3地图的CSharp库的文档")]
-    public static string GetLibDocument()
-    {
-        return File.ReadAllText("data/RA3_MapLib_AI_Guide.md");
-    }
+    // [McpServerTool, Description("获取用于操作Ra3地图的CSharp库的文档")]
+    // public static string GetLibDocument()
+    // {
+    //     return File.ReadAllText("data/RA3_MapLib_AI_Guide.md");
+    // }
     
     [McpServerTool, Description("查询CSharp程序集的类结构")]
     public object GetLibStructure(string assemblyName)
