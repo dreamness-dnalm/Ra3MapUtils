@@ -15,13 +15,32 @@
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       mc:Ignorable="d"
       Title="AIPage" Height="450" Width="800">
-    <Grid>
-        <StackPanel Orientation="Vertical" Margin="5,5,5,5">
-            <TextBlock Margin="0,0,0,0">MCP接入点: http://127.0.0.1:30033/mcp</TextBlock>
-            <TextBlock>类型: streamable http</TextBlock>
-            <ui:HyperlinkButton NavigateUri="https://www.yuque.com/muzeqaq/ra3mapwiki/gvdnzevp57yfqu6k">接入与使用文档</ui:HyperlinkButton>
-        </StackPanel>
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-        
+        <ui:CardControl Grid.Row="0">
+            <ui:CardControl.Header>
+                <TextBlock Text="MCP 服务"/>
+            </ui:CardControl.Header>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="0,0,0,4">MCP 接入点: http://127.0.0.1:30033/mcp</TextBlock>
+                <TextBlock Margin="0,0,0,8">传输类型: streamable http</TextBlock>
+                <ui:HyperlinkButton NavigateUri="https://www.yuque.com/muzeqaq/ra3mapwiki/gvdnzevp57yfqu6k">MCP 接入文档</ui:HyperlinkButton>
+            </StackPanel>
+        </ui:CardControl>
+
+        <ui:CardControl Grid.Row="2">
+            <ui:CardControl.Header>
+                <TextBlock Text="HTTP API 服务"/>
+            </ui:CardControl.Header>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="0,0,0,8">文档地址: http://localhost:30033/swagger</TextBlock>
+                <ui:HyperlinkButton NavigateUri="http://localhost:30033/swagger">HTTP API 接口文档（Swagger）</ui:HyperlinkButton>
+            </StackPanel>
+        </ui:CardControl>
     </Grid>
 </Page>

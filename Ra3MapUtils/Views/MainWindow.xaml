@@ -95,7 +95,7 @@
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
                     <ui:NavigationViewItem
-                        Content="大模型"
+                        Content="服务"
                         TargetPageTag="AIPage"
                         TargetPageType="{x:Type mainWindowPages:AIPage}"
                     >

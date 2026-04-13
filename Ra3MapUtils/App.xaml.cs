@@ -1,9 +1,11 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using Ra3MapUtils.Services.Controls;
 using Ra3MapUtils.Services.Impl;
 using Ra3MapUtils.Services.Interface;
@@ -155,7 +157,22 @@ public partial class App : Application
 
         // builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "RA3地编伴侣 HTTP API 接口文档",
+                Version = "v1",
+                Description = "RA3地编伴侣本地 HTTP API 文档，包含状态检测、Lua4 语法检查、C# 脚本执行与微程序调用等接口。"
+            });
+
+            var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFileName);
+            if (File.Exists(xmlPath))
+            {
+                options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+            }
+        });
         builder.Services.AddMcpServer()
             .WithHttpTransport()
             .WithToolsFromAssembly();
