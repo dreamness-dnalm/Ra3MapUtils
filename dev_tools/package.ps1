@@ -50,7 +50,7 @@ vpk pack `
 --mainExe Ra3MapUtils.exe `
 --outputDir $packageOutPath `
 --delta BestSize `
-$(if (Test-Path $releaseNotesPath) { "--releaseNotes $releaseNotesPath" }) `
+--releaseNotes $releaseNotesPath `
 --framework net8.0-x64-sdk
 # --noInst
 ##--icon {path}
