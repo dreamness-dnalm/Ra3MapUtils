@@ -29,49 +29,4 @@ public class MapFileService
         MapFileHelper.Move(sourceMapName, targetMapName);
     }
     
-    // [McpServerTool, Description("获取ra3地图尺寸")]
-    // public static (int width, int height, int border, int playableWidth, int playableHeight) GetMapSize(string mapName)
-    // {
-    //     var ra3map = Ra3MapFacade.Open(Ra3PathUtil.RA3MapFolder, mapName);
-    //     
-    //     return (ra3map.MapWidth, ra3map.MapHeight, ra3map.MapBorderWidth
-    //         , ra3map.MapPlayableWidth, ra3map.MapPlayableHeight);
-    // }
-    //
-    // [McpServerTool, Description("在ra3地图上放置路径点, 返回路径点名称")]
-    // public static string PlaceWaypointsOnMap(string mapName, float x, float y, string name=null)
-    // {
-    //     var ra3map = Ra3MapFacade.Open(Ra3PathUtil.RA3MapFolder, mapName);
-    //     if (name == null)
-    //     {
-    //         var waypointWrap = ra3map.AddWaypoint(x, y);
-    //         name = waypointWrap.WaypointName;
-    //     }
-    //     else
-    //     {
-    //         ra3map.AddWaypoint(name, x, y);
-    //     }
-    //     
-    //     ra3map.Save();
-    //     
-    //     return name;
-    // }
-    //
-    // [McpServerTool, Description("在ra3地图上移除路径点,物体")]
-    // public static void RemoveWaypointsOnMap(string mapName, string name)
-    // {
-    //     var ra3map = Ra3MapFacade.Open(Ra3PathUtil.RA3MapFolder, mapName);
-    //     ra3map.Remove(name);
-    //     ra3map.Save();
-    // }
-    //
-    // [McpServerTool, Description("设置ra3路径点的位置")]
-    // public static void SetWaypointPositionOnMap(string mapName, string name, float x, float y)
-    // {
-    //     var ra3map = Ra3MapFacade.Open(Ra3PathUtil.RA3MapFolder, mapName);
-    //     var waypointWrap = ra3map.GetWaypoints().First(w => w.WaypointName == name);
-    //     waypointWrap.Position = new Vec3D(x, y, waypointWrap.Position.Z);
-    //     ra3map.Save();
-    // }
-    
 }
