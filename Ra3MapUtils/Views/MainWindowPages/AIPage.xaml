@@ -38,8 +38,8 @@
                 <TextBlock Text="HTTP API 服务"/>
             </ui:CardControl.Header>
             <StackPanel Orientation="Vertical">
-                <TextBlock Margin="0,0,0,8">文档地址: http://localhost:30033/swagger</TextBlock>
-                <ui:HyperlinkButton NavigateUri="http://localhost:30033/swagger">HTTP API 接口文档（Swagger）</ui:HyperlinkButton>
+                <TextBlock Margin="0,0,0,8">文档地址: http://127.0.0.1:30033/swagger</TextBlock>
+                <ui:HyperlinkButton NavigateUri="http://127.0.0.1:30033/swagger">HTTP API 接口文档（Swagger）</ui:HyperlinkButton>
             </StackPanel>
         </ui:CardControl>
     </Grid>
