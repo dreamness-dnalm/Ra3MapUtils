@@ -22,7 +22,7 @@ dotnet build Ra3MapUtils.sln -c Release
 # Run from the main project directory
 dotnet run --project Ra3MapUtils/Ra3MapUtils.csproj
 ```
-
+ 
 ### Package for Release
 ```powershell
 # Package using Velopack (requires vpk CLI and 7z)
