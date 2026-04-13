@@ -2,12 +2,12 @@ $toolPath = Split-Path -parent $MyInvocation.MyCommand.Definition
 
 $compileType = "Release" # Debug / Release
 $projectPath = "$toolPath\..\Ra3MapUtils"
-$version = Get-Content -Path "$projectPath\VERSION" -Raw
+$version = (Get-Content -Path "$projectPath\VERSION" -Raw).Trim()
 $projectFilePath = "$projectPath\Ra3MapUtils.csproj"
 $buildOutPath = "$toolPath\.cache\$compileType"
 $packageOutPath = "$toolPath\publish\v$version"
 $releaseNotesPath = "$toolPath\..\doc\release_notes\RELEASE_v$version.md"
-$softwareName = "RA3µØ±à°éÂÂ"
+$softwareName = "RA3ï¿½Ø±ï¿½ï¿½ï¿½ï¿½"
 $vpkPackId = "Ra3MapUtils"
 
 # ----------- build ------------
@@ -24,7 +24,7 @@ dotnet publish `
     -r win-x64 `
     -o $buildOutPath
 
-# Êä³ö
+# ï¿½ï¿½ï¿½
 if ($LASTEXITCODE -eq 0) {
     Write-Host "Build success, output path: $buildOutPath" -ForegroundColor Blue -BackgroundColor Gray
 } else {
@@ -50,7 +50,7 @@ vpk pack `
 --mainExe Ra3MapUtils.exe `
 --outputDir $packageOutPath `
 --delta BestSize `
---releaseNotes $releaseNotesPath `
+$(if (Test-Path $releaseNotesPath) { "--releaseNotes $releaseNotesPath" }) `
 --framework net8.0-x64-sdk
 # --noInst
 ##--icon {path}
@@ -63,18 +63,18 @@ Remove-Item -Recurse -Force "$packageOutPath\assets.win.json"
 Remove-Item -Recurse -Force "$packageOutPath\$softwareName\.portable"
 Remove-Item -Recurse -Force "$packageOutPath\$vpkPackId-win-Portable.zip"
 
-# Ð´ÎÄ±¾µ½$packageOutPath\$softwareName\Èç¹ûÔËÐÐÊ§°ÜÇëÔÄ¶Á±¾ÎÄ¼þ.txt 
-# ÎÄ±¾ÄÚÈÝÎª: Èç¹û±¨´í: You must install or update .NET to run this application.
-#¡¡ÇëÏÂÔØ²¢°²×°£º¡¡https://builds.dotnet.microsoft.com/dotnet/Sdk/8.0.415/dotnet-sdk-8.0.415-win-x64.exe
-# ¿ÉÈëQQÈº»ñÈ¡°ïÖú:  513118543  /  613550502
-# ¿É²Î¿¼ÔÚÏß°ïÖúÎÄµµ: https://www.yuque.com/muzeqaq/ra3mapwiki/vppua7qbrig4emxd
+# Ð´ï¿½Ä±ï¿½ï¿½ï¿½$packageOutPath\$softwareName\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½.txt 
+# ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½Îª: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: You must install or update .NET to run this application.
+#ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø²ï¿½ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½https://builds.dotnet.microsoft.com/dotnet/Sdk/8.0.415/dotnet-sdk-8.0.415-win-x64.exe
+# ï¿½ï¿½ï¿½ï¿½QQÈºï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½:  513118543  /  613550502
+# ï¿½É²Î¿ï¿½ï¿½ï¿½ï¿½ß°ï¿½ï¿½ï¿½ï¿½Äµï¿½: https://www.yuque.com/muzeqaq/ra3mapwiki/vppua7qbrig4emxd
 
-Set-Content -Path "$packageOutPath\$softwareName\Èç¹ûÔËÐÐÊ§°ÜÇëÔÄ¶Á±¾ÎÄ¼þ.txt" -Value "Èç¹û±¨´í: You must install or update .NET to run this application.`r`nÇëÏÂÔØ²¢°²×°£º¡¡https://builds.dotnet.microsoft.com/dotnet/Sdk/8.0.415/dotnet-sdk-8.0.415-win-x64.exe`r`n¿ÉÈëQQÈº»ñÈ¡°ïÖú:  513118543  /  613550502`r`n¿É²Î¿¼ÔÚÏß°ïÖúÎÄµµ: https://www.yuque.com/muzeqaq/ra3mapwiki/vppua7qbrig4emxd" -Encoding UTF8
+Set-Content -Path "$packageOutPath\$softwareName\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½.txt" -Value "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: You must install or update .NET to run this application.`r`nï¿½ï¿½ï¿½ï¿½ï¿½Ø²ï¿½ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½https://builds.dotnet.microsoft.com/dotnet/Sdk/8.0.415/dotnet-sdk-8.0.415-win-x64.exe`r`nï¿½ï¿½ï¿½ï¿½QQÈºï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½:  513118543  /  613550502`r`nï¿½É²Î¿ï¿½ï¿½ï¿½ï¿½ß°ï¿½ï¿½ï¿½ï¿½Äµï¿½: https://www.yuque.com/muzeqaq/ra3mapwiki/vppua7qbrig4emxd" -Encoding UTF8
 
 7z a -t7z "$packageOutPath\$vpkPackId-v$version-Portable.7z" "$packageOutPath\$softwareName" -mx=9
 #Remove-Item -Recurse -Force "$packageOutPath\$softwareName"
 
-# Êä³ö
+# ï¿½ï¿½ï¿½
 if ($LASTEXITCODE -eq 0) {
     Write-Host "Pack success, output path: $packageOutPath" -ForegroundColor Blue -BackgroundColor Gray
 } else {
