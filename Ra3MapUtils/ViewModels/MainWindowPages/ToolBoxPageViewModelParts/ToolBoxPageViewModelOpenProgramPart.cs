@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using System.Windows.Forms;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -18,10 +18,27 @@ public partial class ToolBoxPageViewModel: ObservableObject
             return;
         }
 
-        var path = Path.Combine(Path.GetDirectoryName(NewWorldBuilderBusiness.NewWorldBuilderPath), "game", "WuRa3GameDebug.exe");
-        ProgramUtil.Run(path);
+        var newWorldBuilderDirectory = Path.GetDirectoryName(NewWorldBuilderBusiness.NewWorldBuilderPath);
+        if (string.IsNullOrWhiteSpace(newWorldBuilderDirectory))
+        {
+            MessageBox.Show("请先配置新地编路径");
+            return;
+        }
+
+        var path = Path.Combine(newWorldBuilderDirectory, "game", "WuRa3GameDebug.exe");
+        if (!File.Exists(path))
+        {
+            MessageBox.Show("调试工具不存在: " + path);
+            return;
+        }
+
+        var executableDirectory = Path.GetDirectoryName(path);
+        if (string.IsNullOrWhiteSpace(executableDirectory))
+        {
+            MessageBox.Show("调试工具目录无效: " + path);
+            return;
+        }
+
+        _ = ProgramUtil.Run(path, executableDirectory);
     }
-    
-    
-    
 }
