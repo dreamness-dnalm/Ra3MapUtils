@@ -61,6 +61,40 @@
                     Margin="4,4,4,4"
                     Padding="0"
                     VerticalAlignment="Stretch"
+                    Command="{Binding OpenNewWorldBuilderDebugProgramCommand}"
+                    IsChevronVisible="False"
+                    Visibility="Visible">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Image
+                            Width="60"
+                            Margin="24,0,0,0"
+                            Source="pack://application:,,,/data/imgs/new_world_builder_debug_icon.png" />
+
+                        <StackPanel
+                            Grid.Column="1"
+                            Margin="24"
+                            VerticalAlignment="Center">
+                            <ui:TextBlock
+                                Margin="0"
+                                FontTypography="BodyStrong"
+                                Text="打开调试工具"
+                                TextWrapping="WrapWithOverflow" />
+                            <ui:TextBlock
+                                Appearance="Secondary"
+                                Text="新地编调试工具"
+                                TextWrapping="WrapWithOverflow" />
+                        </StackPanel>
+                    </Grid>
+                </ui:CardAction>
+                <ui:CardAction
+                    Margin="4,4,4,4"
+                    Padding="0"
+                    VerticalAlignment="Stretch"
                     Command="{Binding OpenChatLuaHelperWindowCommand}"
                     IsChevronVisible="False" Visibility="Visible">
                     <Grid>
