@@ -1,8 +1,10 @@
+using System.IO;
 using System.Windows.Forms;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using Ra3MapUtils.Models;
+using Ra3MapUtils.ViewModels.toolbox;
 using Ra3MapUtils.Views.SubWindows.toolbox;
 using SharedFunctionLib.Business;
 
@@ -54,6 +56,58 @@ public partial class ToolBoxPageViewModel: ObservableObject
         }
         
         GlobalVarsModel.ChatLuaHelperWindowOpened = true;
+    }
+
+    [RelayCommand]
+    private void OpenMapDataEditorWindow()
+    {
+        var openFileDialog = new OpenFileDialog
+        {
+            Title = "选择地图数据文件",
+            Filter = "地图数据文件|*.map;*.scb;*.bin",
+            Multiselect = false
+        };
+
+        if (openFileDialog.ShowDialog() != DialogResult.OK)
+        {
+            return;
+        }
+
+        var filePath = openFileDialog.FileName;
+        if (!File.Exists(filePath))
+        {
+            MessageBox.Show("文件不存在: " + filePath);
+            return;
+        }
+
+        var extension = Path.GetExtension(filePath).ToLowerInvariant();
+        if (extension is not (".map" or ".scb" or ".bin"))
+        {
+            MessageBox.Show("不支持的文件类型: " + extension);
+            return;
+        }
+
+        var mapDataEditorWindowViewModel = App.Current.Services.GetRequiredService<MapDataEditorWindowViewModel>();
+        if (!mapDataEditorWindowViewModel.LoadMapDataFromFile(filePath))
+        {
+            return;
+        }
+
+        if (GlobalVarsModel.MapDataEditorWindowOpened)
+        {
+            if (mapDataEditorWindowViewModel._mapDataEditorWindow is not null &&
+                mapDataEditorWindowViewModel._mapDataEditorWindow.IsVisible)
+            {
+                mapDataEditorWindowViewModel.TryActivateWindow();
+                return;
+            }
+
+            GlobalVarsModel.MapDataEditorWindowOpened = false;
+        }
+
+        var mapDataEditorWindow = App.Current.Services.GetRequiredService<MapDataEditorWindow>();
+        mapDataEditorWindow.Show();
+        GlobalVarsModel.MapDataEditorWindowOpened = true;
     }
 
     [RelayCommand]
