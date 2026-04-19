@@ -291,6 +291,8 @@
       <Resource Include="data\imgs\SymmetryTransform_11.png" />
       <None Remove="data\imgs\icon.png" />
       <Resource Include="data\imgs\icon.png" />
+      <None Remove="data\imgs\map_data_editor_icon.png" />
+      <Resource Include="data\imgs\map_data_editor_icon.png" />
       <None Remove="data\imgs\new_world_builder_debug_icon.png" />
       <Resource Include="data\imgs\new_world_builder_debug_icon.png" />
     </ItemGroup>

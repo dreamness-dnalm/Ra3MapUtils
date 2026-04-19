@@ -7,6 +7,12 @@ public class MapDataAssetDetailFieldItem
     public string Label { get; set; } = "";
 
     public string Value { get; set; } = "-";
+
+    public bool IsGroup { get; set; }
+
+    public bool IsExpanded { get; set; }
+
+    public ObservableCollection<MapDataAssetDetailFieldItem> Children { get; } = new();
 }
 
 public class MapDataAssetDetailModel

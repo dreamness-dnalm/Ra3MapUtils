@@ -189,7 +189,7 @@
                         <Image
                             Width="60"
                             Margin="24,0,0,0"
-                            Source="pack://application:,,,/data/imgs/icon.png" />
+                            Source="pack://application:,,,/data/imgs/map_data_editor_icon.png" />
 
                         <StackPanel
                             Grid.Column="1"
@@ -202,7 +202,7 @@
                                 TextWrapping="WrapWithOverflow" />
                             <ui:TextBlock
                                 Appearance="Secondary"
-                                Text="选择 map/scb/bin 并查看 Context.AssetDict"
+                                Text="解析地图数据"
                                 TextWrapping="WrapWithOverflow" />
                         </StackPanel>
                     </Grid>

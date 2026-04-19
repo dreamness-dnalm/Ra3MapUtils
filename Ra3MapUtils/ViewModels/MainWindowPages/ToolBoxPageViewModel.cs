@@ -1,4 +1,6 @@
+using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -7,6 +9,9 @@ using Ra3MapUtils.Models;
 using Ra3MapUtils.ViewModels.toolbox;
 using Ra3MapUtils.Views.SubWindows.toolbox;
 using SharedFunctionLib.Business;
+using MessageBox = System.Windows.Forms.MessageBox;
+using WpfApplication = System.Windows.Application;
+using WpfWindow = System.Windows.Window;
 
 namespace Ra3MapUtils.ViewModels.MainWindowPages;
 
@@ -87,27 +92,58 @@ public partial class ToolBoxPageViewModel: ObservableObject
             return;
         }
 
-        var mapDataEditorWindowViewModel = App.Current.Services.GetRequiredService<MapDataEditorWindowViewModel>();
-        if (!mapDataEditorWindowViewModel.LoadMapDataFromFile(filePath))
+        var normalizedFilePath = TryNormalizePath(filePath);
+        if (normalizedFilePath is null)
+        {
+            MessageBox.Show("Failed to normalize path: " + filePath);
+            return;
+        }
+
+        var existingWindow = WpfApplication.Current.Windows
+            .OfType<MapDataEditorWindow>()
+            .FirstOrDefault(window => IsMapDataEditorWindowForPath(window, normalizedFilePath));
+        if (existingWindow is not null)
+        {
+            ActivateWindow(existingWindow);
+            return;
+        }
+
+        var mapDataEditorWindow = App.Current.Services.GetRequiredService<MapDataEditorWindow>();
+        if (!mapDataEditorWindow._mapDataEditorWindowViewModel.LoadMapDataFromFile(filePath))
         {
             return;
         }
 
-        if (GlobalVarsModel.MapDataEditorWindowOpened)
-        {
-            if (mapDataEditorWindowViewModel._mapDataEditorWindow is not null &&
-                mapDataEditorWindowViewModel._mapDataEditorWindow.IsVisible)
-            {
-                mapDataEditorWindowViewModel.TryActivateWindow();
-                return;
-            }
+        mapDataEditorWindow.Show();
+    }
 
-            GlobalVarsModel.MapDataEditorWindowOpened = false;
+    private static bool IsMapDataEditorWindowForPath(MapDataEditorWindow window, string normalizedFilePath)
+    {
+        var existingPath = TryNormalizePath(window._mapDataEditorWindowViewModel.FilePath);
+        return existingPath is not null &&
+               string.Equals(existingPath, normalizedFilePath, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static string? TryNormalizePath(string path)
+    {
+        try
+        {
+            return Path.GetFullPath(path);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private static void ActivateWindow(WpfWindow window)
+    {
+        if (window.WindowState == System.Windows.WindowState.Minimized)
+        {
+            window.WindowState = System.Windows.WindowState.Normal;
         }
 
-        var mapDataEditorWindow = App.Current.Services.GetRequiredService<MapDataEditorWindow>();
-        mapDataEditorWindow.Show();
-        GlobalVarsModel.MapDataEditorWindowOpened = true;
+        window.Activate();
     }
 
     [RelayCommand]
@@ -116,3 +152,4 @@ public partial class ToolBoxPageViewModel: ObservableObject
         MessageBox.Show("欢迎加入QQ群: 513118543");
     }
 }
+

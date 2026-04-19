@@ -21,7 +21,8 @@
                  ExtendsContentIntoTitleBar="True"
                  WindowBackdropType="Mica"
                  WindowCornerPreference="Round"
-                 WindowStyle="SingleBorderWindow">
+                 WindowStyle="SingleBorderWindow"
+                 Topmost="{Binding IsTopmost}">
 
     <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="Closed">
@@ -36,7 +37,15 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ui:TitleBar Grid.Row="0" Title="地图数据编辑器" ShowMaximize="True"/>
+        <Grid Grid.Row="0" Margin="10,5,10,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ui:ToggleSwitch Grid.Column="0" Margin="0,0,10,0" Content="置顶" IsChecked="{Binding IsTopmost}"/>
+            <ui:TitleBar Grid.Column="1" Title="地图数据编辑器" ShowMaximize="True"/>
+        </Grid>
 
         <Grid Grid.Row="1" Margin="15,0,15,10">
             <Grid.RowDefinitions>
@@ -78,7 +87,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Margin="10,8,10,8" Text="玩家列表" FontWeight="Bold"/>
+                    <TextBlock Grid.Row="0" Margin="10,8,10,8" Text="数据树" FontWeight="Bold"/>
 
                     <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                         <TreeView ItemsSource="{Binding AssetTree}" Margin="8">
@@ -126,8 +135,8 @@
                             <TextBlock Text="{Binding SelectedAssetDetail.Description}" Margin="0,6,0,10" TextWrapping="Wrap"/>
 
                             <ItemsControl ItemsSource="{Binding SelectedAssetDetail.Fields}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
+                                <ItemsControl.Resources>
+                                    <DataTemplate x:Key="DetailFieldTemplate">
                                         <Grid Margin="0,0,0,6">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="150"/>
@@ -137,6 +146,32 @@
                                             <TextBlock Grid.Column="0" Margin="0,0,10,0" Text="{Binding Label}" FontWeight="Bold" TextWrapping="Wrap"/>
                                             <TextBlock Grid.Column="1" Text="{Binding Value}" TextWrapping="Wrap"/>
                                         </Grid>
+                                    </DataTemplate>
+
+                                    <DataTemplate x:Key="DetailGroupTemplate">
+                                        <Expander Header="{Binding Label}" IsExpanded="{Binding IsExpanded, Mode=TwoWay}" Margin="0,0,0,6">
+                                            <ItemsControl ItemsSource="{Binding Children}" Margin="8,6,0,0">
+                                                <ItemsControl.ItemTemplate>
+                                                    <StaticResource ResourceKey="DetailFieldTemplate"/>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </Expander>
+                                    </DataTemplate>
+                                </ItemsControl.Resources>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <ContentControl Content="{Binding}">
+                                            <ContentControl.Style>
+                                                <Style TargetType="ContentControl">
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource DetailFieldTemplate}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsGroup}" Value="True">
+                                                            <Setter Property="ContentTemplate" Value="{StaticResource DetailGroupTemplate}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ContentControl.Style>
+                                        </ContentControl>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>

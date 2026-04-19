@@ -12,6 +12,5 @@ public partial class MapDataEditorWindow : FluentWindow
     {
         DataContext = App.Current.Services.GetRequiredService<MapDataEditorWindowViewModel>();
         InitializeComponent();
-        _mapDataEditorWindowViewModel._mapDataEditorWindow = this;
     }
 }

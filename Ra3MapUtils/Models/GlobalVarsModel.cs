@@ -51,6 +51,4 @@ public static class GlobalVarsModel
     public static bool LogViewerWindowOpened { get; set; } = false;
     
     public static bool ChatLuaHelperWindowOpened { get; set; } = false;
-
-    public static bool MapDataEditorWindowOpened { get; set; } = false;
 }
