@@ -1,18 +1,35 @@
 using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Ra3MapUtils.Models;
 
-public class MapDataAssetDetailFieldItem
+public enum MapDataAssetDetailFieldEditorType
 {
-    public string Label { get; set; } = "";
+    ReadOnly,
+    TextBox,
+    CheckBox,
+    ComboBox
+}
 
-    public string Value { get; set; } = "-";
+public partial class MapDataAssetDetailFieldItem : ObservableObject
+{
+    [ObservableProperty] private string _label = "";
 
-    public bool IsGroup { get; set; }
+    [ObservableProperty] private string _value = "-";
 
-    public bool IsExpanded { get; set; }
+    [ObservableProperty] private bool _boolValue = false;
+
+    [ObservableProperty] private bool _isGroup = false;
+
+    [ObservableProperty] private bool _isExpanded = false;
+
+    [ObservableProperty] private MapDataAssetDetailFieldEditorType _editorType = MapDataAssetDetailFieldEditorType.ReadOnly;
+
+    public Action<MapDataAssetDetailFieldItem>? CommitAction { get; set; }
 
     public ObservableCollection<MapDataAssetDetailFieldItem> Children { get; } = new();
+
+    public ObservableCollection<string> Options { get; } = new();
 }
 
 public class MapDataAssetDetailModel

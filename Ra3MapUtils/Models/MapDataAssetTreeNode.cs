@@ -50,4 +50,16 @@ public class MapDataAssetTreeNode
     public bool IsSelected { get; set; }
 
     public ObservableCollection<MapDataAssetTreeNode> Children { get; } = new();
+
+    public bool CanAddScript => Kind is MapDataAssetTreeNodeKind.ScriptList or MapDataAssetTreeNodeKind.ScriptGroup;
+
+    public bool CanDeleteScript => Kind == MapDataAssetTreeNodeKind.Script;
+
+    public bool CanRenameScript => Kind == MapDataAssetTreeNodeKind.Script;
+
+    public bool CanAddScriptGroup => Kind is MapDataAssetTreeNodeKind.ScriptList or MapDataAssetTreeNodeKind.ScriptGroup;
+
+    public bool CanDeleteScriptGroup => Kind == MapDataAssetTreeNodeKind.ScriptGroup;
+
+    public bool CanRenameScriptGroup => Kind == MapDataAssetTreeNodeKind.ScriptGroup;
 }

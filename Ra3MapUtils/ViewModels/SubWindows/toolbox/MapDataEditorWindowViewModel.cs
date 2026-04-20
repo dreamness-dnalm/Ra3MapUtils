@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -11,10 +13,13 @@ using CommunityToolkit.Mvvm.Input;
 using Dreamness.RA3.Map.Parser.Asset.ScriptData;
 using Dreamness.RA3.Map.Parser.Core.MapScb;
 using Dreamness.Ra3.Map.Parser.Asset.Base;
+using Dreamness.Ra3.Map.Parser.Asset.Collection.Property;
 using Dreamness.Ra3.Map.Parser.Asset.Impl.Player;
 using Dreamness.Ra3.Map.Parser.Asset.Impl.Script;
 using Dreamness.Ra3.Map.Parser.Core.Base;
 using Dreamness.Ra3.Map.Parser.Core.Map;
+using Dreamness.Ra3.Map.Parser.Util.Compress;
+using Ookii.Dialogs.WinForms;
 using Ra3MapUtils.Models;
 using MessageBox = System.Windows.Forms.MessageBox;
 
@@ -22,13 +27,25 @@ namespace Ra3MapUtils.ViewModels.toolbox;
 
 public partial class MapDataEditorWindowViewModel : ObservableObject
 {
-    private const string PlayerRootDisplayName = "\u73a9\u5bb6\u5217\u8868";
-    private const string ScriptRootDisplayName = "\u811a\u672c";
+    private const string PlayerRootDisplayName = "玩家列表";
+    private const string ScriptRootDisplayName = "脚本";
     private const string NeutralPlayerDisplayName = "(neutral)";
 
     private static readonly Encoding _gb18030Encoding;
     private static readonly Encoding _latin1Encoding;
     private static readonly UTF8Encoding _utf8Strict = new(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true);
+
+    private BaseContext? _loadedContext;
+    private Ra3Map? _loadedMap;
+    private string _loadedExtension = "";
+
+    private SidesListAsset? _sidesListAsset;
+    private PlayerScriptsList? _playerScriptsList;
+
+    private bool _hasSidesListAsset;
+    private bool _hasPlayerScriptsListAsset;
+    private int _playerCount;
+    private int _scriptListCount;
 
     static MapDataEditorWindowViewModel()
     {
@@ -49,16 +66,32 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
 
     [ObservableProperty] private bool _isTopmost = false;
 
+    [ObservableProperty] private bool _isDirty = false;
+
+    [ObservableProperty] private bool _canSave = false;
+
+    [ObservableProperty] private bool _canReload = false;
+
     [ObservableProperty] private ObservableCollection<MapDataAssetTreeNode> _assetTree = new();
 
     [ObservableProperty] private MapDataAssetTreeNode? _selectedAssetNode;
 
     [ObservableProperty] private MapDataAssetDetailModel _selectedAssetDetail = MapDataAssetDetailModel.Empty();
 
-    private bool _hasSidesListAsset;
-    private bool _hasPlayerScriptsListAsset;
-    private int _playerCount;
-    private int _scriptListCount;
+    partial void OnSelectedAssetNodeChanged(MapDataAssetTreeNode? value)
+    {
+        SelectedAssetDetail = BuildDetail(value);
+    }
+
+    partial void OnIsDirtyChanged(bool value)
+    {
+        RefreshActionState();
+    }
+
+    partial void OnFilePathChanged(string value)
+    {
+        RefreshActionState();
+    }
 
     public bool LoadMapDataFromFile(string filePath)
     {
@@ -90,14 +123,14 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
             ParseStatus = "Parsed";
             ParseStatusColor = Brushes.LimeGreen;
 
-            BuildCombinedTree(context);
-            SelectedAssetNode = AssetTree.FirstOrDefault(n => n.Kind == MapDataAssetTreeNodeKind.ScriptRoot)
-                                ?? AssetTree.FirstOrDefault();
-            if (SelectedAssetNode is not null)
-            {
-                SelectedAssetNode.IsSelected = true;
-            }
+            _loadedContext = context;
+            _loadedExtension = extension;
 
+            BuildCombinedTree(context);
+            SelectDefaultNode();
+
+            IsDirty = false;
+            RefreshActionState();
             return true;
         }
         catch (Exception ex)
@@ -107,10 +140,9 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
             ParserTypeName = "";
             AssetTree.Clear();
             SelectedAssetNode = null;
-            _hasSidesListAsset = false;
-            _hasPlayerScriptsListAsset = false;
-            _playerCount = 0;
-            _scriptListCount = 0;
+            SelectedAssetDetail = MapDataAssetDetailModel.Empty();
+            ResetLoadedState();
+            RefreshActionState();
             MessageBox.Show("Failed to load map data: " + ex.Message);
             return false;
         }
@@ -128,20 +160,286 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
         SelectedAssetNode = e.NewValue as MapDataAssetTreeNode;
     }
 
-    partial void OnSelectedAssetNodeChanged(MapDataAssetTreeNode? value)
+    [RelayCommand]
+    private void CommitDetailField(MapDataAssetDetailFieldItem? field)
     {
-        SelectedAssetDetail = BuildDetail(value);
+        if (field?.CommitAction is null)
+        {
+            return;
+        }
+
+        try
+        {
+            field.CommitAction(field);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("提交修改失败: " + ex.Message);
+        }
+    }
+
+    [RelayCommand]
+    private void Save()
+    {
+        if (!CanSave || _loadedContext is null || string.IsNullOrWhiteSpace(FilePath))
+        {
+            return;
+        }
+
+        try
+        {
+            switch (_loadedExtension)
+            {
+                case ".map":
+                    if (_loadedMap is not null)
+                    {
+                        _loadedMap.Save();
+                    }
+                    else
+                    {
+                        SaveContextToRawFile(_loadedContext, FilePath);
+                    }
+
+                    break;
+                case ".scb":
+                case ".bin":
+                    SaveContextToRawFile(_loadedContext, FilePath);
+                    break;
+                default:
+                    throw new NotSupportedException("Unsupported extension for saving: " + _loadedExtension);
+            }
+
+            IsDirty = false;
+            ParseStatus = "Saved";
+            ParseStatusColor = Brushes.LimeGreen;
+            RefreshActionState();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("保存失败: " + ex.Message);
+        }
+    }
+
+    [RelayCommand]
+    private void Reload()
+    {
+        if (string.IsNullOrWhiteSpace(FilePath))
+        {
+            return;
+        }
+
+        if (IsDirty)
+        {
+            var result = MessageBox.Show(
+                "存在未保存修改，确定重新载入并放弃当前修改吗？",
+                "确认",
+                System.Windows.Forms.MessageBoxButtons.YesNo,
+                System.Windows.Forms.MessageBoxIcon.Warning);
+            if (result != System.Windows.Forms.DialogResult.Yes)
+            {
+                return;
+            }
+        }
+
+        LoadMapDataFromFile(FilePath);
+    }
+
+    [RelayCommand]
+    private void AddScript(MapDataAssetTreeNode? targetNode)
+    {
+        if (_loadedContext is null)
+        {
+            return;
+        }
+
+        var node = ResolveTargetNode(targetNode);
+        if (node is null)
+        {
+            return;
+        }
+
+        if (node.Kind == MapDataAssetTreeNodeKind.ScriptList && node.ScriptList is not null)
+        {
+            var newScriptName = BuildUniqueName(node.ScriptList.Scripts.Select(s => s.Name), "新脚本");
+            var newScript = CreateDefaultScript(newScriptName);
+            node.ScriptList.Scripts.Add(newScript);
+            MarkDirtyAndRefresh(node, newScript, MapDataAssetTreeNodeKind.Script);
+            return;
+        }
+
+        if (node.Kind == MapDataAssetTreeNodeKind.ScriptGroup && node.ScriptGroup is not null)
+        {
+            var newScriptName = BuildUniqueName(node.ScriptGroup.Scripts.Select(s => s.Name), "新脚本");
+            var newScript = CreateDefaultScript(newScriptName);
+            node.ScriptGroup.Scripts.Add(newScript);
+            MarkDirtyAndRefresh(node, newScript, MapDataAssetTreeNodeKind.Script);
+        }
+    }
+
+    [RelayCommand]
+    private void DeleteScript(MapDataAssetTreeNode? targetNode)
+    {
+        var node = ResolveTargetNode(targetNode);
+        if (node?.Script is null || _playerScriptsList is null)
+        {
+            return;
+        }
+
+        var result = MessageBox.Show(
+            "确定删除该脚本吗？",
+            "确认",
+            System.Windows.Forms.MessageBoxButtons.YesNo,
+            System.Windows.Forms.MessageBoxIcon.Warning);
+        if (result != System.Windows.Forms.DialogResult.Yes)
+        {
+            return;
+        }
+
+        var parentNode = FindParentNode(node);
+        if (!RemoveScriptRecursive(_playerScriptsList.ScriptLists, node.Script))
+        {
+            return;
+        }
+
+        var preferredSelection = ResolvePreferredSelection(parentNode);
+        MarkDirtyAndRefresh(parentNode, preferredSelection.Entity, preferredSelection.Kind);
+    }
+
+    [RelayCommand]
+    private void RenameScript(MapDataAssetTreeNode? targetNode)
+    {
+        var node = ResolveTargetNode(targetNode);
+        if (node?.Script is null)
+        {
+            return;
+        }
+
+        var input = PromptName("重命名脚本", "请输入脚本名", node.Script.Name);
+        if (input is null)
+        {
+            return;
+        }
+
+        node.Script.Name = input;
+        MarkDirtyAndRefresh(node, node.Script, MapDataAssetTreeNodeKind.Script);
+    }
+
+    [RelayCommand]
+    private void AddScriptGroup(MapDataAssetTreeNode? targetNode)
+    {
+        if (_loadedContext is null)
+        {
+            return;
+        }
+
+        var node = ResolveTargetNode(targetNode);
+        if (node is null)
+        {
+            return;
+        }
+
+        if (node.Kind == MapDataAssetTreeNodeKind.ScriptList && node.ScriptList is not null)
+        {
+            var newGroupName = BuildUniqueName(node.ScriptList.ScriptGroups.Select(g => g.Name), "新文件夹");
+            var newGroup = ScriptGroup.Empty(newGroupName, true, false, _loadedContext);
+            node.ScriptList.ScriptGroups.Add(newGroup);
+            MarkDirtyAndRefresh(node, newGroup, MapDataAssetTreeNodeKind.ScriptGroup);
+            return;
+        }
+
+        if (node.Kind == MapDataAssetTreeNodeKind.ScriptGroup && node.ScriptGroup is not null)
+        {
+            var newGroupName = BuildUniqueName(node.ScriptGroup.ScriptGroups.Select(g => g.Name), "新文件夹");
+            var newGroup = ScriptGroup.Empty(newGroupName, true, false, _loadedContext);
+            node.ScriptGroup.ScriptGroups.Add(newGroup);
+            MarkDirtyAndRefresh(node, newGroup, MapDataAssetTreeNodeKind.ScriptGroup);
+        }
+    }
+
+    [RelayCommand]
+    private void DeleteScriptGroup(MapDataAssetTreeNode? targetNode)
+    {
+        var node = ResolveTargetNode(targetNode);
+        if (node?.ScriptGroup is null || _playerScriptsList is null)
+        {
+            return;
+        }
+
+        var result = MessageBox.Show(
+            "确定删除该文件夹吗？",
+            "确认",
+            System.Windows.Forms.MessageBoxButtons.YesNo,
+            System.Windows.Forms.MessageBoxIcon.Warning);
+        if (result != System.Windows.Forms.DialogResult.Yes)
+        {
+            return;
+        }
+
+        var parentNode = FindParentNode(node);
+        if (!RemoveScriptGroupRecursive(_playerScriptsList.ScriptLists, node.ScriptGroup))
+        {
+            return;
+        }
+
+        var preferredSelection = ResolvePreferredSelection(parentNode);
+        MarkDirtyAndRefresh(parentNode, preferredSelection.Entity, preferredSelection.Kind);
+    }
+
+    [RelayCommand]
+    private void RenameScriptGroup(MapDataAssetTreeNode? targetNode)
+    {
+        var node = ResolveTargetNode(targetNode);
+        if (node?.ScriptGroup is null)
+        {
+            return;
+        }
+
+        var input = PromptName("重命名文件夹", "请输入文件夹名", node.ScriptGroup.Name);
+        if (input is null)
+        {
+            return;
+        }
+
+        node.ScriptGroup.Name = input;
+        MarkDirtyAndRefresh(node, node.ScriptGroup, MapDataAssetTreeNodeKind.ScriptGroup);
+    }
+
+    private MapDataAssetTreeNode? ResolveTargetNode(MapDataAssetTreeNode? node)
+    {
+        return node ?? SelectedAssetNode;
+    }
+
+    private void ResetLoadedState()
+    {
+        _loadedContext = null;
+        _loadedMap = null;
+        _loadedExtension = "";
+        _sidesListAsset = null;
+        _playerScriptsList = null;
+        _hasSidesListAsset = false;
+        _hasPlayerScriptsListAsset = false;
+        _playerCount = 0;
+        _scriptListCount = 0;
+        IsDirty = false;
+    }
+
+    private void RefreshActionState()
+    {
+        CanReload = !string.IsNullOrWhiteSpace(FilePath) && _loadedContext is not null;
+        CanSave = CanReload && IsDirty;
     }
 
     private BaseContext LoadContext(string filePath, string extension, out string parserTypeName)
     {
+        _loadedMap = null;
+
         switch (extension)
         {
             case ".map":
             {
-                var map = Ra3Map.Open(filePath);
+                _loadedMap = Ra3Map.Open(filePath);
                 parserTypeName = nameof(Ra3Map);
-                return map.Context;
+                return _loadedMap.Context;
             }
             case ".scb":
             {
@@ -167,16 +465,32 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
     {
         AssetTree.Clear();
 
-        var sidesListAsset = FindSidesListAsset(context);
-        var playerScriptsList = FindPlayerScriptsListAsset(context);
+        _sidesListAsset = FindSidesListAsset(context);
+        _playerScriptsList = FindPlayerScriptsListAsset(context);
 
-        _hasSidesListAsset = sidesListAsset is not null;
-        _hasPlayerScriptsListAsset = playerScriptsList is not null;
-        _playerCount = sidesListAsset?.PlayerDataList.Count ?? 0;
-        _scriptListCount = playerScriptsList?.ScriptLists.Count ?? 0;
+        _hasSidesListAsset = _sidesListAsset is not null;
+        _hasPlayerScriptsListAsset = _playerScriptsList is not null;
+        _playerCount = _sidesListAsset?.PlayerDataList.Count ?? 0;
+        _scriptListCount = _playerScriptsList?.ScriptLists.Count ?? 0;
 
-        AssetTree.Add(BuildPlayerRootNode(sidesListAsset));
-        AssetTree.Add(BuildScriptRootNode(sidesListAsset, playerScriptsList));
+        AssetTree.Add(BuildPlayerRootNode(_sidesListAsset));
+        AssetTree.Add(BuildScriptRootNode(_sidesListAsset, _playerScriptsList));
+    }
+
+    private void SelectDefaultNode()
+    {
+        var defaultNode = AssetTree.FirstOrDefault(n => n.Kind == MapDataAssetTreeNodeKind.ScriptRoot)
+                          ?? AssetTree.FirstOrDefault();
+        SetSelectedNode(defaultNode);
+    }
+
+    private void SetSelectedNode(MapDataAssetTreeNode? node)
+    {
+        SelectedAssetNode = node;
+        if (node is not null)
+        {
+            node.IsSelected = true;
+        }
     }
 
     private MapDataAssetTreeNode BuildPlayerRootNode(SidesListAsset? sidesListAsset)
@@ -394,7 +708,7 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
             return NormalizeDisplayText(playerName);
         }
 
-        return $"\u73a9\u5bb6#{index}";
+        return $"玩家#{index}";
     }
 
     private static SidesListAsset? FindSidesListAsset(BaseContext context)
@@ -670,7 +984,7 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
         var detail = new MapDataAssetDetailModel
         {
             Title = string.IsNullOrWhiteSpace(node.DisplayName) ? "-" : node.DisplayName,
-            Description = "ScriptConditionContent fields (read-only)"
+            Description = "ScriptConditionContent fields"
         };
 
         if (condition is null)
@@ -680,13 +994,51 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
         }
 
         AddField(detail, "NodeType", "ScriptCondition");
-        AddField(detail, "Name", SafeValue(() => condition.ContentName));
-        AddField(detail, "启用", ToBoolText(condition.Enabled));
+
+        AddEditableComboField(
+            detail.Fields,
+            "Name",
+            condition.ContentName,
+            ScriptData.ConditionDict.Keys.OrderBy(k => k),
+            field =>
+            {
+                var newName = (field.Value ?? "").Trim();
+                if (string.Equals(newName, condition.ContentName, StringComparison.Ordinal))
+                {
+                    return;
+                }
+
+                if (!TryApplyConditionNameChange(condition, newName, out var error))
+                {
+                    MessageBox.Show(error);
+                    field.Value = condition.ContentName;
+                    return;
+                }
+
+                MarkDirtyAndRefresh(node, condition, MapDataAssetTreeNodeKind.ScriptCondition);
+            });
+
+        AddEditableCheckField(
+            detail.Fields,
+            "启用",
+            condition.Enabled,
+            field =>
+            {
+                if (condition.Enabled == field.BoolValue)
+                {
+                    return;
+                }
+
+                condition.Enabled = field.BoolValue;
+                MarkDirtyAndRefresh(node, condition, MapDataAssetTreeNodeKind.ScriptCondition);
+            });
+
         AddField(detail, "反转", ToBoolText(condition.IsInverted));
 
         var declareModel = TryGetScriptDeclareModel(condition);
         AddScriptDeclareFields(detail, declareModel);
-        AddArgumentFields(detail, condition.Arguments, declareModel?.Arguments);
+        AddArgumentFields(detail, node, condition.Arguments, declareModel?.Arguments);
+
         return detail;
     }
 
@@ -696,7 +1048,7 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
         var detail = new MapDataAssetDetailModel
         {
             Title = string.IsNullOrWhiteSpace(node.DisplayName) ? "-" : node.DisplayName,
-            Description = $"ScriptAction ({branchName}) fields (read-only)"
+            Description = $"ScriptAction ({branchName}) fields"
         };
 
         if (action is null)
@@ -707,12 +1059,49 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
 
         AddField(detail, "NodeType", node.Kind == MapDataAssetTreeNodeKind.ScriptActionFalse ? "ScriptActionFalse" : "ScriptAction");
         AddField(detail, "Branch", branchName);
-        AddField(detail, "Name", SafeValue(() => action.ContentName));
-        AddField(detail, "启用", ToBoolText(action.Enabled));
+
+        AddEditableComboField(
+            detail.Fields,
+            "Name",
+            action.ContentName,
+            ScriptData.ActionDict.Keys.OrderBy(k => k),
+            field =>
+            {
+                var newName = (field.Value ?? "").Trim();
+                if (string.Equals(newName, action.ContentName, StringComparison.Ordinal))
+                {
+                    return;
+                }
+
+                if (!TryApplyActionNameChange(action, newName, out var error))
+                {
+                    MessageBox.Show(error);
+                    field.Value = action.ContentName;
+                    return;
+                }
+
+                MarkDirtyAndRefresh(node, action, node.Kind);
+            });
+
+        AddEditableCheckField(
+            detail.Fields,
+            "启用",
+            action.Enabled,
+            field =>
+            {
+                if (action.Enabled == field.BoolValue)
+                {
+                    return;
+                }
+
+                action.Enabled = field.BoolValue;
+                MarkDirtyAndRefresh(node, action, node.Kind);
+            });
 
         var declareModel = TryGetScriptDeclareModel(action);
         AddScriptDeclareFields(detail, declareModel);
-        AddArgumentFields(detail, action.Arguments, declareModel?.Arguments);
+        AddArgumentFields(detail, node, action.Arguments, declareModel?.Arguments);
+
         return detail;
     }
 
@@ -749,14 +1138,15 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
         AddField(detail, "参数模板", ToDisplayText(declareModel?.ScriptArg));
     }
 
-    private static void AddArgumentFields(
+    private void AddArgumentFields(
         MapDataAssetDetailModel detail,
+        MapDataAssetTreeNode node,
         IEnumerable<ScriptArgument> runtimeArguments,
-        IReadOnlyList<ArgumentModel>? declareArguments)
+        IEnumerable<ArgumentModel>? declareArguments)
     {
         var runtimeArgumentList = runtimeArguments.ToList();
-        var declaredCount = declareArguments?.Count ?? 0;
-        var count = Math.Max(runtimeArgumentList.Count, declaredCount);
+        var declaredArgumentList = declareArguments?.ToList() ?? new List<ArgumentModel>();
+        var count = Math.Max(runtimeArgumentList.Count, declaredArgumentList.Count);
         if (count == 0)
         {
             return;
@@ -765,7 +1155,7 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
         for (var i = 0; i < count; i++)
         {
             var runtimeArgument = i < runtimeArgumentList.Count ? runtimeArgumentList[i] : null;
-            var declareArgument = declareArguments is not null && i < declareArguments.Count ? declareArguments[i] : null;
+            var declareArgument = i < declaredArgumentList.Count ? declaredArgumentList[i] : null;
 
             var group = new MapDataAssetDetailFieldItem
             {
@@ -773,19 +1163,51 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
                 IsGroup = true,
                 IsExpanded = true
             };
-            AddArgumentFieldItems(group.Children, runtimeArgument, declareArgument);
+
+            AddArgumentFieldItems(group.Children, node, runtimeArgument, declareArgument);
             detail.Fields.Add(group);
         }
     }
 
-    private static void AddArgumentFieldItems(
+    private void AddArgumentFieldItems(
         ObservableCollection<MapDataAssetDetailFieldItem> fields,
+        MapDataAssetTreeNode node,
         ScriptArgument? runtimeArgument,
         ArgumentModel? declareArgument)
     {
-        var realType = ToDisplayText(declareArgument?.RealType);
+        var realType = ToDisplayText(declareArgument?.RealType ?? runtimeArgument?.ArgumentModel.RealType);
         var valueLabel = realType == "-" ? "参数值" : $"参数值({realType})";
-        AddField(fields, valueLabel, runtimeArgument is null ? "-" : ToArgumentDisplayText(runtimeArgument));
+
+        if (runtimeArgument is null)
+        {
+            AddField(fields, valueLabel, "-");
+            return;
+        }
+
+        var currentDisplay = ToArgumentDisplayText(runtimeArgument);
+
+        if (realType is "String" or "Int32" or "Double")
+        {
+            AddEditableTextField(
+                fields,
+                valueLabel,
+                currentDisplay,
+                field =>
+                {
+                    if (!TryApplyArgumentValue(runtimeArgument, declareArgument, field.Value ?? "", out var error))
+                    {
+                        MessageBox.Show(error);
+                        field.Value = ToArgumentDisplayText(runtimeArgument);
+                        return;
+                    }
+
+                    MarkDirtyAndRefresh(node, runtimeArgument, node.Kind);
+                });
+        }
+        else
+        {
+            AddField(fields, valueLabel, currentDisplay);
+        }
 
         // AddField(fields, "参数注释", ToDisplayText(declareArgument?.ExampleData));
         // AddField(fields, "参数类型编号", declareArgument?.TypeNumber.ToString() ?? "-");
@@ -801,8 +1223,501 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
         fields.Add(new MapDataAssetDetailFieldItem
         {
             Label = label,
-            Value = string.IsNullOrWhiteSpace(value) ? "-" : value
+            Value = string.IsNullOrWhiteSpace(value) ? "-" : value,
+            EditorType = MapDataAssetDetailFieldEditorType.ReadOnly
         });
+    }
+
+    private static void AddEditableTextField(
+        ObservableCollection<MapDataAssetDetailFieldItem> fields,
+        string label,
+        string value,
+        Action<MapDataAssetDetailFieldItem> commitAction)
+    {
+        fields.Add(new MapDataAssetDetailFieldItem
+        {
+            Label = label,
+            Value = string.IsNullOrWhiteSpace(value) ? "-" : value,
+            EditorType = MapDataAssetDetailFieldEditorType.TextBox,
+            CommitAction = commitAction
+        });
+    }
+
+    private static void AddEditableCheckField(
+        ObservableCollection<MapDataAssetDetailFieldItem> fields,
+        string label,
+        bool value,
+        Action<MapDataAssetDetailFieldItem> commitAction)
+    {
+        fields.Add(new MapDataAssetDetailFieldItem
+        {
+            Label = label,
+            BoolValue = value,
+            EditorType = MapDataAssetDetailFieldEditorType.CheckBox,
+            CommitAction = commitAction
+        });
+    }
+
+    private static void AddEditableComboField(
+        ObservableCollection<MapDataAssetDetailFieldItem> fields,
+        string label,
+        string selectedValue,
+        IEnumerable<string> options,
+        Action<MapDataAssetDetailFieldItem> commitAction)
+    {
+        var item = new MapDataAssetDetailFieldItem
+        {
+            Label = label,
+            Value = selectedValue,
+            EditorType = MapDataAssetDetailFieldEditorType.ComboBox,
+            CommitAction = commitAction
+        };
+
+        foreach (var option in options)
+        {
+            item.Options.Add(option);
+        }
+
+        if (!item.Options.Any(o => string.Equals(o, selectedValue, StringComparison.Ordinal)))
+        {
+            item.Options.Insert(0, selectedValue);
+        }
+
+        fields.Add(item);
+    }
+
+    private bool TryApplyConditionNameChange(ScriptConditionContent condition, string newName, out string error)
+    {
+        error = "";
+
+        if (_loadedContext is null)
+        {
+            error = "当前上下文为空，无法修改命令名。";
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(newName))
+        {
+            error = "命令名不能为空。";
+            return false;
+        }
+
+        if (!ScriptData.ConditionDict.TryGetValue(newName, out var declareModel))
+        {
+            error = "未找到对应条件命令声明: " + newName;
+            return false;
+        }
+
+        condition.SetContentName(newName, _loadedContext);
+        condition.ContentType = declareModel.EditorNumber;
+        condition.AssetPropertyType = AssetProperty.AssetPropertyType.stringType;
+
+        condition.Arguments.Clear();
+        foreach (var argumentModel in declareModel.Arguments)
+        {
+            condition.Arguments.Add(CreateDefaultArgument(argumentModel, false));
+        }
+
+        condition.MarkModified();
+        return true;
+    }
+
+    private bool TryApplyActionNameChange(ScriptAction action, string newName, out string error)
+    {
+        error = "";
+
+        if (_loadedContext is null)
+        {
+            error = "当前上下文为空，无法修改命令名。";
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(newName))
+        {
+            error = "命令名不能为空。";
+            return false;
+        }
+
+        if (!ScriptData.ActionDict.TryGetValue(newName, out var declareModel))
+        {
+            error = "未找到对应动作命令声明: " + newName;
+            return false;
+        }
+
+        action.SetContentName(newName, _loadedContext);
+        action.ContentType = declareModel.EditorNumber;
+        action.AssetPropertyType = AssetProperty.AssetPropertyType.stringType;
+
+        action.Arguments.Clear();
+        foreach (var argumentModel in declareModel.Arguments)
+        {
+            action.Arguments.Add(CreateDefaultArgument(argumentModel, newName == "DEBUG_MESSAGE_BOX"));
+        }
+
+        action.MarkModified();
+        return true;
+    }
+
+    private static bool TryApplyArgumentValue(
+        ScriptArgument runtimeArgument,
+        ArgumentModel? declareArgument,
+        string rawInput,
+        out string error)
+    {
+        var realType = declareArgument?.RealType ?? runtimeArgument.ArgumentModel.RealType;
+
+        switch (realType)
+        {
+            case "String":
+                runtimeArgument.StringValue = rawInput;
+                error = "";
+                return true;
+            case "Int32":
+                if (int.TryParse(rawInput, out var intValue))
+                {
+                    runtimeArgument.IntValue = intValue;
+                    error = "";
+                    return true;
+                }
+
+                error = "参数值必须是 Int32 整数。";
+                return false;
+            case "Double":
+                if (float.TryParse(rawInput, NumberStyles.Float, CultureInfo.InvariantCulture, out var floatValue) ||
+                    float.TryParse(rawInput, NumberStyles.Float, CultureInfo.CurrentCulture, out floatValue))
+                {
+                    runtimeArgument.FloatValue = floatValue;
+                    error = "";
+                    return true;
+                }
+
+                error = "参数值必须是 Double 浮点数。";
+                return false;
+            default:
+                error = "当前参数类型暂不支持编辑: " + realType;
+                return false;
+        }
+    }
+
+    private static ScriptArgument CreateDefaultArgument(ArgumentModel argumentModel, bool requireUtf8)
+    {
+        var defaultValue = argumentModel.RealType switch
+        {
+            "String" => "",
+            "Int32" => "0",
+            "Double" => "0",
+            "Vec3D" => "0,0,0",
+            _ => ""
+        };
+
+        return ScriptArgument.Of(argumentModel, defaultValue, requireUtf8);
+    }
+
+    private Script CreateDefaultScript(string name)
+    {
+        if (_loadedContext is null)
+        {
+            throw new InvalidOperationException("Context is not loaded.");
+        }
+
+        var script = Script.Default(name, _loadedContext);
+        var orCondition = OrCondition.Empty(_loadedContext);
+        orCondition.Conditions.Add(ScriptConditionContent.Of("CONDITION_TRUE", new List<string>(), _loadedContext));
+        script.ScriptOrConditions.Add(orCondition);
+        return script;
+    }
+
+    private static string BuildUniqueName(IEnumerable<string> existingNames, string baseName)
+    {
+        var nameSet = new HashSet<string>(
+            existingNames.Where(n => !string.IsNullOrWhiteSpace(n)),
+            StringComparer.OrdinalIgnoreCase);
+
+        if (!nameSet.Contains(baseName))
+        {
+            return baseName;
+        }
+
+        var index = 1;
+        while (nameSet.Contains($"{baseName}_{index}"))
+        {
+            index++;
+        }
+
+        return $"{baseName}_{index}";
+    }
+
+    private static bool RemoveScriptRecursive(IEnumerable<ScriptList> scriptLists, Script script)
+    {
+        foreach (var scriptList in scriptLists)
+        {
+            if (scriptList.Scripts.Contains(script))
+            {
+                scriptList.Scripts.Remove(script);
+                return true;
+            }
+
+            if (RemoveScriptRecursive(scriptList.ScriptGroups, script))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool RemoveScriptRecursive(IEnumerable<ScriptGroup> scriptGroups, Script script)
+    {
+        foreach (var scriptGroup in scriptGroups)
+        {
+            if (scriptGroup.Scripts.Contains(script))
+            {
+                scriptGroup.Scripts.Remove(script);
+                return true;
+            }
+
+            if (RemoveScriptRecursive(scriptGroup.ScriptGroups, script))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool RemoveScriptGroupRecursive(IEnumerable<ScriptList> scriptLists, ScriptGroup scriptGroup)
+    {
+        foreach (var scriptList in scriptLists)
+        {
+            if (scriptList.ScriptGroups.Contains(scriptGroup))
+            {
+                scriptList.ScriptGroups.Remove(scriptGroup);
+                return true;
+            }
+
+            if (RemoveScriptGroupRecursive(scriptList.ScriptGroups, scriptGroup))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool RemoveScriptGroupRecursive(IEnumerable<ScriptGroup> scriptGroups, ScriptGroup scriptGroup)
+    {
+        foreach (var group in scriptGroups)
+        {
+            if (group.ScriptGroups.Contains(scriptGroup))
+            {
+                group.ScriptGroups.Remove(scriptGroup);
+                return true;
+            }
+
+            if (RemoveScriptGroupRecursive(group.ScriptGroups, scriptGroup))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static string? PromptName(string title, string instruction, string defaultValue)
+    {
+        var inputDialog = new InputDialog
+        {
+            WindowTitle = title,
+            MainInstruction = instruction,
+            Content = instruction,
+            Input = defaultValue
+        };
+
+        if (inputDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+        {
+            return null;
+        }
+
+        var result = inputDialog.Input?.Trim() ?? "";
+        if (result == "")
+        {
+            MessageBox.Show("名称不能为空");
+            return null;
+        }
+
+        return result;
+    }
+
+    private MapDataAssetTreeNode? FindParentNode(MapDataAssetTreeNode target)
+    {
+        foreach (var root in AssetTree)
+        {
+            var parent = FindParentNode(root, target);
+            if (parent is not null)
+            {
+                return parent;
+            }
+        }
+
+        return null;
+    }
+
+    private static MapDataAssetTreeNode? FindParentNode(MapDataAssetTreeNode current, MapDataAssetTreeNode target)
+    {
+        foreach (var child in current.Children)
+        {
+            if (ReferenceEquals(child, target))
+            {
+                return current;
+            }
+
+            var parent = FindParentNode(child, target);
+            if (parent is not null)
+            {
+                return parent;
+            }
+        }
+
+        return null;
+    }
+
+    private static (object? Entity, MapDataAssetTreeNodeKind? Kind) ResolvePreferredSelection(MapDataAssetTreeNode? node)
+    {
+        if (node is null)
+        {
+            return (null, null);
+        }
+
+        return node.Kind switch
+        {
+            MapDataAssetTreeNodeKind.Player => (node.Player, node.Kind),
+            MapDataAssetTreeNodeKind.ScriptList => (node.ScriptList, node.Kind),
+            MapDataAssetTreeNodeKind.ScriptGroup => (node.ScriptGroup, node.Kind),
+            MapDataAssetTreeNodeKind.Script => (node.Script, node.Kind),
+            MapDataAssetTreeNodeKind.ScriptOrCondition => (node.OrCondition, node.Kind),
+            MapDataAssetTreeNodeKind.ScriptCondition => (node.ScriptCondition, node.Kind),
+            MapDataAssetTreeNodeKind.ScriptActionTrue or MapDataAssetTreeNodeKind.ScriptActionFalse => (node.ScriptAction, node.Kind),
+            _ => (null, node.Kind)
+        };
+    }
+
+    private void MarkDirtyAndRefresh(MapDataAssetTreeNode? previousNode, object? preferredEntity, MapDataAssetTreeNodeKind? preferredKind)
+    {
+        if (_loadedContext is null)
+        {
+            return;
+        }
+
+        IsDirty = true;
+        RebuildTreeAndReselect(previousNode, preferredEntity, preferredKind);
+    }
+
+    private void RebuildTreeAndReselect(
+        MapDataAssetTreeNode? previousNode,
+        object? preferredEntity,
+        MapDataAssetTreeNodeKind? preferredKind)
+    {
+        if (_loadedContext is null)
+        {
+            return;
+        }
+
+        var previousNodeSnapshot = previousNode ?? SelectedAssetNode;
+
+        BuildCombinedTree(_loadedContext);
+
+        MapDataAssetTreeNode? targetNode = null;
+
+        if (preferredEntity is not null && preferredKind is not null)
+        {
+            targetNode = EnumerateNodes(AssetTree)
+                .FirstOrDefault(node => node.Kind == preferredKind && NodeEntityReferenceEquals(node, preferredEntity));
+        }
+
+        if (targetNode is null && previousNodeSnapshot is not null)
+        {
+            targetNode = FindNodeBySnapshot(previousNodeSnapshot);
+        }
+
+        if (targetNode is null)
+        {
+            targetNode = AssetTree.FirstOrDefault(n => n.Kind == MapDataAssetTreeNodeKind.ScriptRoot)
+                         ?? AssetTree.FirstOrDefault();
+        }
+
+        SetSelectedNode(targetNode);
+    }
+
+    private MapDataAssetTreeNode? FindNodeBySnapshot(MapDataAssetTreeNode snapshot)
+    {
+        return EnumerateNodes(AssetTree).FirstOrDefault(node => NodeSnapshotMatches(node, snapshot));
+    }
+
+    private static IEnumerable<MapDataAssetTreeNode> EnumerateNodes(IEnumerable<MapDataAssetTreeNode> roots)
+    {
+        foreach (var root in roots)
+        {
+            yield return root;
+            foreach (var child in EnumerateNodes(root.Children))
+            {
+                yield return child;
+            }
+        }
+    }
+
+    private static bool NodeSnapshotMatches(MapDataAssetTreeNode current, MapDataAssetTreeNode snapshot)
+    {
+        if (current.Kind != snapshot.Kind)
+        {
+            return false;
+        }
+
+        return current.Kind switch
+        {
+            MapDataAssetTreeNodeKind.PlayerRoot or
+            MapDataAssetTreeNodeKind.ScriptRoot or
+            MapDataAssetTreeNodeKind.ScriptIfRoot or
+            MapDataAssetTreeNodeKind.ScriptThenRoot or
+            MapDataAssetTreeNodeKind.ScriptElseRoot => true,
+            MapDataAssetTreeNodeKind.Player => ReferenceEquals(current.Player, snapshot.Player),
+            MapDataAssetTreeNodeKind.ScriptList => ReferenceEquals(current.ScriptList, snapshot.ScriptList),
+            MapDataAssetTreeNodeKind.ScriptGroup => ReferenceEquals(current.ScriptGroup, snapshot.ScriptGroup),
+            MapDataAssetTreeNodeKind.Script => ReferenceEquals(current.Script, snapshot.Script),
+            MapDataAssetTreeNodeKind.ScriptOrCondition => ReferenceEquals(current.OrCondition, snapshot.OrCondition),
+            MapDataAssetTreeNodeKind.ScriptCondition => ReferenceEquals(current.ScriptCondition, snapshot.ScriptCondition),
+            MapDataAssetTreeNodeKind.ScriptActionTrue or MapDataAssetTreeNodeKind.ScriptActionFalse =>
+                ReferenceEquals(current.ScriptAction, snapshot.ScriptAction),
+            _ => false
+        };
+    }
+
+    private static bool NodeEntityReferenceEquals(MapDataAssetTreeNode node, object entity)
+    {
+        return node.Kind switch
+        {
+            MapDataAssetTreeNodeKind.Player => ReferenceEquals(node.Player, entity),
+            MapDataAssetTreeNodeKind.ScriptList => ReferenceEquals(node.ScriptList, entity),
+            MapDataAssetTreeNodeKind.ScriptGroup => ReferenceEquals(node.ScriptGroup, entity),
+            MapDataAssetTreeNodeKind.Script => ReferenceEquals(node.Script, entity),
+            MapDataAssetTreeNodeKind.ScriptOrCondition => ReferenceEquals(node.OrCondition, entity),
+            MapDataAssetTreeNodeKind.ScriptCondition => ReferenceEquals(node.ScriptCondition, entity),
+            MapDataAssetTreeNodeKind.ScriptActionTrue or MapDataAssetTreeNodeKind.ScriptActionFalse => ReferenceEquals(node.ScriptAction, entity),
+            _ => false
+        };
+    }
+
+    private static void SaveContextToRawFile(BaseContext context, string filePath)
+    {
+        var dirPath = Path.GetDirectoryName(filePath);
+        if (!string.IsNullOrWhiteSpace(dirPath) && !Directory.Exists(dirPath))
+        {
+            Directory.CreateDirectory(dirPath);
+        }
+
+        using var stream = File.Create(filePath);
+        using var binaryWriter = new BinaryWriter(stream);
+        binaryWriter.Write(CompressConst.UnCompressFlag);
+        binaryWriter.Write(context.ToBytes());
     }
 
     private static string SafeValue(Func<string?> valueFactory)
@@ -1176,4 +2091,3 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
         }
     }
 }
-

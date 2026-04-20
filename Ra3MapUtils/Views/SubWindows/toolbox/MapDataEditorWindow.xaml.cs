@@ -1,16 +1,26 @@
 using Microsoft.Extensions.DependencyInjection;
-using Ra3MapUtils.ViewModels.toolbox;
+using System.Windows.Input;
 using Wpf.Ui.Controls;
 
 namespace Ra3MapUtils.Views.SubWindows.toolbox;
 
 public partial class MapDataEditorWindow : FluentWindow
 {
-    public MapDataEditorWindowViewModel _mapDataEditorWindowViewModel => (MapDataEditorWindowViewModel)DataContext;
+    public global::Ra3MapUtils.ViewModels.toolbox.MapDataEditorWindowViewModel _mapDataEditorWindowViewModel
+        => (global::Ra3MapUtils.ViewModels.toolbox.MapDataEditorWindowViewModel)DataContext;
 
     public MapDataEditorWindow()
     {
-        DataContext = App.Current.Services.GetRequiredService<MapDataEditorWindowViewModel>();
+        DataContext = App.Current.Services.GetRequiredService<global::Ra3MapUtils.ViewModels.toolbox.MapDataEditorWindowViewModel>();
         InitializeComponent();
+    }
+
+    private void TreeViewItem_OnPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (sender is System.Windows.Controls.TreeViewItem treeViewItem)
+        {
+            treeViewItem.IsSelected = true;
+            treeViewItem.Focus();
+        }
     }
 }
