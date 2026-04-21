@@ -89,6 +89,9 @@ public partial class App : Application
 
         services.AddTransient<ChatLuaHelperViewWindow>();
         services.AddSingleton<ChatLuaHelperViewModel>();
+
+        services.AddTransient<MapDataEditorWindow>();
+        services.AddTransient<MapDataEditorWindowViewModel>();
         
         services.AddTransient<TerrainTransWindow>();
         services.AddSingleton<TerrainTransWindowViewModel>();

@@ -1,0 +1,297 @@
+﻿<ui:FluentWindow x:Class="Ra3MapUtils.Views.SubWindows.toolbox.MapDataEditorWindow"
+                 x:Name="RootWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 xmlns:vm="clr-namespace:Ra3MapUtils.ViewModels.toolbox"
+                 xmlns:models="clr-namespace:Ra3MapUtils.Models"
+                 xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                 d:DataContext="{d:DesignInstance Type=vm:MapDataEditorWindowViewModel, IsDesignTimeCreatable=True}"
+                 d:DesignHeight="900"
+                 d:DesignWidth="1200"
+                 ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+                 ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                 mc:Ignorable="d"
+                 Title="地图数据编辑器"
+                 Height="900"
+                 Width="1200"
+                 ResizeMode="CanResizeWithGrip"
+                 WindowStartupLocation="CenterScreen"
+                 ExtendsContentIntoTitleBar="True"
+                 WindowBackdropType="Mica"
+                 WindowCornerPreference="Round"
+                 WindowStyle="SingleBorderWindow"
+                 Topmost="{Binding IsTopmost}">
+
+    <ui:FluentWindow.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </ui:FluentWindow.Resources>
+
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="Closed">
+            <behaviors:InvokeCommandAction Command="{Binding ClosedCommand}" PassEventArgsToCommand="False"/>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="10,5,10,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ui:ToggleSwitch Grid.Column="0" Margin="0,0,10,0" Content="置顶" IsChecked="{Binding IsTopmost}"/>
+            <ui:TitleBar Grid.Column="1" Title="地图数据编辑器" ShowMaximize="True"/>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="15,0,15,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,4,0,0">
+                <ui:Button Content="保存" Margin="0,0,10,0" Command="{Binding SaveCommand}" IsEnabled="{Binding CanSave}"/>
+                <ui:Button Content="重新载入(放弃修改)" Command="{Binding ReloadCommand}" IsEnabled="{Binding CanReload}"/>
+            </StackPanel>
+
+            <TextBlock Grid.Row="1" Text="{Binding FilePath}" TextWrapping="Wrap"/>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,4,0,0">
+                <TextBlock Text="类型: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding FileType}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,4,0,0">
+                <TextBlock Text="解析器: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding ParserTypeName}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,4,0,0">
+                <TextBlock Text="状态: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding ParseStatus}" Foreground="{Binding ParseStatusColor}"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="2" Margin="15,0,15,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="6">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Margin="10,8,10,8" Text="数据树" FontWeight="Bold"/>
+
+                    <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <TreeView x:Name="MapDataTreeView" ItemsSource="{Binding AssetTree}" Margin="8">
+                            <behaviors:Interaction.Triggers>
+                                <behaviors:EventTrigger EventName="SelectedItemChanged">
+                                    <behaviors:InvokeCommandAction Command="{Binding AssetTreeItemSelectedChangedCommand}" PassEventArgsToCommand="True"/>
+                                </behaviors:EventTrigger>
+                            </behaviors:Interaction.Triggers>
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="TreeViewItem">
+                                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                                    <Setter Property="Tag" Value="{Binding DataContext, RelativeSource={RelativeSource AncestorType=TreeView}}"/>
+                                    <EventSetter Event="PreviewMouseRightButtonDown" Handler="TreeViewItem_OnPreviewMouseRightButtonDown"/>
+                                    <Setter Property="ContextMenu">
+                                        <Setter.Value>
+                                            <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                                                <MenuItem Header="添加新脚本"
+                                                          Visibility="{Binding CanAddScript, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          Command="{Binding PlacementTarget.Tag.AddScriptCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                          CommandParameter="{Binding}"/>
+                                                <MenuItem Header="删除脚本"
+                                                          Visibility="{Binding CanDeleteScript, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          Command="{Binding PlacementTarget.Tag.DeleteScriptCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                          CommandParameter="{Binding}"/>
+                                                <MenuItem Header="重命名脚本"
+                                                          Visibility="{Binding CanRenameScript, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          Command="{Binding PlacementTarget.Tag.RenameScriptCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                          CommandParameter="{Binding}"/>
+                                                <Separator Visibility="{Binding CanAddScriptGroup, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                <MenuItem Header="添加文件夹"
+                                                          Visibility="{Binding CanAddScriptGroup, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          Command="{Binding PlacementTarget.Tag.AddScriptGroupCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                          CommandParameter="{Binding}"/>
+                                                <MenuItem Header="删除文件夹"
+                                                          Visibility="{Binding CanDeleteScriptGroup, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          Command="{Binding PlacementTarget.Tag.DeleteScriptGroupCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                          CommandParameter="{Binding}"/>
+                                                <MenuItem Header="重命名文件夹"
+                                                          Visibility="{Binding CanRenameScriptGroup, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          Command="{Binding PlacementTarget.Tag.RenameScriptGroupCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                          CommandParameter="{Binding}"/>
+                                            </ContextMenu>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+                            <TreeView.ItemTemplate>
+                                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                    <TextBlock Text="{Binding DisplayName}"/>
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+
+            <GridSplitter Grid.Column="1"
+                          Width="8"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"
+                          ResizeBehavior="PreviousAndNext"
+                          ResizeDirection="Columns"
+                          Background="{DynamicResource CardStrokeColorDefaultBrush}"/>
+
+            <Border Grid.Column="2" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="6">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Margin="10,8,10,8" Text="详情" FontWeight="Bold"/>
+
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                        <StackPanel Margin="10">
+                            <TextBlock Text="{Binding SelectedAssetDetail.Title}" FontWeight="Bold" FontSize="15" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding SelectedAssetDetail.Description}" Margin="0,6,0,10" TextWrapping="Wrap"/>
+
+                            <ItemsControl ItemsSource="{Binding SelectedAssetDetail.Fields}">
+                                <ItemsControl.Resources>
+                                    <DataTemplate x:Key="DetailReadOnlyFieldTemplate">
+                                        <Grid Margin="0,0,0,6">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0" Margin="0,0,10,0" Text="{Binding Label}" FontWeight="Bold" TextWrapping="Wrap"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding Value}" TextWrapping="Wrap"/>
+                                        </Grid>
+                                    </DataTemplate>
+
+                                    <DataTemplate x:Key="DetailTextBoxFieldTemplate">
+                                        <Grid Margin="0,0,0,6">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0" Margin="0,0,10,0" Text="{Binding Label}" FontWeight="Bold" TextWrapping="Wrap"/>
+                                            <TextBox Grid.Column="1" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                <behaviors:Interaction.Triggers>
+                                                    <behaviors:EventTrigger EventName="LostFocus">
+                                                        <behaviors:InvokeCommandAction Command="{Binding DataContext.CommitDetailFieldCommand, Source={x:Reference RootWindow}}" CommandParameter="{Binding}"/>
+                                                    </behaviors:EventTrigger>
+                                                </behaviors:Interaction.Triggers>
+                                            </TextBox>
+                                        </Grid>
+                                    </DataTemplate>
+
+                                    <DataTemplate x:Key="DetailCheckBoxFieldTemplate">
+                                        <Grid Margin="0,0,0,6">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0" Margin="0,0,10,0" Text="{Binding Label}" FontWeight="Bold" TextWrapping="Wrap"/>
+                                            <CheckBox Grid.Column="1" IsChecked="{Binding BoolValue, Mode=TwoWay}">
+                                                <behaviors:Interaction.Triggers>
+                                                    <behaviors:EventTrigger EventName="Checked">
+                                                        <behaviors:InvokeCommandAction Command="{Binding DataContext.CommitDetailFieldCommand, Source={x:Reference RootWindow}}" CommandParameter="{Binding}"/>
+                                                    </behaviors:EventTrigger>
+                                                    <behaviors:EventTrigger EventName="Unchecked">
+                                                        <behaviors:InvokeCommandAction Command="{Binding DataContext.CommitDetailFieldCommand, Source={x:Reference RootWindow}}" CommandParameter="{Binding}"/>
+                                                    </behaviors:EventTrigger>
+                                                </behaviors:Interaction.Triggers>
+                                            </CheckBox>
+                                        </Grid>
+                                    </DataTemplate>
+
+                                    <DataTemplate x:Key="DetailComboBoxFieldTemplate">
+                                        <Grid Margin="0,0,0,6">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0" Margin="0,0,10,0" Text="{Binding Label}" FontWeight="Bold" TextWrapping="Wrap"/>
+                                            <ComboBox Grid.Column="1" ItemsSource="{Binding Options}" SelectedItem="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                <behaviors:Interaction.Triggers>
+                                                    <behaviors:EventTrigger EventName="SelectionChanged">
+                                                        <behaviors:InvokeCommandAction Command="{Binding DataContext.CommitDetailFieldCommand, Source={x:Reference RootWindow}}" CommandParameter="{Binding}"/>
+                                                    </behaviors:EventTrigger>
+                                                </behaviors:Interaction.Triggers>
+                                            </ComboBox>
+                                        </Grid>
+                                    </DataTemplate>
+
+                                    <DataTemplate x:Key="DetailGroupTemplate">
+                                        <Expander Header="{Binding Label}" IsExpanded="{Binding IsExpanded, Mode=TwoWay}" Margin="0,0,0,6">
+                                            <ItemsControl ItemsSource="{Binding Children}" Margin="8,6,0,0">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DynamicResource ResourceKey="DetailItemTemplate"/>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </Expander>
+                                    </DataTemplate>
+
+                                    <DataTemplate x:Key="DetailItemTemplate">
+                                        <ContentControl Content="{Binding}">
+                                            <ContentControl.Style>
+                                                <Style TargetType="ContentControl">
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource DetailReadOnlyFieldTemplate}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsGroup}" Value="True">
+                                                            <Setter Property="ContentTemplate" Value="{StaticResource DetailGroupTemplate}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding EditorType}" Value="{x:Static models:MapDataAssetDetailFieldEditorType.TextBox}">
+                                                            <Setter Property="ContentTemplate" Value="{StaticResource DetailTextBoxFieldTemplate}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding EditorType}" Value="{x:Static models:MapDataAssetDetailFieldEditorType.CheckBox}">
+                                                            <Setter Property="ContentTemplate" Value="{StaticResource DetailCheckBoxFieldTemplate}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding EditorType}" Value="{x:Static models:MapDataAssetDetailFieldEditorType.ComboBox}">
+                                                            <Setter Property="ContentTemplate" Value="{StaticResource DetailComboBoxFieldTemplate}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ContentControl.Style>
+                                        </ContentControl>
+                                    </DataTemplate>
+                                </ItemsControl.Resources>
+                                <ItemsControl.ItemTemplate>
+                                    <StaticResource ResourceKey="DetailItemTemplate"/>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>
