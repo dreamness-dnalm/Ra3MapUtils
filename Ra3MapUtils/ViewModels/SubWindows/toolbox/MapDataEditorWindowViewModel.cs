@@ -37,6 +37,8 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
 
     private BaseContext? _loadedContext;
     private Ra3Map? _loadedMap;
+    private object? _loadedParserInstance;
+    private Action? _nativeSaveAction;
     private string _loadedExtension = "";
 
     private SidesListAsset? _sidesListAsset;
@@ -46,6 +48,25 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
     private bool _hasPlayerScriptsListAsset;
     private int _playerCount;
     private int _scriptListCount;
+
+    private sealed class LoadedContextResult
+    {
+        public LoadedContextResult(BaseContext context, string parserTypeName, object? parserInstance, Action? nativeSaveAction)
+        {
+            Context = context;
+            ParserTypeName = parserTypeName;
+            ParserInstance = parserInstance;
+            NativeSaveAction = nativeSaveAction;
+        }
+
+        public BaseContext Context { get; }
+
+        public string ParserTypeName { get; }
+
+        public object? ParserInstance { get; }
+
+        public Action? NativeSaveAction { get; }
+    }
 
     static MapDataEditorWindowViewModel()
     {
@@ -107,7 +128,7 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
         }
 
         var extension = Path.GetExtension(filePath).ToLowerInvariant();
-        if (extension is not (".map" or ".scb" or ".bin"))
+        if (extension is not (".map" or ".scb" or ".bin" or ".paste"))
         {
             MessageBox.Show("Unsupported file extension: " + extension);
             return false;
@@ -115,18 +136,20 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
 
         try
         {
-            var context = LoadContext(filePath, extension, out var parserTypeName);
+            var loadResult = LoadContext(filePath, extension);
 
             FilePath = filePath;
             FileType = extension.TrimStart('.').ToUpperInvariant();
-            ParserTypeName = parserTypeName;
+            ParserTypeName = loadResult.ParserTypeName;
             ParseStatus = "Parsed";
             ParseStatusColor = Brushes.LimeGreen;
 
-            _loadedContext = context;
+            _loadedContext = loadResult.Context;
+            _loadedParserInstance = loadResult.ParserInstance;
+            _nativeSaveAction = loadResult.NativeSaveAction;
             _loadedExtension = extension;
 
-            BuildCombinedTree(context);
+            BuildCombinedTree(loadResult.Context);
             SelectDefaultNode();
 
             IsDirty = false;
@@ -188,25 +211,38 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
 
         try
         {
-            switch (_loadedExtension)
+            Exception? nativeSaveError = null;
+            var nativeSaved = false;
+            if (_nativeSaveAction is not null)
             {
-                case ".map":
-                    if (_loadedMap is not null)
+                try
+                {
+                    _nativeSaveAction();
+                    nativeSaved = true;
+                }
+                catch (Exception ex)
+                {
+                    nativeSaveError = ex;
+                }
+            }
+
+            if (!nativeSaved)
+            {
+                try
+                {
+                    SaveContextToRawFile(_loadedContext, FilePath);
+                }
+                catch (Exception rawSaveError)
+                {
+                    if (nativeSaveError is not null)
                     {
-                        _loadedMap.Save();
-                    }
-                    else
-                    {
-                        SaveContextToRawFile(_loadedContext, FilePath);
+                        throw new Exception(
+                            "Native save failed: " + nativeSaveError.Message + "; fallback raw save failed: " + rawSaveError.Message,
+                            rawSaveError);
                     }
 
-                    break;
-                case ".scb":
-                case ".bin":
-                    SaveContextToRawFile(_loadedContext, FilePath);
-                    break;
-                default:
-                    throw new NotSupportedException("Unsupported extension for saving: " + _loadedExtension);
+                    throw;
+                }
             }
 
             IsDirty = false;
@@ -413,6 +449,8 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
     {
         _loadedContext = null;
         _loadedMap = null;
+        _loadedParserInstance = null;
+        _nativeSaveAction = null;
         _loadedExtension = "";
         _sidesListAsset = null;
         _playerScriptsList = null;
@@ -429,7 +467,7 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
         CanSave = CanReload && IsDirty;
     }
 
-    private BaseContext LoadContext(string filePath, string extension, out string parserTypeName)
+    private LoadedContextResult LoadContext(string filePath, string extension)
     {
         _loadedMap = null;
 
@@ -438,20 +476,19 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
             case ".map":
             {
                 _loadedMap = Ra3Map.Open(filePath);
-                parserTypeName = nameof(Ra3Map);
-                return _loadedMap.Context;
+                return new LoadedContextResult(_loadedMap.Context, nameof(Ra3Map), _loadedMap, () => _loadedMap.Save());
             }
             case ".scb":
             {
                 var mapScb = Ra3MapScb.FromFile(filePath);
-                parserTypeName = nameof(Ra3MapScb);
-                return mapScb.Context;
+                return new LoadedContextResult(mapScb.Context, nameof(Ra3MapScb), mapScb, () => mapScb.Save());
             }
             case ".bin":
+            case ".paste":
             {
-                if (TryLoadBinContext(filePath, out var context, out parserTypeName, out var error))
+                if (TryLoadBinContext(filePath, out var loadResult, out var error))
                 {
-                    return context;
+                    return loadResult;
                 }
 
                 throw new Exception(error);
@@ -1994,7 +2031,7 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
         return score;
     }
 
-    private static bool TryLoadBinContext(string filePath, out BaseContext context, out string parserTypeName, out string error)
+    private static bool TryLoadBinContext(string filePath, out LoadedContextResult loadResult, out string error)
     {
         foreach (var typeName in new[]
                  {
@@ -2002,7 +2039,7 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
                      "Dreamness.RA3.Map.Parser.Core.ClipBoard.Ra3ClipBoard"
                  })
         {
-            if (TryLoadContextByTypeName(typeName, filePath, out context, out parserTypeName, out error))
+            if (TryLoadContextByTypeName(typeName, filePath, out loadResult, out error))
             {
                 return true;
             }
@@ -2014,22 +2051,20 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
                      "Dreamness.RA3.Map.Parser.Core.ClipBoard.Ra3MapClipboard"
                  })
         {
-            if (TryLoadContextByTypeName(typeName, filePath, out context, out parserTypeName, out error))
+            if (TryLoadContextByTypeName(typeName, filePath, out loadResult, out error))
             {
                 return true;
             }
         }
 
-        context = null!;
-        parserTypeName = "";
-        error = "No available .bin parser found (Ra3ClipBoard / Ra3MapClipboard).";
+        loadResult = null!;
+        error = "No available clipboard parser found (Ra3ClipBoard / Ra3MapClipboard).";
         return false;
     }
 
-    private static bool TryLoadContextByTypeName(string typeName, string filePath, out BaseContext context, out string parserTypeName, out string error)
+    private static bool TryLoadContextByTypeName(string typeName, string filePath, out LoadedContextResult loadResult, out string error)
     {
-        context = null!;
-        parserTypeName = "";
+        loadResult = null!;
         error = "";
 
         var parserType = typeof(Ra3Map).Assembly.GetType(typeName, throwOnError: false);
@@ -2063,16 +2098,22 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
             var contextField = parserType.GetField("Context", BindingFlags.Public | BindingFlags.Instance);
             if (contextField?.GetValue(parserInstance) is BaseContext fieldContext)
             {
-                context = fieldContext;
-                parserTypeName = parserType.Name;
+                loadResult = new LoadedContextResult(
+                    fieldContext,
+                    parserType.Name,
+                    parserInstance,
+                    BuildNativeSaveAction(parserType, parserInstance, filePath));
                 return true;
             }
 
             var contextProperty = parserType.GetProperty("Context", BindingFlags.Public | BindingFlags.Instance);
             if (contextProperty?.GetValue(parserInstance) is BaseContext propertyContext)
             {
-                context = propertyContext;
-                parserTypeName = parserType.Name;
+                loadResult = new LoadedContextResult(
+                    propertyContext,
+                    parserType.Name,
+                    parserInstance,
+                    BuildNativeSaveAction(parserType, parserInstance, filePath));
                 return true;
             }
 
@@ -2089,5 +2130,56 @@ public partial class MapDataEditorWindowViewModel : ObservableObject
             error = ex.Message;
             return false;
         }
+    }
+
+    private static Action? BuildNativeSaveAction(Type parserType, object parserInstance, string filePath)
+    {
+        const BindingFlags flags = BindingFlags.Public | BindingFlags.Instance;
+
+        var saveNoArgMethod = parserType.GetMethod(
+            "Save",
+            flags,
+            binder: null,
+            types: Type.EmptyTypes,
+            modifiers: null);
+        if (saveNoArgMethod is not null)
+        {
+            return () => saveNoArgMethod.Invoke(parserInstance, Array.Empty<object>());
+        }
+
+        var saveBoolMethod = parserType.GetMethod(
+            "Save",
+            flags,
+            binder: null,
+            types: new[] { typeof(bool) },
+            modifiers: null);
+        if (saveBoolMethod is not null)
+        {
+            return () => saveBoolMethod.Invoke(parserInstance, new object[] { false });
+        }
+
+        var saveAsMethod = parserType.GetMethod(
+            "SaveAs",
+            flags,
+            binder: null,
+            types: new[] { typeof(string) },
+            modifiers: null);
+        if (saveAsMethod is not null)
+        {
+            return () => saveAsMethod.Invoke(parserInstance, new object[] { filePath });
+        }
+
+        var saveAsWithCompressMethod = parserType.GetMethod(
+            "SaveAs",
+            flags,
+            binder: null,
+            types: new[] { typeof(string), typeof(bool) },
+            modifiers: null);
+        if (saveAsWithCompressMethod is not null)
+        {
+            return () => saveAsWithCompressMethod.Invoke(parserInstance, new object[] { filePath, false });
+        }
+
+        return null;
     }
 }
