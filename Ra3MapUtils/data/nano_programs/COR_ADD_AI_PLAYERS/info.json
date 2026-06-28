@@ -1,0 +1,6 @@
+{
+    "ID": "a0489abb-3b9a-4fd6-a0f3-8e7739f1f3e0",
+    "Name": "[日冕]添加AI玩家",
+    "Description": "向地图添加 AIPlayer01 到 AIPlayer06，已存在的玩家会自动跳过。",
+    "Author": "dreamness"
+}

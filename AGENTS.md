@@ -1,7 +1,7 @@
 # Ra3MapUtils Agent 协作规范（仓库级）
 
 ## 1) 适用范围与优先级
-- 本文件适用于整个仓库：`N:\workspace\ra3\Ra3MapUtils`。
+- 本文件适用于整个仓库：`Ra3MapUtils`。
 - 子目录存在 `AGENTS.md` 时，子目录规则优先于本文件：
   - `Ra3MapUtils/AGENTS.md`
   - `SharedFunctionLib/AGENTS.md`
@@ -62,3 +62,8 @@
 - 改业务/DAO/配置存储前先读：`SharedFunctionLib/AGENTS.md`
 - 改地图底层工具前先读：`UtilCoreLib/AGENTS.md`
 
+
+<!-- SPECKIT START -->
+For additional context about technologies to be used, project structure,
+shell commands, and other important information, read the current plan
+<!-- SPECKIT END -->

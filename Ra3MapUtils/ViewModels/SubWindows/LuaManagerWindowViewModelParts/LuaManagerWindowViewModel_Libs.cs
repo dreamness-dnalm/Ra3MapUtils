@@ -188,6 +188,51 @@ public partial class LuaManagerWindowViewModel
         MapLuaImporterUtil.ImportLuaWithActiveConfig(_mapFilePath);
     }
 
+    [RelayCommand]
+    private void ExportLuaImportScheme()
+    {
+        if (string.IsNullOrWhiteSpace(_mapFilePath))
+        {
+            MessageBox.Show("未选择地图，无法导出Lua导入方案。");
+            return;
+        }
+
+        var fileNamePrefix = string.IsNullOrWhiteSpace(_mapName)
+            ? "lua_import_scheme"
+            : string.Join("_", _mapName.Split(Path.GetInvalidFileNameChars(), StringSplitOptions.RemoveEmptyEntries));
+
+        using var dialog = new SaveFileDialog
+        {
+            Title = "导出Lua导入方案",
+            Filter = "JSON文件 (*.json)|*.json",
+            DefaultExt = "json",
+            AddExtension = true,
+            OverwritePrompt = true,
+            FileName = $"{fileNamePrefix}_lua_import_scheme.json"
+        };
+
+        var mapDir = Path.GetDirectoryName(_mapFilePath);
+        if (!string.IsNullOrWhiteSpace(mapDir) && Directory.Exists(mapDir))
+        {
+            dialog.InitialDirectory = mapDir;
+        }
+
+        if (dialog.ShowDialog() != DialogResult.OK)
+        {
+            return;
+        }
+
+        try
+        {
+            var result = _luaImportService.ExportMapLuaImportScheme(_mapFilePath, dialog.FileName);
+            MessageBox.Show($"已导出 {result.ItemCount} 个Lua导入项到：\n{result.JsonPath}");
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show("导出Lua导入方案失败, 详细错误: " + e.Message);
+        }
+    }
+
     // [RelayCommand]
     // private void ImportLua()
     // {

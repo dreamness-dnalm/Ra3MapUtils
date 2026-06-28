@@ -87,6 +87,9 @@
       <None Include="data\nano_programs\COPY_TEAM\Main.cs">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Include="data\nano_programs\COR_FORCE_ENHANCE\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
       <None Include="data\nano_programs\EXPORT_PLAYERDATA\Main.cs">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
@@ -142,6 +145,9 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="data\RA3_MapLib_AI_Guide.md">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\Ra3Hacker\**\*">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <Compile Remove="data\nano_programs\UUID_Generator\Main.cs" />
@@ -254,6 +260,35 @@
       <None Include="data\nano_programs\OPEN_MAP_FOLDER\Main.cs">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="data\nano_programs\COR_FORCE_ENHANCE\info.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <Compile Remove="data\nano_programs\COR_FORCE_ENHANCE\Main.cs" />
+      <None Include="data\nano_programs\COR_FORCE_ENHANCE\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\nano_programs\COR_ADD_AI_PLAYERS\info.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <Compile Remove="data\nano_programs\COR_ADD_AI_PLAYERS\Main.cs" />
+      <None Include="data\nano_programs\COR_ADD_AI_PLAYERS\Main.cs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\Ra3Hacker\Ra3Hacker.Injector.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="data\Ra3Hacker\Ra3Hacker.Injector.exe">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="data\Ra3Hacker\Ra3Hacker.Injector.runtimeconfig.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="data\Ra3Hacker\setting.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="data\Ra3Hacker\TinyNative.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -267,6 +302,14 @@
       <Resource Include="data\imgs\coming_soon_icon.png" />
       <None Remove="data\imgs\chat_lua_helper_icon.png" />
       <Resource Include="data\imgs\chat_lua_helper_icon.png" />
+      <None Remove="data\imgs\image_encoding_tool_icon.png" />
+      <Resource Include="data\imgs\image_encoding_tool_icon.png" />
+      <None Remove="data\imgs\fast_hash_calculator_icon.png" />
+      <Resource Include="data\imgs\fast_hash_calculator_icon.png" />
+      <None Remove="data\imgs\lua_executor_icon.png" />
+      <Resource Include="data\imgs\lua_executor_icon.png" />
+      <None Remove="data\imgs\time_control_icon.png" />
+      <Resource Include="data\imgs\time_control_icon.png" />
       <None Remove="data\imgs\SymmetryTransform_1.png" />
       <Resource Include="data\imgs\SymmetryTransform_1.png" />
       <None Remove="data\imgs\SymmetryTransform_2.png" />
@@ -315,6 +358,9 @@
       </Reference>
       <Reference Include="Dreamness.ScriptExecutor">
         <HintPath>lib\Dreamness.ScriptExecutor.dll</HintPath>
+      </Reference>
+      <Reference Include="Ra3Hacker.Sdk">
+        <HintPath>lib\Ra3Hacker.Sdk.dll</HintPath>
       </Reference>
     </ItemGroup>
 

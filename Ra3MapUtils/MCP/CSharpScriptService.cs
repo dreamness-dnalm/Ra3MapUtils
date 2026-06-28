@@ -13,7 +13,7 @@ namespace Ra3MapUtils.MCP;
 [McpServerToolType]
 public class CSharpScriptService
 {
-    [McpServerTool, Description("执行CSharp脚本")]
+    [McpServerTool(Name = "run_ra3_csharp_script"), Description("执行CSharp脚本")]
     public static string RunRa3CSharpScript(string csharpScript, string workingDirectory = null)
     {
         // 先创建包含常用包的 ScriptOptions

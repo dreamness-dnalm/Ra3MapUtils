@@ -103,6 +103,11 @@
                         Icon="{ui:SymbolIcon TriangleRight20}"
                         Command="{Binding DoImportCommand}"
                     />
+                    <ui:MenuItem
+                        ToolTip="导出Lua导入方案"
+                        Icon="{ui:SymbolIcon Save20}"
+                        Command="{Binding ExportLuaImportSchemeCommand}"
+                    />
                 </Menu>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <ui:ListView ItemsSource="{Binding LuaLibConfigs}" SelectedValue="{Binding SelectedLuaLibConfig}">

@@ -16,7 +16,7 @@ public class UpdateService: IUpdateService
 {
     private UpdateManager mgr = new UpdateManager(
         // new GiteeSource("dreamness", "update_test", null, true),
-        new SimpleWebSource("http://public-files.amiksemo.com/ra3/Ra3MapUtils"),
+        new SimpleWebSource("https://public-files.dreamness.cn/ra3/Ra3MapUtils"),
         null, 
         null);
     

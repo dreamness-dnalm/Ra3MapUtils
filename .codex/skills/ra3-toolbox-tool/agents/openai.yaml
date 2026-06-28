@@ -1,0 +1,4 @@
+interface:
+  display_name: "RA3 Toolbox Tool"
+  short_description: "Add Ra3MapUtils toolbox tools with matching entry icons."
+  default_prompt: "Use $ra3-toolbox-tool when adding or updating a Ra3MapUtils toolbox tool entry."

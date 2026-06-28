@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.IO;
+using System.Net.Http;
 using System.Reflection;
 using System.Windows;
 using Microsoft.AspNetCore.Builder;
@@ -31,6 +32,8 @@ namespace Ra3MapUtils;
 /// </summary>
 public partial class App : Application
 {
+    private static readonly Uri StartupTelemetryUri = new("https://ra3maputils-server.amiksemo.com/file/ra3/Ra3MapUtils/releases.win.json");
+
     public IServiceProvider Services { get; }
 
     public new static App Current => (App)Application.Current;
@@ -92,6 +95,18 @@ public partial class App : Application
 
         services.AddTransient<MapDataEditorWindow>();
         services.AddTransient<MapDataEditorWindowViewModel>();
+
+        services.AddTransient<ImageEncodingToolWindow>();
+        services.AddTransient<ImageEncodingToolWindowViewModel>();
+
+        services.AddTransient<FastHashCalculatorWindow>();
+        services.AddTransient<FastHashCalculatorWindowViewModel>();
+
+        services.AddTransient<LuaExecutorWindow>();
+        services.AddTransient<LuaExecutorWindowViewModel>();
+
+        services.AddTransient<TimeControlWindow>();
+        services.AddTransient<TimeControlWindowViewModel>();
         
         services.AddTransient<TerrainTransWindow>();
         services.AddSingleton<TerrainTransWindowViewModel>();
@@ -134,6 +149,28 @@ public partial class App : Application
     // public static APIService _apiService = new();
 
     private static Mutex _mutex;
+
+    private static void TrackStartupTelemetry()
+    {
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                using var httpClient = new HttpClient
+                {
+                    Timeout = TimeSpan.FromSeconds(5)
+                };
+
+                using var response = await httpClient.GetAsync(
+                    StartupTelemetryUri,
+                    HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+            }
+            catch
+            {
+                // Startup telemetry must never block or interrupt the app.
+            }
+        });
+    }
     
     protected override async void OnStartup(StartupEventArgs e)
     {
@@ -147,6 +184,7 @@ public partial class App : Application
             Environment.Exit(0);
         }
 
+        TrackStartupTelemetry();
 
         var builder = WebApplication.CreateBuilder();
         
