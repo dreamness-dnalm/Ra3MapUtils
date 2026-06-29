@@ -1,0 +1,4 @@
+interface:
+  display_name: "RA3 Nano Program"
+  short_description: "Create Ra3MapUtils nano programs safely."
+  default_prompt: "Use $ra3-nano-program when adding or updating a Ra3MapUtils nano program."

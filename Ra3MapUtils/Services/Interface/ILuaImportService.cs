@@ -12,6 +12,10 @@ public interface ILuaImportService
     public void DeleteMapLuaLibConfig(string mapName, string showingName);
     
     public List<LuaLibConfigModel> LoadMapLuaLibConfig(string mapName);
+
+    public LuaImportSchemeOperationResult ExportMapLuaImportScheme(string map, string jsonPath);
+
+    public LuaImportSchemeOperationResult ImportLuaBySchemeJson(string map, string jsonPath);
     
     // public void UpsertScriptGroup(string mapName, XElement scriptGroupXElement, string behindScriptGroupName);
 }

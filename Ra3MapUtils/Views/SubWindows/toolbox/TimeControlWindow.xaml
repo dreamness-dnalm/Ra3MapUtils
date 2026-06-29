@@ -1,0 +1,183 @@
+<ui:FluentWindow x:Class="Ra3MapUtils.Views.SubWindows.toolbox.TimeControlWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 xmlns:vm="clr-namespace:Ra3MapUtils.ViewModels.toolbox"
+                 d:DataContext="{d:DesignInstance Type=vm:TimeControlWindowViewModel, IsDesignTimeCreatable=True}"
+                 d:DesignHeight="620"
+                 d:DesignWidth="940"
+                 ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+                 ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                 mc:Ignorable="d"
+                 Title="时间操控"
+                 Height="620"
+                 Width="940"
+                 MinHeight="520"
+                 MinWidth="820"
+                 ResizeMode="CanResizeWithGrip"
+                 WindowStartupLocation="CenterScreen"
+                 ExtendsContentIntoTitleBar="True"
+                 WindowBackdropType="Mica"
+                 WindowCornerPreference="Round"
+                 WindowStyle="SingleBorderWindow"
+                 Topmost="{Binding IsTopmost}">
+
+    <Grid Margin="10,0,10,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ui:ToggleSwitch Grid.Column="0" Margin="0,6,12,0" Content="置顶" IsChecked="{Binding IsTopmost}"/>
+            <ui:TitleBar Grid.Column="1" Title="时间操控" ShowMaximize="True" ShowMinimize="True" ShowClose="True"/>
+        </Grid>
+
+        <Border Grid.Row="1"
+                Margin="5,4,5,8"
+                Padding="12,10"
+                BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="6">
+            <UniformGrid Columns="2" Rows="2">
+                <StackPanel Margin="0,0,16,8">
+                    <TextBlock Text="当前帧" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding CurrentFrameText}" FontSize="20"/>
+                </StackPanel>
+                <StackPanel Margin="0,0,16,8">
+                    <TextBlock Text="当前时间" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding CurrentTimeText}" FontSize="20"/>
+                </StackPanel>
+                <StackPanel Margin="0,0,16,0">
+                    <TextBlock Text="暂停状态" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding PauseStatusText}"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="速度状态" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding FastStatusText}"/>
+                </StackPanel>
+            </UniformGrid>
+        </Border>
+
+        <WrapPanel Grid.Row="2" Margin="5,0,5,4">
+            <ui:Button Content="刷新状态"
+                       Icon="{ui:SymbolIcon ArrowClockwise16}"
+                       Command="{Binding RefreshStatusCommand}"
+                       Margin="0,0,8,8"/>
+            <ui:Button Content="{Binding PauseButtonText}"
+                       Icon="{ui:SymbolIcon Play16}"
+                       Command="{Binding TogglePauseCommand}"
+                       Margin="0,0,8,8"/>
+            <ui:Button Content="{Binding FastButtonText}"
+                       Icon="{ui:SymbolIcon Play16}"
+                       Command="{Binding ToggleFastCommand}"
+                       Margin="0,0,8,8"/>
+            <ui:Button Content="{Binding SingleStepButtonText}"
+                       Icon="{ui:SymbolIcon Play16}"
+                       Command="{Binding ToggleSingleStepCommand}"
+                       Margin="0,0,8,8"/>
+            <ui:Button Content="前进一帧"
+                       Icon="{ui:SymbolIcon Play16}"
+                       Command="{Binding StepFrameCommand}"
+                       Margin="0,0,8,8"/>
+            <ui:Button Content="重置"
+                       Icon="{ui:SymbolIcon ArrowClockwise16}"
+                       Command="{Binding ResetTimeControlCommand}"
+                       Margin="0,0,8,8"/>
+        </WrapPanel>
+
+        <Border Grid.Row="3"
+                Margin="5,2,5,8"
+                Padding="10,8"
+                BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="6">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="快进到帧" VerticalAlignment="Center" Margin="0,0,12,8"/>
+                <StackPanel Grid.Row="0"
+                            Grid.Column="1"
+                            Orientation="Horizontal"
+                            Margin="0,0,0,8">
+                    <TextBox Width="126"
+                             Text="{Binding FastToFrameText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalContentAlignment="Center"
+                             Margin="0,0,8,0"/>
+                    <ui:Button Content="执行"
+                               Icon="{ui:SymbolIcon Play16}"
+                               Command="{Binding FastToFrameCommand}"
+                               MinWidth="88"/>
+                </StackPanel>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="快进到时间" VerticalAlignment="Center" Margin="0,0,12,8"/>
+                <StackPanel Grid.Row="1"
+                            Grid.Column="1"
+                            Orientation="Horizontal"
+                            Margin="0,0,0,8">
+                    <TextBox Width="64"
+                             Text="{Binding FastToHourText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalContentAlignment="Center"
+                             Margin="0,0,4,0"/>
+                    <TextBlock Text="时" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox Width="64"
+                             Text="{Binding FastToMinuteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalContentAlignment="Center"
+                             Margin="0,0,4,0"/>
+                    <TextBlock Text="分" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox Width="64"
+                             Text="{Binding FastToSecondText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalContentAlignment="Center"
+                             Margin="0,0,4,0"/>
+                    <TextBlock Text="秒" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox Width="64"
+                             Text="{Binding FastToSubFrameText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalContentAlignment="Center"
+                             Margin="0,0,4,0"/>
+                    <TextBlock Text="子帧" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <ui:Button Content="执行"
+                               Icon="{ui:SymbolIcon Play16}"
+                               Command="{Binding FastToTimeCommand}"
+                               MinWidth="88"/>
+                </StackPanel>
+
+                <TextBlock Grid.Row="2"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           Text="{Binding StatusText}"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                           TextWrapping="Wrap"
+                           Margin="0,2,0,0"/>
+            </Grid>
+        </Border>
+
+        <TextBox Grid.Row="4"
+                 Margin="5,0,5,0"
+                 Text="{Binding OutputText, Mode=OneWay}"
+                 IsReadOnly="True"
+                 AcceptsReturn="True"
+                 TextWrapping="NoWrap"
+                 FontFamily="Consolas"
+                 VerticalScrollBarVisibility="Auto"
+                 HorizontalScrollBarVisibility="Auto"/>
+    </Grid>
+</ui:FluentWindow>

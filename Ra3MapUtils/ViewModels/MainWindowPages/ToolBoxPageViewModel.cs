@@ -147,6 +147,77 @@ public partial class ToolBoxPageViewModel: ObservableObject
     }
 
     [RelayCommand]
+    private void OpenImageEncodingToolWindow()
+    {
+        var existingWindow = WpfApplication.Current.Windows
+            .OfType<ImageEncodingToolWindow>()
+            .FirstOrDefault();
+        if (existingWindow is not null)
+        {
+            ActivateWindow(existingWindow);
+            return;
+        }
+
+        var imageEncodingToolWindow = App.Current.Services.GetRequiredService<ImageEncodingToolWindow>();
+        imageEncodingToolWindow.Show();
+    }
+
+    [RelayCommand]
+    private void OpenFastHashCalculatorWindow()
+    {
+        var existingWindow = WpfApplication.Current.Windows
+            .OfType<FastHashCalculatorWindow>()
+            .FirstOrDefault();
+        if (existingWindow is not null)
+        {
+            ActivateWindow(existingWindow);
+            return;
+        }
+
+        var fastHashCalculatorWindow = App.Current.Services.GetRequiredService<FastHashCalculatorWindow>();
+        fastHashCalculatorWindow.Show();
+    }
+
+    [RelayCommand]
+    private void OpenLuaExecutorWindow()
+    {
+        try
+        {
+            var existingWindow = WpfApplication.Current.Windows
+                .OfType<LuaExecutorWindow>()
+                .FirstOrDefault();
+            if (existingWindow is not null)
+            {
+                ActivateWindow(existingWindow);
+                return;
+            }
+
+            var luaExecutorWindow = App.Current.Services.GetRequiredService<LuaExecutorWindow>();
+            luaExecutorWindow.Show();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("打开 Lua执行器失败: " + ex.Message);
+        }
+    }
+
+    [RelayCommand]
+    private void OpenTimeControlWindow()
+    {
+        var existingWindow = WpfApplication.Current.Windows
+            .OfType<TimeControlWindow>()
+            .FirstOrDefault();
+        if (existingWindow is not null)
+        {
+            ActivateWindow(existingWindow);
+            return;
+        }
+
+        var timeControlWindow = App.Current.Services.GetRequiredService<TimeControlWindow>();
+        timeControlWindow.Show();
+    }
+
+    [RelayCommand]
     private void OpenMoreFunctionsWindow()
     {
         MessageBox.Show("欢迎加入QQ群: 513118543");

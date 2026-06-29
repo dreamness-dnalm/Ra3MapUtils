@@ -1,4 +1,4 @@
-$toolPath = Split-Path -parent $MyInvocation.MyCommand.Definition
+ï»¿$toolPath = Split-Path -parent $MyInvocation.MyCommand.Definition
 
 $compileType = "Release" # Debug / Release
 $projectPath = "$toolPath\..\Ra3MapUtils"
@@ -7,7 +7,7 @@ $projectFilePath = "$projectPath\Ra3MapUtils.csproj"
 $buildOutPath = "$toolPath\.cache\$compileType"
 $packageOutPath = "$toolPath\publish\v$version"
 $releaseNotesPath = "$toolPath\..\doc\release_notes\RELEASE_v$version.md"
-$softwareName = "RA3µØ±à°éÂÂ"
+$softwareName = "RA3åœ°ç¼–ä¼´ä¾£"
 $vpkPackId = "Ra3MapUtils"
 
 # ----------- build ------------
@@ -22,9 +22,10 @@ dotnet publish `
     $projectFilePath `
     -c $compileType `
     -r win-x64 `
+    --self-contained true `
     -o $buildOutPath
 
-# Êä³ö
+# è¾“å‡º
 if ($LASTEXITCODE -eq 0) {
     Write-Host "Build success, output path: $buildOutPath" -ForegroundColor Blue -BackgroundColor Gray
 } else {
@@ -50,8 +51,7 @@ vpk pack `
 --mainExe Ra3MapUtils.exe `
 --outputDir $packageOutPath `
 --delta BestSize `
---releaseNotes $releaseNotesPath `
---framework net8.0-x64-sdk
+--releaseNotes $releaseNotesPath
 # --noInst
 ##--icon {path}
 # `
@@ -63,18 +63,10 @@ Remove-Item -Recurse -Force "$packageOutPath\assets.win.json"
 Remove-Item -Recurse -Force "$packageOutPath\$softwareName\.portable"
 Remove-Item -Recurse -Force "$packageOutPath\$vpkPackId-win-Portable.zip"
 
-# Ğ´ÎÄ±¾µ½$packageOutPath\$softwareName\Èç¹ûÔËĞĞÊ§°ÜÇëÔÄ¶Á±¾ÎÄ¼ş.txt 
-# ÎÄ±¾ÄÚÈİÎª: Èç¹û±¨´í: You must install or update .NET to run this application.
-#¡¡ÇëÏÂÔØ²¢°²×°£º¡¡https://builds.dotnet.microsoft.com/dotnet/Sdk/8.0.415/dotnet-sdk-8.0.415-win-x64.exe
-# ¿ÉÈëQQÈº»ñÈ¡°ïÖú:  513118543  /  613550502
-# ¿É²Î¿¼ÔÚÏß°ïÖúÎÄµµ: https://www.yuque.com/muzeqaq/ra3mapwiki/vppua7qbrig4emxd
-
-Set-Content -Path "$packageOutPath\$softwareName\Èç¹ûÔËĞĞÊ§°ÜÇëÔÄ¶Á±¾ÎÄ¼ş.txt" -Value "Èç¹û±¨´í: You must install or update .NET to run this application.`r`nÇëÏÂÔØ²¢°²×°£º¡¡https://builds.dotnet.microsoft.com/dotnet/Sdk/8.0.415/dotnet-sdk-8.0.415-win-x64.exe`r`n¿ÉÈëQQÈº»ñÈ¡°ïÖú:  513118543  /  613550502`r`n¿É²Î¿¼ÔÚÏß°ïÖúÎÄµµ: https://www.yuque.com/muzeqaq/ra3mapwiki/vppua7qbrig4emxd" -Encoding UTF8
-
 7z a -t7z "$packageOutPath\$vpkPackId-v$version-Portable.7z" "$packageOutPath\$softwareName" -mx=9
 #Remove-Item -Recurse -Force "$packageOutPath\$softwareName"
 
-# Êä³ö
+# è¾“å‡º
 if ($LASTEXITCODE -eq 0) {
     Write-Host "Pack success, output path: $packageOutPath" -ForegroundColor Blue -BackgroundColor Gray
 } else {
@@ -84,3 +76,4 @@ if ($LASTEXITCODE -eq 0) {
 
 Invoke-Item "$packageOutPath"
     
+

@@ -1,0 +1,11 @@
+﻿{
+  "http": {
+    "port": 30034
+  },
+  "injector": {
+    "dll": "TinyNative.dll"
+  },
+  "data": {
+    "folder": "data"
+  }
+}
