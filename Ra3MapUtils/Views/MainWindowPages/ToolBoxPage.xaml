@@ -237,7 +237,7 @@
                                 TextWrapping="WrapWithOverflow" />
                             <ui:TextBlock
                                 Appearance="Secondary"
-                                Text="图片转JPG/PNG Base64和Lua片段"
+                                Text="图片转JPG/PNG/WEBP Base64和Lua片段"
                                 TextWrapping="WrapWithOverflow" />
                         </StackPanel>
                     </Grid>

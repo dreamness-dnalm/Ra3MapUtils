@@ -49,6 +49,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -68,8 +69,6 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
@@ -83,37 +82,61 @@
                        VerticalAlignment="Center"
                        Margin="0,0,6,0"/>
             <ComboBox Grid.Column="2"
-                      Width="78"
+                      Width="112"
                       ItemsSource="{Binding OutputFormats}"
                       SelectedItem="{Binding OutputFormat, Mode=TwoWay}"
                       Margin="0,0,12,0"/>
-            <TextBlock Grid.Column="3"
-                       Text="{Binding CompressionRatio, StringFormat=压缩比率: {0:0}%}"
-                       VerticalAlignment="Center"
-                       Margin="0,0,8,0"/>
-            <Slider Grid.Column="4"
-                    Width="150"
-                    Minimum="0"
-                    Maximum="95"
-                    TickFrequency="5"
-                    IsSnapToTickEnabled="True"
-                    Value="{Binding CompressionRatio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    VerticalAlignment="Center"
-                    Margin="0,0,12,0"/>
-            <ui:Button Grid.Column="5"
+            <ui:Button Grid.Column="3"
                        Content="下载图片"
                        Icon="{ui:SymbolIcon Save20}"
                        Command="{Binding SaveOutputImageCommand}"
                        IsEnabled="{Binding HasImage}"
                        Margin="0,0,12,0"/>
-            <TextBlock Grid.Column="6"
+            <TextBlock Grid.Column="4"
                        Text="{Binding FileName}"
                        ToolTip="{Binding FilePath}"
                        VerticalAlignment="Center"
                        TextTrimming="CharacterEllipsis"/>
         </Grid>
 
-        <Border Grid.Row="2"
+        <Grid Grid.Row="2" Margin="5,4,5,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       Text="{Binding CompressionRatio, StringFormat=压缩比率: {0:0}%}"
+                       VerticalAlignment="Center"
+                       Margin="0,0,8,0"/>
+            <Slider Grid.Column="1"
+                    Width="210"
+                    Minimum="0"
+                    Maximum="95"
+                    TickFrequency="5"
+                    IsSnapToTickEnabled="True"
+                    Value="{Binding CompressionRatio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    VerticalAlignment="Center"
+                    Margin="0,0,24,0"/>
+            <TextBlock Grid.Column="2"
+                       Text="{Binding ResizeScale, StringFormat=尺寸缩放: {0:0}%}"
+                       VerticalAlignment="Center"
+                       Margin="0,0,8,0"/>
+            <Slider Grid.Column="3"
+                    Width="240"
+                    Minimum="1"
+                    Maximum="100"
+                    TickFrequency="1"
+                    IsSnapToTickEnabled="True"
+                    Value="{Binding ResizeScale, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    VerticalAlignment="Center"
+                    Margin="0,0,12,0"/>
+        </Grid>
+
+        <Border Grid.Row="3"
                 Margin="5,4,5,4"
                 Padding="10,8"
                 BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
@@ -127,11 +150,13 @@
                 <TextBlock Text="{Binding OutputSizeLabel}" FontWeight="SemiBold"/>
                 <TextBlock Text="{Binding OutputImageSizeText}" Margin="0,0,18,0"/>
                 <TextBlock Text="Base64占用: " FontWeight="SemiBold"/>
-                <TextBlock Text="{Binding Base64SizeText}"/>
+                <TextBlock Text="{Binding Base64SizeText}" Margin="0,0,18,0"/>
+                <TextBlock Text="游戏内存占用: " FontWeight="SemiBold"/>
+                <TextBlock Text="{Binding GameMemorySizeText}"/>
             </WrapPanel>
         </Border>
 
-        <Border Grid.Row="3"
+        <Border Grid.Row="4"
                 Margin="5,4,5,4"
                 Padding="10,8"
                 BorderBrush="{Binding Base64WarningBrush}"
@@ -144,7 +169,7 @@
                        TextWrapping="Wrap"/>
         </Border>
 
-        <Grid Grid.Row="4" Margin="5,6,5,0">
+        <Grid Grid.Row="5" Margin="5,6,5,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="8"/>

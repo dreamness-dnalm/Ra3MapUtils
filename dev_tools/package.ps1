@@ -9,6 +9,8 @@ $packageOutPath = "$toolPath\publish\v$version"
 $releaseNotesPath = "$toolPath\..\doc\release_notes\RELEASE_v$version.md"
 $softwareName = "RA3地编伴侣"
 $vpkPackId = "Ra3MapUtils"
+$portableArchivePath = "$packageOutPath\$vpkPackId-v$version-Portable.7z"
+$latestPortableArchivePath = "$packageOutPath\$vpkPackId-latest-Portable.7z"
 
 # ----------- build ------------
 
@@ -63,11 +65,12 @@ Remove-Item -Recurse -Force "$packageOutPath\assets.win.json"
 Remove-Item -Recurse -Force "$packageOutPath\$softwareName\.portable"
 Remove-Item -Recurse -Force "$packageOutPath\$vpkPackId-win-Portable.zip"
 
-7z a -t7z "$packageOutPath\$vpkPackId-v$version-Portable.7z" "$packageOutPath\$softwareName" -mx=9
+7z a -t7z $portableArchivePath "$packageOutPath\$softwareName" -mx=9
 #Remove-Item -Recurse -Force "$packageOutPath\$softwareName"
 
 # 输出
 if ($LASTEXITCODE -eq 0) {
+    Copy-Item -Path $portableArchivePath -Destination $latestPortableArchivePath -Force -ErrorAction Stop
     Write-Host "Pack success, output path: $packageOutPath" -ForegroundColor Blue -BackgroundColor Gray
 } else {
     Write-Host "Pack failed, output path: $packageOutPath" -ForegroundColor Red -BackgroundColor Gray
