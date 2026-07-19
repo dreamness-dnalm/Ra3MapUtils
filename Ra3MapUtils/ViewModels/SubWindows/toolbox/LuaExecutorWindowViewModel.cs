@@ -5,11 +5,14 @@ using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
+using Ra3MapUtils.Models;
+using Ra3MapUtils.Services.Interface;
 using Ra3Hacker.Sdk;
+using Wpf.Ui.Controls;
 
 namespace Ra3MapUtils.ViewModels.toolbox;
 
-public partial class LuaExecutorWindowViewModel : ObservableObject
+public partial class LuaExecutorWindowViewModel : ObservableObject, IDisposable
 {
     private const string MapLuaState = "isolated";
 
@@ -18,6 +21,9 @@ public partial class LuaExecutorWindowViewModel : ObservableObject
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
         WriteIndented = true,
     };
+
+    private readonly ILuaCompletionService _luaCompletionService;
+    private bool _completionOptionsLoaded;
 
     [ObservableProperty] private bool _isTopmost = false;
 
@@ -34,6 +40,54 @@ public partial class LuaExecutorWindowViewModel : ObservableObject
     [ObservableProperty] private string _outputText = "";
 
     [ObservableProperty] private string _responseText = "";
+
+    [ObservableProperty] private bool _enableLuaLibrary = true;
+
+    [ObservableProperty] private string _userCodeLibraryPath = "";
+
+    [ObservableProperty] private string _completionStatusText = "Lua 4 补全索引尚未加载";
+
+    public LuaExecutorWindowViewModel(ILuaCompletionService luaCompletionService)
+    {
+        _luaCompletionService = luaCompletionService;
+        var options = _luaCompletionService.GetOptions();
+        _enableLuaLibrary = options.EnableLuaLibrary;
+        _userCodeLibraryPath = options.UserCodeLibraryPath;
+        CompletionStatusText = _luaCompletionService.Status.Message;
+        _completionOptionsLoaded = true;
+        _luaCompletionService.IndexChanged += OnCompletionIndexChanged;
+    }
+
+    public async Task InitializeCompletionAsync()
+    {
+        await _luaCompletionService.RefreshAsync();
+    }
+
+    public IReadOnlyList<LuaCompletionItem> GetCompletionItems(string code, int caretOffset)
+    {
+        return _luaCompletionService.GetCompletions(code, caretOffset);
+    }
+
+    public LuaCompletionItem? GetDocumentation(string code, int offset)
+    {
+        return _luaCompletionService.GetDocumentation(code, offset);
+    }
+
+    partial void OnEnableLuaLibraryChanged(bool value)
+    {
+        if (_completionOptionsLoaded)
+        {
+            _ = SaveCompletionOptionsAsync();
+        }
+    }
+
+    partial void OnUserCodeLibraryPathChanged(string value)
+    {
+        if (_completionOptionsLoaded)
+        {
+            _ = SaveCompletionOptionsAsync();
+        }
+    }
 
     [RelayCommand]
     private void BrowseLuaFile()
@@ -54,6 +108,33 @@ public partial class LuaExecutorWindowViewModel : ObservableObject
 
         LuaFilePath = dialog.FileName;
         TryLoadLuaFileToEditor(dialog.FileName);
+    }
+
+    [RelayCommand]
+    private void BrowseUserCodeLibrary()
+    {
+        var dialog = new OpenFolderDialog
+        {
+            Title = "选择用户 Lua 4 代码库根目录",
+            FolderName = Directory.Exists(UserCodeLibraryPath) ? UserCodeLibraryPath : "",
+        };
+
+        if (dialog.ShowDialog() == true && !string.IsNullOrWhiteSpace(dialog.FolderName))
+        {
+            UserCodeLibraryPath = dialog.FolderName;
+        }
+    }
+
+    [RelayCommand]
+    private void ClearUserCodeLibrary()
+    {
+        UserCodeLibraryPath = "";
+    }
+
+    [RelayCommand]
+    private async Task RefreshCompletion()
+    {
+        await _luaCompletionService.RefreshAsync();
     }
 
     [RelayCommand]
@@ -220,5 +301,30 @@ public partial class LuaExecutorWindowViewModel : ObservableObject
         {
             dialog.FileName = path;
         }
+    }
+
+    private async Task SaveCompletionOptionsAsync()
+    {
+        await _luaCompletionService.UpdateOptionsAsync(
+            new LuaCompletionOptions(EnableLuaLibrary, UserCodeLibraryPath));
+    }
+
+    private void OnCompletionIndexChanged(object? sender, LuaCompletionIndexChangedEventArgs e)
+    {
+        void ApplyStatus() => CompletionStatusText = e.Status.Message;
+
+        if (App.Current.Dispatcher.CheckAccess())
+        {
+            ApplyStatus();
+        }
+        else
+        {
+            App.Current.Dispatcher.BeginInvoke(ApplyStatus);
+        }
+    }
+
+    public void Dispose()
+    {
+        _luaCompletionService.IndexChanged -= OnCompletionIndexChanged;
     }
 }

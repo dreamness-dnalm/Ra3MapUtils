@@ -74,6 +74,7 @@
         <Compile Include="Business\ChatLuaHelperBusiness.cs" />
         <Compile Include="Business\LuaImporterBusiness.cs" />
         <Compile Include="Business\LuaLibBindingBusiness.cs" />
+        <Compile Include="Business\LuaExecutorBusiness.cs" />
         <Compile Include="Business\NanoProgramMetaBusiness.cs" />
         <Compile Include="Business\NewWorldBuilderBusiness.cs" />
         <Compile Include="Business\UpdateBusiness.cs" />
