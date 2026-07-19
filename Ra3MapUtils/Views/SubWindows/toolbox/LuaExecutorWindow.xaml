@@ -4,6 +4,7 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
                  xmlns:vm="clr-namespace:Ra3MapUtils.ViewModels.toolbox"
                  d:DataContext="{d:DesignInstance Type=vm:LuaExecutorWindowViewModel, IsDesignTimeCreatable=True}"
                  d:DesignHeight="720"
@@ -13,9 +14,9 @@
                  Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                  mc:Ignorable="d"
                  Title="Lua执行器"
-                 Height="720"
+                 Height="780"
                  Width="980"
-                 MinHeight="620"
+                 MinHeight="680"
                  MinWidth="820"
                  ResizeMode="CanResizeWithGrip"
                  WindowStartupLocation="CenterScreen"
@@ -51,6 +52,8 @@
                 CornerRadius="6">
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -97,7 +100,55 @@
                          VerticalContentAlignment="Center"
                          Margin="0,0,0,8"/>
 
-                <TextBlock Grid.Row="2"
+                <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="补全" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <ui:ToggleSwitch Grid.Column="1"
+                                     Content="Lua库"
+                                     IsChecked="{Binding EnableLuaLibrary}"
+                                     VerticalAlignment="Center"
+                                     Margin="0,0,16,0"/>
+                    <TextBlock Grid.Column="2" Text="用户代码库" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <TextBox Grid.Column="3"
+                             Text="{Binding UserCodeLibraryPath}"
+                             IsReadOnly="True"
+                             MinWidth="160"
+                             VerticalContentAlignment="Center"
+                             Margin="0,0,8,0"/>
+                    <ui:Button Grid.Column="4"
+                               Icon="{ui:SymbolIcon FolderOpen16}"
+                               Command="{Binding BrowseUserCodeLibraryCommand}"
+                               ToolTip="选择用户 Lua 4 代码库"
+                               Margin="0,0,8,0"/>
+                    <ui:Button Grid.Column="5"
+                               Icon="{ui:SymbolIcon Delete16}"
+                               Command="{Binding ClearUserCodeLibraryCommand}"
+                               ToolTip="清除用户代码库"
+                               Margin="0,0,8,0"/>
+                    <ui:Button Grid.Column="6"
+                               Icon="{ui:SymbolIcon ArrowSync16}"
+                               Command="{Binding RefreshCompletionCommand}"
+                               ToolTip="重建 Lua 4 补全索引"/>
+                </Grid>
+
+                <TextBlock Grid.Row="3"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="5"
+                           Text="{Binding CompletionStatusText}"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                           TextWrapping="Wrap"
+                           Margin="0,0,0,4"/>
+
+                <TextBlock Grid.Row="4"
                            Grid.Column="0"
                            Grid.ColumnSpan="5"
                            Text="{Binding StatusText}"
@@ -106,17 +157,14 @@
             </Grid>
         </Border>
 
-        <TextBox Grid.Row="2"
-                 Margin="5,0,5,8"
-                 Text="{Binding LuaCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 AcceptsReturn="True"
-                 AcceptsTab="True"
-                 TextWrapping="NoWrap"
-                 FontFamily="Consolas"
-                 FontSize="13"
-                 VerticalScrollBarVisibility="Auto"
-                 HorizontalScrollBarVisibility="Auto"
-                 VerticalContentAlignment="Top"/>
+        <avalonEdit:TextEditor x:Name="CodeEditor"
+                               Grid.Row="2"
+                               Margin="5,0,5,8"
+                               FontFamily="Consolas"
+                               FontSize="13"
+                               ShowLineNumbers="True"
+                               HorizontalScrollBarVisibility="Auto"
+                               VerticalScrollBarVisibility="Auto"/>
 
         <Grid Grid.Row="3" Margin="5,0,5,0">
             <Grid.ColumnDefinitions>

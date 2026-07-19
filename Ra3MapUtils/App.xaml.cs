@@ -104,6 +104,7 @@ public partial class App : Application
 
         services.AddTransient<LuaExecutorWindow>();
         services.AddTransient<LuaExecutorWindowViewModel>();
+        services.AddSingleton<ILuaCompletionService, LuaCompletionService>();
 
         services.AddTransient<TimeControlWindow>();
         services.AddTransient<TimeControlWindowViewModel>();
