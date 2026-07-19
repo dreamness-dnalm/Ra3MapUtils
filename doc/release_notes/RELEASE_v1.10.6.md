@@ -1,6 +1,7 @@
-# v1.10.5 Release Notes
+# v1.10.6 Release Notes
 RA3地编助手(RA3MapUtils)
-自包含环境
+* 优化调试器
+* 图片编码工具新增格式: webp
 
 ## v1.10.x功能
 * 加入全新的调试工具

@@ -1,6 +1,7 @@
-# v1.10.5 Release Notes
+# v1.10.7 Release Notes
 RA3地编助手(RA3MapUtils)
-自包含环境
+* 调试器新增功能: 物品摆放, 修改操作单位
+* 优化图片编码工具
 
 ## v1.10.x功能
 * 加入全新的调试工具
