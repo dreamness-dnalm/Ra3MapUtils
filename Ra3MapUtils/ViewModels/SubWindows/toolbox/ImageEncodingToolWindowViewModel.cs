@@ -5,6 +5,7 @@ using System.Windows.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ImageMagick;
+using ImageMagick.Drawing;
 using MessageBox = System.Windows.Forms.MessageBox;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 using SaveFileDialog = System.Windows.Forms.SaveFileDialog;
@@ -31,6 +32,10 @@ public partial class ImageEncodingToolWindowViewModel : ObservableObject
     [ObservableProperty] private double _compressionRatio = 60;
 
     [ObservableProperty] private double _resizeScale = 100;
+
+    [ObservableProperty] private bool _isRoundedCornersEnabled = false;
+
+    [ObservableProperty] private double _cornerRadius = 14;
 
     [ObservableProperty] private IReadOnlyList<string> _outputFormats = new[] { WebpOutputFormat, JpgOutputFormat, PngOutputFormat };
 
@@ -78,6 +83,16 @@ public partial class ImageEncodingToolWindowViewModel : ObservableObject
     }
 
     partial void OnResizeScaleChanged(double value)
+    {
+        RegenerateOutputIfReady();
+    }
+
+    partial void OnIsRoundedCornersEnabledChanged(bool value)
+    {
+        RegenerateOutputIfReady();
+    }
+
+    partial void OnCornerRadiusChanged(double value)
     {
         RegenerateOutputIfReady();
     }
@@ -220,6 +235,11 @@ public partial class ImageEncodingToolWindowViewModel : ObservableObject
             image.AutoOrient();
             ApplyResize(image, ResizeScale);
 
+            if (IsRoundedCornersEnabled)
+            {
+                ApplyRoundedCorners(image, CornerRadius);
+            }
+
             var outputFormat = NormalizeOutputFormat(OutputFormat);
             var outputMagickFormat = ResolveMagickFormat(outputFormat);
             if (outputFormat == JpgOutputFormat)
@@ -295,6 +315,8 @@ public partial class ImageEncodingToolWindowViewModel : ObservableObject
         Base64SizeText = "-";
         GameMemorySizeText = "-";
         ResizeScale = 100;
+        IsRoundedCornersEnabled = false;
+        CornerRadius = 14;
         Base64Text = "";
         LuaText = "";
         OriginalPreviewImage = new BitmapImage();
@@ -430,6 +452,25 @@ public partial class ImageEncodingToolWindowViewModel : ObservableObject
         image.Resize(targetWidth, targetHeight);
     }
 
+    internal static void ApplyRoundedCorners(MagickImage image, double cornerRadius)
+    {
+        var radius = ResolveCornerRadius(image.Width, image.Height, cornerRadius);
+        if (radius <= 0)
+        {
+            return;
+        }
+
+        image.Alpha(AlphaOption.On);
+
+        using var roundedMask = new MagickImage(MagickColors.Transparent, image.Width, image.Height);
+        new Drawables()
+            .FillColor(MagickColors.White)
+            .RoundRectangle(0, 0, image.Width - 1, image.Height - 1, radius, radius)
+            .Draw(roundedMask);
+
+        image.Composite(roundedMask, CompositeOperator.DstIn);
+    }
+
     private static uint ResolveJpgQuality(int compressionRatio)
     {
         return (uint)Math.Clamp(100 - compressionRatio, 1, 100);
@@ -453,6 +494,17 @@ public partial class ImageEncodingToolWindowViewModel : ObservableObject
     private static int ResolveResizeScale(double resizeScale)
     {
         return Math.Clamp((int)Math.Round(resizeScale), 1, 100);
+    }
+
+    internal static int ResolveCornerRadius(uint width, uint height, double cornerRadius)
+    {
+        if (!double.IsFinite(cornerRadius))
+        {
+            return 0;
+        }
+
+        var maximumRadius = (int)Math.Min(Math.Min(width, height) / 2, int.MaxValue);
+        return Math.Clamp((int)Math.Round(cornerRadius), 0, maximumRadius);
     }
 
     private static string ResolveDefaultOutputFormat(string filePath)

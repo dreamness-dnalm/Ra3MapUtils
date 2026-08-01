@@ -99,21 +99,11 @@
                        TextTrimming="CharacterEllipsis"/>
         </Grid>
 
-        <Grid Grid.Row="2" Margin="5,4,5,4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <TextBlock Grid.Column="0"
-                       Text="{Binding CompressionRatio, StringFormat=压缩比率: {0:0}%}"
+        <WrapPanel Grid.Row="2" Margin="5,4,5,4" Orientation="Horizontal">
+            <TextBlock Text="{Binding CompressionRatio, StringFormat=压缩比率: {0:0}%}"
                        VerticalAlignment="Center"
                        Margin="0,0,8,0"/>
-            <Slider Grid.Column="1"
-                    Width="210"
+            <Slider Width="210"
                     Minimum="0"
                     Maximum="95"
                     TickFrequency="5"
@@ -121,12 +111,10 @@
                     Value="{Binding CompressionRatio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     VerticalAlignment="Center"
                     Margin="0,0,24,0"/>
-            <TextBlock Grid.Column="2"
-                       Text="{Binding ResizeScale, StringFormat=尺寸缩放: {0:0}%}"
+            <TextBlock Text="{Binding ResizeScale, StringFormat=尺寸缩放: {0:0}%}"
                        VerticalAlignment="Center"
                        Margin="0,0,8,0"/>
-            <Slider Grid.Column="3"
-                    Width="240"
+            <Slider Width="240"
                     Minimum="1"
                     Maximum="100"
                     TickFrequency="1"
@@ -134,7 +122,21 @@
                     Value="{Binding ResizeScale, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     VerticalAlignment="Center"
                     Margin="0,0,12,0"/>
-        </Grid>
+            <ui:ToggleSwitch Content="圆角"
+                             IsChecked="{Binding IsRoundedCornersEnabled, Mode=TwoWay}"
+                             VerticalAlignment="Center"
+                             Margin="0,0,12,0"/>
+            <TextBlock Text="圆角半径(px):"
+                       VerticalAlignment="Center"
+                       Margin="0,0,6,0"/>
+            <ui:NumberBox Width="96"
+                          Minimum="0"
+                          Maximum="4096"
+                          MaxDecimalPlaces="0"
+                          Value="{Binding CornerRadius, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          IsEnabled="{Binding IsRoundedCornersEnabled}"
+                          VerticalAlignment="Center"/>
+        </WrapPanel>
 
         <Border Grid.Row="3"
                 Margin="5,4,5,4"

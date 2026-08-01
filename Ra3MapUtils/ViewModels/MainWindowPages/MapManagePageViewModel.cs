@@ -448,9 +448,15 @@ public partial class MapManagePageViewModel: ObservableObject
     private void Search()
     {
         _mapList.Clear();
-        _actualMapFiles.Where(i => _searchingKeyword == "" || i.Contains(_searchingKeyword))
+        _actualMapFiles.Where(i => MatchesSearchKeyword(i, _searchingKeyword))
             .ToList()
             .ForEach(i => _mapList.Add(i));
+    }
+
+    internal static bool MatchesSearchKeyword(string mapName, string keyword)
+    {
+        return string.IsNullOrEmpty(keyword) ||
+               mapName.Contains(keyword, StringComparison.OrdinalIgnoreCase);
     }
 
     [RelayCommand]
