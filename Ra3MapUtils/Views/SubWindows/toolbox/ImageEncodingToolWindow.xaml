@@ -7,7 +7,7 @@
                  xmlns:vm="clr-namespace:Ra3MapUtils.ViewModels.toolbox"
                  xmlns:xamlConverters="clr-namespace:Ra3MapUtils.Utils.XamlConverters"
                  xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
-                 d:DataContext="{d:DesignInstance Type=vm:ImageEncodingToolWindowViewModel, IsDesignTimeCreatable=True}"
+                 d:DataContext="{d:DesignInstance Type=vm:ImageEncodingToolWindowViewModel, IsDesignTimeCreatable=False}"
                  d:DesignHeight="820"
                  d:DesignWidth="1080"
                  ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
