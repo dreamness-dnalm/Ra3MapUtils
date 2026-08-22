@@ -141,13 +141,13 @@
         </member>
         <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.RemoveByUniqueId(System.String)">
             <summary>
-            移除指定 UniqueId 的物体/路径点
+            移除指定 UniqueId 的物体/路径点/路径
             </summary>
             <param name="uniqueId"></param>
         </member>
         <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.Remove(System.Object)">
             <summary>
-            移除物体/路径点/玩家/队伍
+            移除物体/路径点/路径/玩家/队伍
             </summary>
             <param name="o"></param>
             <exception cref="T:System.ArgumentNullException"></exception>
@@ -155,7 +155,7 @@
         </member>
         <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetUnitObjects">
             <summary>
-            获取所有单位物体
+            获取所有单位物体（不含路径点和路径节点）
             </summary>
             <returns></returns>
         </member>
@@ -242,6 +242,22 @@
             </summary>
             <param name="playerName">玩家名称</param>
             <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetRoadObjects">
+            <summary>
+            获取路径工具节点。RoadOption 为 0 的静态道路场景仍作为普通单位/场景物体，
+            因为它们不参与 World Builder 的路径节点格式。
+            </summary>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddRoadObject(System.String,System.Single,System.Single,System.Single,System.Single,System.Int32)">
+            <summary>
+            添加 World Builder 路径节点。原始 road option 原样保留，各位含义尚未完全文档化。
+            </summary>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.RemoveRoadObject(Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.RoadObjectWrap)">
+            <summary>
+            移除指定路径节点。
+            </summary>
         </member>
         <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetTeams">
             <summary>

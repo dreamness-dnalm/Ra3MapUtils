@@ -103,11 +103,116 @@ public partial class LuaExecutorWindow : FluentWindow
 
     private void OnEditorPreviewKeyDown(object sender, KeyEventArgs e)
     {
+        if ((e.Key is Key.Oem2 or Key.Divide) && Keyboard.Modifiers == ModifierKeys.Control)
+        {
+            ToggleLineComments();
+            e.Handled = true;
+            return;
+        }
+
         if (e.Key == Key.Space && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
         {
             ShowCompletionWindow(force: true);
             e.Handled = true;
         }
+    }
+
+    private void ToggleLineComments()
+    {
+        var document = CodeEditor.Document;
+        var hasSelection = CodeEditor.SelectionLength > 0;
+        var selectionStart = hasSelection ? CodeEditor.SelectionStart : CodeEditor.CaretOffset;
+        var selectionEnd = hasSelection
+            ? CodeEditor.SelectionStart + CodeEditor.SelectionLength
+            : CodeEditor.CaretOffset;
+        var firstLine = document.GetLineByOffset(selectionStart);
+        var lastLine = document.GetLineByOffset(selectionEnd);
+
+        // A selection ending at the start of the next line should not affect that line.
+        if (hasSelection && selectionEnd == lastLine.Offset && lastLine.LineNumber > firstLine.LineNumber)
+        {
+            lastLine = document.GetLineByNumber(lastLine.LineNumber - 1);
+        }
+
+        var firstLineNumber = firstLine.LineNumber;
+        var lastLineNumber = lastLine.LineNumber;
+        var caretLineNumber = document.GetLineByOffset(CodeEditor.CaretOffset).LineNumber;
+        var caretColumn = CodeEditor.CaretOffset - document.GetLineByNumber(caretLineNumber).Offset;
+        var adjustedCaretColumn = caretColumn;
+        var lineTexts = Enumerable.Range(firstLineNumber, lastLineNumber - firstLineNumber + 1)
+            .Select(lineNumber => document.GetText(document.GetLineByNumber(lineNumber)))
+            .ToArray();
+        var nonEmptyLines = lineTexts.Where(text => !string.IsNullOrWhiteSpace(text)).ToArray();
+        var shouldUncomment = nonEmptyLines.Length > 0 &&
+                              nonEmptyLines.All(text => text[GetIndentationLength(text)..].StartsWith("--"));
+
+        document.BeginUpdate();
+        try
+        {
+            for (var lineNumber = lastLineNumber; lineNumber >= firstLineNumber; lineNumber--)
+            {
+                var line = document.GetLineByNumber(lineNumber);
+                var text = document.GetText(line);
+                if (string.IsNullOrWhiteSpace(text) && firstLineNumber != lastLineNumber)
+                {
+                    continue;
+                }
+
+                var indentationLength = GetIndentationLength(text);
+                if (shouldUncomment)
+                {
+                    var uncommentOffset = line.Offset + indentationLength;
+                    var removeLength = 2;
+                    if (text.Length > indentationLength + 2 && text[indentationLength + 2] == ' ')
+                    {
+                        removeLength++;
+                    }
+
+                    document.Remove(uncommentOffset, removeLength);
+                    if (lineNumber == caretLineNumber && caretColumn >= indentationLength)
+                    {
+                        adjustedCaretColumn = Math.Max(indentationLength, caretColumn - removeLength);
+                    }
+                }
+                else
+                {
+                    document.Insert(line.Offset + indentationLength, "-- ");
+                    if (lineNumber == caretLineNumber && caretColumn >= indentationLength)
+                    {
+                        adjustedCaretColumn = caretColumn + 3;
+                    }
+                }
+            }
+        }
+        finally
+        {
+            document.EndUpdate();
+        }
+
+        if (hasSelection)
+        {
+            firstLine = document.GetLineByNumber(firstLineNumber);
+            lastLine = document.GetLineByNumber(lastLineNumber);
+            CodeEditor.Select(firstLine.Offset, lastLine.EndOffset - firstLine.Offset);
+        }
+        else
+        {
+            var caretLine = document.GetLineByNumber(caretLineNumber);
+            CodeEditor.CaretOffset = caretLine.Offset + Math.Min(adjustedCaretColumn, caretLine.Length);
+        }
+
+        CodeEditor.Focus();
+    }
+
+    private static int GetIndentationLength(string text)
+    {
+        var indentationLength = 0;
+        while (indentationLength < text.Length && text[indentationLength] is ' ' or '\t')
+        {
+            indentationLength++;
+        }
+
+        return indentationLength;
     }
 
     private void OnTextEntered(object sender, TextCompositionEventArgs e)

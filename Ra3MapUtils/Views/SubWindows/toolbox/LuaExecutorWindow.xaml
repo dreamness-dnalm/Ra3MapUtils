@@ -29,7 +29,6 @@
     <Grid Margin="10,0,10,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -44,129 +43,167 @@
             <ui:TitleBar Grid.Column="1" Title="Lua执行器" ShowMaximize="True" ShowMinimize="True" ShowClose="True"/>
         </Grid>
 
-        <Border Grid.Row="1"
-                Margin="5,4,5,8"
-                Padding="12,10"
-                BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
-                BorderThickness="1"
-                CornerRadius="6">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+        <TabControl Grid.Row="1" Margin="5,4,5,8">
+            <TabItem Header="运行下面的代码">
+                <Grid Margin="0,8,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="环境" VerticalAlignment="Center" Margin="0,0,12,8"/>
-                <TextBlock Grid.Row="0"
-                           Grid.Column="1"
-                           Text="地图lua"
-                           FontWeight="SemiBold"
-                           VerticalAlignment="Center"
-                           Margin="0,0,12,8"/>
-                <ui:Button Grid.Row="0"
-                           Grid.Column="2"
-                           Content="运行代码"
-                           Icon="{ui:SymbolIcon Play16}"
-                           Command="{Binding RunCodeCommand}"
-                           Margin="0,0,8,8"/>
-                <ui:Button Grid.Row="0"
-                           Grid.Column="3"
-                           Content="选择文件"
-                           Icon="{ui:SymbolIcon FolderOpen16}"
-                           Command="{Binding BrowseLuaFileCommand}"
-                           Margin="0,0,8,8"/>
-                <ui:Button Grid.Row="0"
-                           Grid.Column="4"
-                           Content="运行文件"
-                           Icon="{ui:SymbolIcon Play16}"
-                           Command="{Binding RunFileCommand}"
-                           Margin="0,0,0,8"/>
+                    <Border Grid.Row="0"
+                            Margin="0,0,0,8"
+                            Padding="12,10"
+                            BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="6">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="文件" VerticalAlignment="Center" Margin="0,0,12,8"/>
-                <TextBox Grid.Row="1"
-                         Grid.Column="1"
-                         Grid.ColumnSpan="4"
-                         Text="{Binding LuaFilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         VerticalContentAlignment="Center"
-                         Margin="0,0,0,8"/>
+                            <Grid Grid.Row="0" Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="环境" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                                <TextBlock Grid.Column="1" Text="地图lua" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <ui:Button Grid.Column="2"
+                                           Content="运行代码"
+                                           Icon="{ui:SymbolIcon Play16}"
+                                           Command="{Binding RunCodeCommand}"/>
+                            </Grid>
 
-                <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" Margin="0,0,0,8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                            <Grid Grid.Row="1" Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" Text="补全" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                    <ui:ToggleSwitch Grid.Column="1"
-                                     Content="Lua库"
-                                     IsChecked="{Binding EnableLuaLibrary}"
-                                     VerticalAlignment="Center"
-                                     Margin="0,0,16,0"/>
-                    <TextBlock Grid.Column="2" Text="用户代码库" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                    <TextBox Grid.Column="3"
-                             Text="{Binding UserCodeLibraryPath}"
-                             IsReadOnly="True"
-                             MinWidth="160"
-                             VerticalContentAlignment="Center"
-                             Margin="0,0,8,0"/>
-                    <ui:Button Grid.Column="4"
-                               Icon="{ui:SymbolIcon FolderOpen16}"
-                               Command="{Binding BrowseUserCodeLibraryCommand}"
-                               ToolTip="选择用户 Lua 4 代码库"
-                               Margin="0,0,8,0"/>
-                    <ui:Button Grid.Column="5"
-                               Icon="{ui:SymbolIcon Delete16}"
-                               Command="{Binding ClearUserCodeLibraryCommand}"
-                               ToolTip="清除用户代码库"
-                               Margin="0,0,8,0"/>
-                    <ui:Button Grid.Column="6"
-                               Icon="{ui:SymbolIcon ArrowSync16}"
-                               Command="{Binding RefreshCompletionCommand}"
-                               ToolTip="重建 Lua 4 补全索引"/>
+                                <TextBlock Grid.Column="0" Text="补全" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                                <ui:ToggleSwitch Grid.Column="1"
+                                                 Content="Lua库"
+                                                 IsChecked="{Binding EnableLuaLibrary}"
+                                                 VerticalAlignment="Center"
+                                                 Margin="0,0,16,0"/>
+                                <TextBlock Grid.Column="2" Text="用户代码库" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBox Grid.Column="3"
+                                         Text="{Binding UserCodeLibraryPath}"
+                                         IsReadOnly="True"
+                                         MinWidth="160"
+                                         VerticalContentAlignment="Center"
+                                         Margin="0,0,8,0"/>
+                                <ui:Button Grid.Column="4"
+                                           Icon="{ui:SymbolIcon FolderOpen16}"
+                                           Command="{Binding BrowseUserCodeLibraryCommand}"
+                                           ToolTip="选择用户 Lua 4 代码库"
+                                           Margin="0,0,8,0"/>
+                                <ui:Button Grid.Column="5"
+                                           Icon="{ui:SymbolIcon Delete16}"
+                                           Command="{Binding ClearUserCodeLibraryCommand}"
+                                           ToolTip="清除用户代码库"
+                                           Margin="0,0,8,0"/>
+                                <ui:Button Grid.Column="6"
+                                           Icon="{ui:SymbolIcon ArrowSync16}"
+                                           Command="{Binding RefreshCompletionCommand}"
+                                           ToolTip="重建 Lua 4 补全索引"/>
+                            </Grid>
+
+                            <TextBlock Grid.Row="2"
+                                       Text="{Binding CompletionStatusText}"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       TextWrapping="Wrap"
+                                       Margin="0,0,0,4"/>
+                            <TextBlock Grid.Row="3"
+                                       Text="{Binding StatusText}"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       TextWrapping="Wrap"/>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Row="1"
+                            BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            ClipToBounds="True">
+                        <avalonEdit:TextEditor x:Name="CodeEditor"
+                                               FontFamily="Consolas"
+                                               FontSize="13"
+                                               ShowLineNumbers="True"
+                                               HorizontalScrollBarVisibility="Auto"
+                                               VerticalScrollBarVisibility="Auto"/>
+                    </Border>
                 </Grid>
+            </TabItem>
 
-                <TextBlock Grid.Row="3"
-                           Grid.Column="0"
-                           Grid.ColumnSpan="5"
-                           Text="{Binding CompletionStatusText}"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                           TextWrapping="Wrap"
-                           Margin="0,0,0,4"/>
+            <TabItem Header="运行文件">
+                <Grid Margin="0,8,0,0">
+                    <Border VerticalAlignment="Top"
+                            Padding="16,14"
+                            BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="6">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" Margin="0,0,0,14">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="环境" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                                <TextBlock Grid.Column="1" Text="地图lua" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            </Grid>
 
-                <TextBlock Grid.Row="4"
-                           Grid.Column="0"
-                           Grid.ColumnSpan="5"
-                           Text="{Binding StatusText}"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                           TextWrapping="Wrap"/>
-            </Grid>
-        </Border>
+                            <TextBlock Grid.Row="1"
+                                       Text="选择要执行的 Lua 文件"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,8"/>
+                            <Grid Grid.Row="2" Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0"
+                                         Text="{Binding LuaFilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         VerticalContentAlignment="Center"
+                                         Margin="0,0,8,0"/>
+                                <ui:Button Grid.Column="1"
+                                           Content="选择文件"
+                                           Icon="{ui:SymbolIcon FolderOpen16}"
+                                           Command="{Binding BrowseLuaFileCommand}"
+                                           Margin="0,0,8,0"/>
+                                <ui:Button Grid.Column="2"
+                                           Content="运行文件"
+                                           Icon="{ui:SymbolIcon Play16}"
+                                           Command="{Binding RunFileCommand}"/>
+                            </Grid>
+                            <TextBlock Grid.Row="3"
+                                       Text="{Binding StatusText}"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       TextWrapping="Wrap"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
+        </TabControl>
 
-        <avalonEdit:TextEditor x:Name="CodeEditor"
-                               Grid.Row="2"
-                               Margin="5,0,5,8"
-                               FontFamily="Consolas"
-                               FontSize="13"
-                               ShowLineNumbers="True"
-                               HorizontalScrollBarVisibility="Auto"
-                               VerticalScrollBarVisibility="Auto"/>
-
-        <Grid Grid.Row="3" Margin="5,0,5,0">
+        <Grid Grid.Row="2" Margin="5,0,5,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="8"/>
