@@ -1,5 +1,4 @@
 using System.IO;
-using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -107,7 +106,6 @@ public partial class LuaExecutorWindowViewModel : ObservableObject, IDisposable
         }
 
         LuaFilePath = dialog.FileName;
-        TryLoadLuaFileToEditor(dialog.FileName);
     }
 
     [RelayCommand]
@@ -158,8 +156,6 @@ public partial class LuaExecutorWindowViewModel : ObservableObject, IDisposable
         {
             return;
         }
-
-        TryLoadLuaFileToEditor(fullPath);
 
         await RunLuaCommandAsync(
             "执行文件",
@@ -250,19 +246,6 @@ public partial class LuaExecutorWindowViewModel : ObservableObject, IDisposable
         }
 
         return true;
-    }
-
-    private void TryLoadLuaFileToEditor(string path)
-    {
-        try
-        {
-            LuaCode = File.ReadAllText(path, Encoding.UTF8);
-            StatusText = "已加载：" + path;
-        }
-        catch (Exception ex)
-        {
-            StatusText = "读取 Lua 文件失败：" + ex.Message;
-        }
     }
 
     private void ShowValidationError(string message)

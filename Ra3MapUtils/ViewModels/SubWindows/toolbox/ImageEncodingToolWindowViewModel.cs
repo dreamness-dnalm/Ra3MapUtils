@@ -1,10 +1,11 @@
 using System.IO;
-using System.Text;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ImageMagick;
+using Ra3MapUtils.Models;
+using Ra3MapUtils.Services.Interface;
 using MessageBox = System.Windows.Forms.MessageBox;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 using SaveFileDialog = System.Windows.Forms.SaveFileDialog;
@@ -17,14 +18,21 @@ public partial class ImageEncodingToolWindowViewModel : ObservableObject
 {
     private const int PossibleTooLargeThresholdBytes = 30 * 1024;
     private const int TooLargeThresholdBytes = 60 * 1024;
-    private const string JpgOutputFormat = "JPG";
-    private const string PngOutputFormat = "PNG";
-    private const string WebpOutputFormat = "WEBP";
+    private const string JpgOutputFormat = ImageEncodingFormats.Jpg;
+    private const string PngOutputFormat = ImageEncodingFormats.Png;
+    private const string WebpOutputFormat = ImageEncodingFormats.Webp;
 
+    private readonly IImageEncodingService _imageEncodingService;
     private bool _isLoadingImage;
-    private uint _outputImageWidth;
-    private uint _outputImageHeight;
     private byte[] _outputImageBytes = Array.Empty<byte>();
+
+    /// <summary>
+    /// 创建图片编码工具视图模型。
+    /// </summary>
+    public ImageEncodingToolWindowViewModel(IImageEncodingService imageEncodingService)
+    {
+        _imageEncodingService = imageEncodingService;
+    }
 
     [ObservableProperty] private bool _isTopmost = false;
 
@@ -32,7 +40,11 @@ public partial class ImageEncodingToolWindowViewModel : ObservableObject
 
     [ObservableProperty] private double _resizeScale = 100;
 
-    [ObservableProperty] private IReadOnlyList<string> _outputFormats = new[] { WebpOutputFormat, JpgOutputFormat, PngOutputFormat };
+    [ObservableProperty] private bool _isRoundedCornersEnabled = false;
+
+    [ObservableProperty] private double _cornerRadius = 14;
+
+    [ObservableProperty] private IReadOnlyList<string> _outputFormats = ImageEncodingFormats.All;
 
     [ObservableProperty] private string _outputFormat = WebpOutputFormat;
 
@@ -82,6 +94,16 @@ public partial class ImageEncodingToolWindowViewModel : ObservableObject
         RegenerateOutputIfReady();
     }
 
+    partial void OnIsRoundedCornersEnabledChanged(bool value)
+    {
+        RegenerateOutputIfReady();
+    }
+
+    partial void OnCornerRadiusChanged(double value)
+    {
+        RegenerateOutputIfReady();
+    }
+
     partial void OnOutputFormatChanged(string value)
     {
         var outputFormat = NormalizeOutputFormat(value);
@@ -91,12 +113,12 @@ public partial class ImageEncodingToolWindowViewModel : ObservableObject
 
     partial void OnIsLuaBase64AutoWrapChanged(bool value)
     {
-        RefreshLuaText();
+        RegenerateOutputIfReady();
     }
 
     partial void OnLuaBase64LineLengthChanged(double value)
     {
-        RefreshLuaText();
+        RegenerateOutputIfReady();
     }
 
     private void RegenerateOutputIfReady()
@@ -216,36 +238,30 @@ public partial class ImageEncodingToolWindowViewModel : ObservableObject
     {
         try
         {
-            using var image = new MagickImage(filePath);
-            image.AutoOrient();
-            ApplyResize(image, ResizeScale);
+            var result = _imageEncodingService.Encode(
+                File.ReadAllBytes(filePath),
+                new ImageEncodingOptions
+                {
+                    OutputFormat = OutputFormat,
+                    CompressionRatio = CompressionRatio,
+                    ResizeScale = ResizeScale,
+                    RoundedCorners = IsRoundedCornersEnabled,
+                    CornerRadius = CornerRadius,
+                    LuaBase64AutoWrap = IsLuaBase64AutoWrap,
+                    LuaBase64LineLength = ResolveLuaBase64LineLength()
+                });
 
-            var outputFormat = NormalizeOutputFormat(OutputFormat);
-            var outputMagickFormat = ResolveMagickFormat(outputFormat);
-            if (outputFormat == JpgOutputFormat)
-            {
-                image.BackgroundColor = MagickColors.White;
-                image.Alpha(AlphaOption.Remove);
-            }
-
-            ApplyCompression(image, outputFormat, CompressionRatio);
-
-            var outputBytes = image.ToByteArray(outputMagickFormat);
-            var base64 = Convert.ToBase64String(outputBytes);
-            var base64Bytes = Encoding.ASCII.GetByteCount(base64);
-
-            OutputFormat = outputFormat;
+            var outputBytes = Convert.FromBase64String(result.Base64);
+            OutputFormat = result.OutputFormat;
             _outputImageBytes = outputBytes;
-            _outputImageWidth = image.Width;
-            _outputImageHeight = image.Height;
-            ImageSizeText = $"{image.Width} x {image.Height}";
-            OutputImageSizeText = FormatBytes(outputBytes.LongLength);
-            Base64SizeText = FormatBytes(base64Bytes);
-            GameMemorySizeText = FormatGameMemorySize(image.Width, image.Height);
-            Base64Text = base64;
-            RefreshLuaText();
-            OutputPreviewImage = BuildOutputPreviewImage(outputBytes, outputFormat);
-            UpdateBase64Warning(base64Bytes);
+            ImageSizeText = $"{result.OutputWidth} x {result.OutputHeight}";
+            OutputImageSizeText = FormatBytes(result.OutputSizeBytes);
+            Base64SizeText = FormatBytes(result.Base64SizeBytes);
+            GameMemorySizeText = FormatBytes(result.GameMemorySizeBytes);
+            Base64Text = result.Base64;
+            LuaText = result.Lua;
+            OutputPreviewImage = BuildOutputPreviewImage(outputBytes, result.OutputFormat);
+            UpdateBase64Warning(result.Base64SizeBytes);
             return true;
         }
         catch (Exception ex)
@@ -295,6 +311,8 @@ public partial class ImageEncodingToolWindowViewModel : ObservableObject
         Base64SizeText = "-";
         GameMemorySizeText = "-";
         ResizeScale = 100;
+        IsRoundedCornersEnabled = false;
+        CornerRadius = 14;
         Base64Text = "";
         LuaText = "";
         OriginalPreviewImage = new BitmapImage();
@@ -302,24 +320,7 @@ public partial class ImageEncodingToolWindowViewModel : ObservableObject
         HasBase64Warning = false;
         Base64WarningText = "";
         OutputFormat = WebpOutputFormat;
-        _outputImageWidth = 0;
-        _outputImageHeight = 0;
         _outputImageBytes = Array.Empty<byte>();
-    }
-
-    private void RefreshLuaText()
-    {
-        if (_outputImageWidth == 0 || _outputImageHeight == 0 || string.IsNullOrEmpty(Base64Text))
-        {
-            return;
-        }
-
-        LuaText = BuildLuaText(
-            _outputImageWidth,
-            _outputImageHeight,
-            Base64Text,
-            IsLuaBase64AutoWrap,
-            ResolveLuaBase64LineLength());
     }
 
     private static BitmapImage BuildPreviewImage(byte[] imageBytes)
@@ -345,114 +346,9 @@ public partial class ImageEncodingToolWindowViewModel : ObservableObject
         return BuildPreviewImage(previewImage.ToByteArray(MagickFormat.Png));
     }
 
-    private static string BuildLuaText(uint width, uint height, string base64, bool shouldWrapBase64, int lineLength)
-    {
-        var luaBase64 = shouldWrapBase64 ? WrapBase64(base64, lineLength) : base64;
-        return "local image = {" + Environment.NewLine +
-               $"    size = {{{width}, {height}}}," + Environment.NewLine +
-               "    base64 = [[" + Environment.NewLine +
-               luaBase64 + Environment.NewLine +
-               "]]" + Environment.NewLine +
-               "}";
-    }
-
     private int ResolveLuaBase64LineLength()
     {
         return Math.Clamp((int)Math.Round(LuaBase64LineLength), 1, 4096);
-    }
-
-    private static string WrapBase64(string base64, int lineLength)
-    {
-        lineLength = Math.Max(1, lineLength);
-        var builder = new StringBuilder(base64.Length + base64.Length / lineLength * Environment.NewLine.Length);
-        for (var index = 0; index < base64.Length; index += lineLength)
-        {
-            if (builder.Length > 0)
-            {
-                builder.AppendLine();
-            }
-
-            var length = Math.Min(lineLength, base64.Length - index);
-            builder.Append(base64, index, length);
-        }
-
-        return builder.ToString();
-    }
-
-    private static void ApplyCompression(MagickImage image, string outputFormat, double compressionRatio)
-    {
-        var normalizedRatio = Math.Clamp((int)Math.Round(compressionRatio), 0, 95);
-        if (outputFormat == JpgOutputFormat)
-        {
-            image.Quality = ResolveJpgQuality(normalizedRatio);
-            if (normalizedRatio > 0)
-            {
-                image.Strip();
-            }
-
-            return;
-        }
-
-        if (outputFormat == WebpOutputFormat)
-        {
-            image.Quality = ResolveWebpQuality(normalizedRatio);
-            if (normalizedRatio > 0)
-            {
-                image.Strip();
-            }
-
-            return;
-        }
-
-        image.Settings.SetDefine(MagickFormat.Png, "compression-level", ResolvePngCompressionLevel(normalizedRatio).ToString());
-        if (normalizedRatio > 0)
-        {
-            image.Strip();
-            image.Settings.SetDefine(MagickFormat.Png, "compression-filter", "5");
-        }
-    }
-
-    private static void ApplyResize(MagickImage image, double resizeScale)
-    {
-        var normalizedScale = ResolveResizeScale(resizeScale);
-        if (normalizedScale >= 100)
-        {
-            return;
-        }
-
-        var targetWidth = Math.Max(1U, (uint)Math.Round(image.Width * normalizedScale / 100.0));
-        var targetHeight = Math.Max(1U, (uint)Math.Round(image.Height * normalizedScale / 100.0));
-        if (targetWidth == image.Width && targetHeight == image.Height)
-        {
-            return;
-        }
-
-        image.Resize(targetWidth, targetHeight);
-    }
-
-    private static uint ResolveJpgQuality(int compressionRatio)
-    {
-        return (uint)Math.Clamp(100 - compressionRatio, 1, 100);
-    }
-
-    private static int ResolvePngCompressionLevel(int compressionRatio)
-    {
-        if (compressionRatio <= 0)
-        {
-            return 0;
-        }
-
-        return Math.Clamp((int)Math.Ceiling(compressionRatio / 95.0 * 9), 1, 9);
-    }
-
-    private static uint ResolveWebpQuality(int compressionRatio)
-    {
-        return (uint)Math.Clamp(100 - compressionRatio, 1, 100);
-    }
-
-    private static int ResolveResizeScale(double resizeScale)
-    {
-        return Math.Clamp((int)Math.Round(resizeScale), 1, 100);
     }
 
     private static string ResolveDefaultOutputFormat(string filePath)
@@ -462,24 +358,7 @@ public partial class ImageEncodingToolWindowViewModel : ObservableObject
 
     private static string NormalizeOutputFormat(string outputFormat)
     {
-        if (string.Equals(outputFormat, PngOutputFormat, StringComparison.OrdinalIgnoreCase))
-        {
-            return PngOutputFormat;
-        }
-
-        return string.Equals(outputFormat, WebpOutputFormat, StringComparison.OrdinalIgnoreCase)
-            ? WebpOutputFormat
-            : JpgOutputFormat;
-    }
-
-    private static MagickFormat ResolveMagickFormat(string outputFormat)
-    {
-        return outputFormat switch
-        {
-            PngOutputFormat => MagickFormat.Png,
-            WebpOutputFormat => MagickFormat.WebP,
-            _ => MagickFormat.Jpg
-        };
+        return ImageEncodingFormats.Normalize(outputFormat);
     }
 
     private static string ResolveOutputExtension(string outputFormat)
@@ -521,7 +400,7 @@ public partial class ImageEncodingToolWindowViewModel : ObservableObject
             : FormatBytes((long)bytes);
     }
 
-    private void UpdateBase64Warning(int base64Bytes)
+    private void UpdateBase64Warning(long base64Bytes)
     {
         if (base64Bytes > TooLargeThresholdBytes)
         {
@@ -547,6 +426,11 @@ public partial class ImageEncodingToolWindowViewModel : ObservableObject
     private static string FormatBytes(long bytes)
     {
         return FormatBytes((double)bytes, bytes.ToString());
+    }
+
+    private static string FormatBytes(ulong bytes)
+    {
+        return FormatBytes(bytes, bytes.ToString());
     }
 
     private static string FormatBytes(double bytes)

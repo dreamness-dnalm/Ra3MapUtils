@@ -4,9 +4,41 @@
         <name>Dreamness.RA3.Map.Parser</name>
     </assembly>
     <members>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.ObjectAsset.WaypointType">
+            <summary>
+            路径点类型。值直接映射到二进制对象属性 <c>waypointType</c>。
+            </summary>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.ObjectsListAsset.GetRegularObjects">
+            <summary>
+            普通单位/场景物体，不含路径点和 World Builder 路径节点。
+            </summary>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.ObjectsListAsset.GetWaypointObjects">
+            <summary>
+            仅路径点。
+            </summary>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.ObjectsListAsset.GetRoadObjects">
+            <summary>
+            仅 World Builder 路径节点。
+            </summary>
+        </member>
         <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.ObjectWrap.Position">
             <summary>
             物体位置坐标 (世界坐标)
+            </summary>
+        </member>
+        <member name="T:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.RoadObjectWrap">
+            <summary>
+            路径工具节点的领域包装。RA3 把这些节点存在普通 Object 列表里，
+            但非零的 RoadOption 把它们和单位、场景物体区分开。
+            </summary>
+        </member>
+        <member name="T:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.RoadOptions">
+            <summary>
+            World Builder 路径节点上保存的原始 option 位。
+            各位含义尚未对照 World Builder 完全核实，因此先按原始整数保留。
             </summary>
         </member>
         <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.UnitObjectWrap.Angle">
@@ -44,6 +76,27 @@
             单位名称
             </summary>
         </member>
+        <member name="T:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.WaypointType">
+            <summary>
+            World Builder 路径点类型。
+            枚举名与约定路径点名称 <c>wp_&lt;waypoint_type&gt;</c> 的后半部分一致。
+            </summary>
+        </member>
+        <member name="T:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.WaypointTypeExtensions">
+            <summary>
+            路径点类型与 World Builder 约定名称之间的转换。
+            </summary>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.WaypointTypeExtensions.ToWaypointName(Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.WaypointType)">
+            <summary>
+            生成 World Builder 约定的路径点名称，例如 <c>wp_PreClimbPortal</c>。
+            </summary>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.WaypointTypeExtensions.TryParseWaypointName(System.String,Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.WaypointType@)">
+            <summary>
+            尝试从 World Builder 约定名称解析路径点类型。
+            </summary>
+        </member>
         <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.WaypointWrap.WaypointID">
             <summary>
             路径点ID
@@ -56,7 +109,13 @@
         </member>
         <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.WaypointWrap.WaypointType">
             <summary>
-            路径点类型
+            路径点类型的原始整数值。为保持 API 兼容而保留；
+            新代码可使用 <see cref="P:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.WaypointWrap.WaypointTypeEnum"/>。
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.WaypointWrap.WaypointTypeEnum">
+            <summary>
+            路径点类型的强类型枚举视图。
             </summary>
         </member>
         <member name="M:Dreamness.Ra3.Map.Parser.Asset.Impl.Player.PlayerData.OfForDefault(System.String,Dreamness.Ra3.Map.Parser.Core.Base.BaseContext)">
@@ -230,6 +289,16 @@
             <param name="value">The value to set.</param>
             <typeparam name="TKey">The type of the key.</typeparam>
             <typeparam name="TValue">The type of the value.</typeparam>
+        </member>
+        <member name="M:Dreamness.RA3.Map.Parser.Core.MapScb.Ra3MapScb.SaveAs(System.String,System.Boolean)">
+            <summary>
+            将 SCB 保存到指定路径。SCB 默认保存为未压缩格式。
+            </summary>
+        </member>
+        <member name="M:Dreamness.RA3.Map.Parser.Core.MapScb.Ra3MapScb.Save(System.Boolean)">
+            <summary>
+            保存到当前 SCB 的来源路径。由 <see cref="M:Dreamness.RA3.Map.Parser.Core.MapScb.Ra3MapScb.FromFile(System.String)"/> 或 <see cref="M:Dreamness.RA3.Map.Parser.Core.MapScb.Ra3MapScb.SaveAs(System.String,System.Boolean)"/> 设置。
+            </summary>
         </member>
     </members>
 </doc>

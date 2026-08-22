@@ -1,4 +1,4 @@
-﻿{
+{
   "http": {
     "port": 30034
   },
@@ -7,5 +7,9 @@
   },
   "data": {
     "folder": "data"
+  },
+  "maps": {
+    "folder": "",
+    "hideBuiltIn": false
   }
 }

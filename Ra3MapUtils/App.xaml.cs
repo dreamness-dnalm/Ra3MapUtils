@@ -96,6 +96,7 @@ public partial class App : Application
         services.AddTransient<MapDataEditorWindow>();
         services.AddTransient<MapDataEditorWindowViewModel>();
 
+        services.AddSingleton<IImageEncodingService, ImageEncodingService>();
         services.AddTransient<ImageEncodingToolWindow>();
         services.AddTransient<ImageEncodingToolWindowViewModel>();
 
@@ -193,6 +194,7 @@ public partial class App : Application
         {
             options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
         });
+        builder.Services.AddSingleton<IImageEncodingService, ImageEncodingService>();
         
         CSharpScriptService.AssemblyAutoLoader.LoadAllAssembliesFromDirectory(AppContext.BaseDirectory);
         CSharpScriptService.AssemblyAutoLoader.LoadAllAssembliesFromDirectory(Path.Combine(Ra3MapUtilsPathUtil.UserDataPath, "Libs"));
@@ -205,7 +207,7 @@ public partial class App : Application
             {
                 Title = "RA3地编伴侣 HTTP API 接口文档",
                 Version = "v1",
-                Description = "RA3地编伴侣本地 HTTP API 文档，包含状态检测、Lua4 语法检查、C# 脚本执行与微程序调用等接口。"
+                Description = "RA3地编伴侣本地 HTTP API 文档，包含状态检测、图片编码、Lua4 语法检查、C# 脚本执行与微程序调用等接口。"
             });
 
             var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
