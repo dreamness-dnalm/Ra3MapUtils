@@ -218,6 +218,22 @@ public partial class ToolBoxPageViewModel: ObservableObject
     }
 
     [RelayCommand]
+    private void OpenDebuggerMapSettingsWindow()
+    {
+        var existingWindow = WpfApplication.Current.Windows
+            .OfType<DebuggerMapSettingsWindow>()
+            .FirstOrDefault();
+        if (existingWindow is not null)
+        {
+            ActivateWindow(existingWindow);
+            return;
+        }
+
+        var debuggerMapSettingsWindow = App.Current.Services.GetRequiredService<DebuggerMapSettingsWindow>();
+        debuggerMapSettingsWindow.Show();
+    }
+
+    [RelayCommand]
     private void OpenMoreFunctionsWindow()
     {
         MessageBox.Show("欢迎加入QQ群: 513118543");

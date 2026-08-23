@@ -95,6 +95,40 @@
                     Margin="4,4,4,4"
                     Padding="0"
                     VerticalAlignment="Stretch"
+                    Command="{Binding OpenDebuggerMapSettingsWindowCommand}"
+                    IsChevronVisible="False"
+                    Visibility="Visible">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Image
+                            Width="60"
+                            Margin="24,0,0,0"
+                            Source="pack://application:,,,/data/imgs/reset_game_map_path_icon.png" />
+
+                        <StackPanel
+                            Grid.Column="1"
+                            Margin="24"
+                            VerticalAlignment="Center">
+                            <ui:TextBlock
+                                Margin="0"
+                                FontTypography="BodyStrong"
+                                Text="重设游戏地图路径"
+                                TextWrapping="WrapWithOverflow" />
+                            <ui:TextBlock
+                                Appearance="Secondary"
+                                Text="指定地图目录并隐藏官方地图"
+                                TextWrapping="WrapWithOverflow" />
+                        </StackPanel>
+                    </Grid>
+                </ui:CardAction>
+                <ui:CardAction
+                    Margin="4,4,4,4"
+                    Padding="0"
+                    VerticalAlignment="Stretch"
                     Command="{Binding OpenChatLuaHelperWindowCommand}"
                     IsChevronVisible="False" Visibility="Visible">
                     <Grid>
