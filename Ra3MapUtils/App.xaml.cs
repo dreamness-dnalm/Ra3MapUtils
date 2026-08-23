@@ -109,6 +109,10 @@ public partial class App : Application
 
         services.AddTransient<TimeControlWindow>();
         services.AddTransient<TimeControlWindowViewModel>();
+
+        services.AddSingleton<IDebuggerMapSettingsService, DebuggerMapSettingsService>();
+        services.AddTransient<DebuggerMapSettingsWindow>();
+        services.AddTransient<DebuggerMapSettingsWindowViewModel>();
         
         services.AddTransient<TerrainTransWindow>();
         services.AddSingleton<TerrainTransWindowViewModel>();

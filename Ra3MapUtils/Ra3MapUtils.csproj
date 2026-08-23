@@ -310,6 +310,8 @@
       <Resource Include="data\imgs\lua_executor_icon.png" />
       <None Remove="data\imgs\time_control_icon.png" />
       <Resource Include="data\imgs\time_control_icon.png" />
+      <None Remove="data\imgs\reset_game_map_path_icon.png" />
+      <Resource Include="data\imgs\reset_game_map_path_icon.png" />
       <None Remove="data\imgs\SymmetryTransform_1.png" />
       <Resource Include="data\imgs\SymmetryTransform_1.png" />
       <None Remove="data\imgs\SymmetryTransform_2.png" />
