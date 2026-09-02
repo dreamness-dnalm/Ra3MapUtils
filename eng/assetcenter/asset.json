@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "assetId": "cn.dreamness.ra3maputils",
+  "displayName": "Ra3MapUtils",
+  "description": "RA3地编伴侣，面向《命令与征服：红色警戒3》地图作者的辅助工具。",
+  "assetType": "application",
+  "homepage": "https://github.com/dreamness-dnalm/Ra3MapUtils",
+  "signingKey": {
+    "algorithm": "Ed25519",
+    "keyId": "ed25519-sha256:QnOwhaW3do0UCg3Ri-x4sHwCGtGcgLIweQtxiiOFEEY",
+    "publicKey": "uW-ErOGm8tB5JrRopLgkr5emv_byQcuc94uCvlo2P2Y"
+  }
+}

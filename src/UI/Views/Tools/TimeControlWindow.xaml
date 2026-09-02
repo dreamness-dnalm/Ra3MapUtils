@@ -1,0 +1,127 @@
+<Window x:Class="UI.Views.Tools.TimeControlWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        xmlns:controls="clr-namespace:UI.Controls"
+        Title="{Binding WindowTitle}"
+        Height="620"
+        Width="940"
+        MinHeight="520"
+        MinWidth="820"
+        WindowStartupLocation="CenterOwner"
+        Topmost="{Binding IsTopmost}"
+        FontFamily="Segoe UI Variable Text, Segoe UI">
+  <shell:WindowChrome.WindowChrome>
+    <shell:WindowChrome CaptionHeight="40"
+                        ResizeBorderThickness="6"
+                        GlassFrameThickness="0"
+                        UseAeroCaptionButtons="False" />
+  </shell:WindowChrome.WindowChrome>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="40" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <controls:ToolWindowTitleBar Grid.Row="0" />
+
+    <Grid Grid.Row="1" Margin="16,8,16,16">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <Border Grid.Row="0"
+              Padding="12,10"
+              BorderBrush="#33000000"
+              BorderThickness="1"
+              CornerRadius="6"
+              Margin="0,0,0,10">
+        <UniformGrid Columns="2" Rows="2">
+          <StackPanel Margin="0,0,16,8">
+            <TextBlock Text="{DynamicResource TimeCtrl_CurrentFrame}" FontWeight="SemiBold" />
+            <TextBlock Text="{Binding CurrentFrameText}" FontSize="20" />
+          </StackPanel>
+          <StackPanel Margin="0,0,16,8">
+            <TextBlock Text="{DynamicResource TimeCtrl_CurrentTime}" FontWeight="SemiBold" />
+            <TextBlock Text="{Binding CurrentTimeText}" FontSize="20" />
+          </StackPanel>
+          <StackPanel Margin="0,0,16,0">
+            <TextBlock Text="{DynamicResource TimeCtrl_PauseState}" FontWeight="SemiBold" />
+            <TextBlock Text="{Binding PauseStatusText}" />
+          </StackPanel>
+          <StackPanel>
+            <TextBlock Text="{DynamicResource TimeCtrl_FastState}" FontWeight="SemiBold" />
+            <TextBlock Text="{Binding FastStatusText}" />
+          </StackPanel>
+        </UniformGrid>
+      </Border>
+
+      <WrapPanel Grid.Row="1" Margin="0,0,0,10">
+        <Button Content="{Binding RefreshLabel}" Command="{Binding RefreshStatusCommand}" Padding="10,4" Margin="0,0,8,8" />
+        <Button Content="{Binding PauseButtonText}" Command="{Binding TogglePauseCommand}" Padding="10,4" Margin="0,0,8,8" />
+        <Button Content="{Binding FastButtonText}" Command="{Binding ToggleFastCommand}" Padding="10,4" Margin="0,0,8,8" />
+        <Button Content="{Binding SingleStepButtonText}" Command="{Binding ToggleSingleStepCommand}" Padding="10,4" Margin="0,0,8,8" />
+        <Button Content="{Binding StepLabel}" Command="{Binding StepFrameCommand}" Padding="10,4" Margin="0,0,8,8" />
+        <Button Content="{Binding ResetLabel}" Command="{Binding ResetTimeControlCommand}" Padding="10,4" Margin="0,0,8,8" />
+      </WrapPanel>
+
+      <Border Grid.Row="2"
+              Padding="10,8"
+              BorderBrush="#33000000"
+              BorderThickness="1"
+              CornerRadius="6"
+              Margin="0,0,0,10">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+
+          <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding FastToFrameLabel}" VerticalAlignment="Center" Margin="0,0,12,8" />
+          <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
+            <TextBox Width="126" Text="{Binding FastToFrameText, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Margin="0,0,8,0" />
+            <Button Content="{Binding RunLabel}" Command="{Binding FastToFrameCommand}" MinWidth="88" Padding="10,4" />
+          </StackPanel>
+
+          <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding FastToTimeLabel}" VerticalAlignment="Center" Margin="0,0,12,8" />
+          <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
+            <TextBox Width="56" Text="{Binding FastToHourText, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Margin="0,0,4,0" />
+            <TextBlock Text="{DynamicResource TimeCtrl_Hour}" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <TextBox Width="56" Text="{Binding FastToMinuteText, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Margin="0,0,4,0" />
+            <TextBlock Text="{DynamicResource TimeCtrl_Minute}" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <TextBox Width="56" Text="{Binding FastToSecondText, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Margin="0,0,4,0" />
+            <TextBlock Text="{DynamicResource TimeCtrl_Second}" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <TextBox Width="56" Text="{Binding FastToSubFrameText, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Margin="0,0,4,0" />
+            <TextBlock Text="{DynamicResource TimeCtrl_SubFrame}" VerticalAlignment="Center" Margin="0,0,12,0" />
+            <Button Content="{Binding RunLabel}" Command="{Binding FastToTimeCommand}" MinWidth="88" Padding="10,4" />
+          </StackPanel>
+
+          <TextBlock Grid.Row="2"
+                     Grid.Column="0"
+                     Grid.ColumnSpan="2"
+                     Text="{Binding StatusText}"
+                     TextWrapping="Wrap"
+                     Opacity="0.75" />
+        </Grid>
+      </Border>
+
+      <TextBox Grid.Row="3"
+               Text="{Binding OutputText, Mode=OneWay}"
+               IsReadOnly="True"
+               AcceptsReturn="True"
+               TextWrapping="NoWrap"
+               FontFamily="Consolas"
+               VerticalScrollBarVisibility="Auto"
+               HorizontalScrollBarVisibility="Auto" />
+    </Grid>
+  </Grid>
+</Window>

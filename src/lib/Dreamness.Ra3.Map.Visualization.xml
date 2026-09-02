@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Dreamness.RA3.Map.Visualization</name>
+    </assembly>
+    <members>
+        <!-- Badly formed XML comment ignored for member "M:PreviewExtension.GetPreviewImage(Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade)" -->
+    </members>
+</doc>

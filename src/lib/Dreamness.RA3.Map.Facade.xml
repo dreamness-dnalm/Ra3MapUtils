@@ -1,0 +1,709 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Dreamness.RA3.Map.Facade</name>
+    </assembly>
+    <members>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.NewMap(System.Int32,System.Int32,System.Int32,System.Int32,System.String)">
+            <summary>
+            创建新地图, 地图实际尺寸 = 可游玩区域尺寸 + 2 * 边界尺寸
+            </summary>
+            <param name="playableWidth">可游玩区域宽度</param>
+            <param name="playableHeight">可游玩区域高度</param>
+            <param name="border">边界</param>
+            <param name="initPlayerStartWaypointCnt">初始化玩家出生点数量</param>
+            <param name="defaultTexture">默认纹理</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.Open(System.String,System.String)">
+            <summary>
+            加载地图
+            </summary>
+            <param name="parentPath">地图所在父目录, 一般情况下请调用Ra3PathUtil.RA3MapFolder</param>
+            <param name="mapName">地图名字</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.Open(System.String)">
+            <summary>
+            加载地图
+            </summary>
+            <param name="mapFilePath">地图文件路径</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.Save(System.Boolean)">
+            <summary>
+            保存地图
+            </summary>
+            <param name="compress">是否压缩,非特殊情况请保持压缩</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.SaveAs(System.String,System.String,System.Boolean)">
+            <summary>
+            另存为地图
+            </summary>
+            <param name="outputPath">输出目录</param>
+            <param name="mapName">地图名字</param>
+            <param name="compress">是否压缩,非特殊情况请保持压缩</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.SaveAs(System.String,System.Boolean)">
+            <summary>
+            另存为地图
+            </summary>
+            <param name="mapFilePath">地图文件路径</param>
+            <param name="compress">是否压缩,非特殊情况请保持压缩</param>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.MapWidth">
+            <summary>
+            地图宽度（包含边界）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.MapHeight">
+            <summary>
+            地图高度（包含边界）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.MapBorderWidth">
+            <summary>
+            边界宽度
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.MapPlayableWidth">
+            <summary>
+            可游玩区域宽度
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.MapPlayableHeight">
+            <summary>
+            可游玩区域高度
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.Area">
+            <summary>
+            地图面积
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.HeightData">
+            <summary>
+            高度数据
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.Borders">
+            <summary>
+            边界数据
+            </summary>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.SetTerrainHeight(System.Int32,System.Int32,System.Single)">
+            <summary>
+            设置地形高度 (使用网格坐标)
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="height"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetTerrainHeight(System.Int32,System.Int32)">
+            <summary>
+            获取地形高度 (使用网格坐标)
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetBorders">
+            <summary>
+            获取所有边界
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.SetBorder(Dreamness.Ra3.Map.Parser.Asset.Impl.Terrain.BorderData,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            设置边界, 左下角(x1, y1), 右上角(x2, y2), (使用网格坐标)
+            </summary>
+            <param name="border"></param>
+            <param name="x1">左下角x</param>
+            <param name="y1">左下角y</param>
+            <param name="x2">右上角x</param>
+            <param name="y2">右上角y</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddBorder(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            添加边界, 左下角(x1, y1), 右上角(x2, y2), (使用网格坐标)
+            </summary>
+            <param name="x1">左下角x</param>
+            <param name="y1">左下角y</param>
+            <param name="x2">右上角x</param>
+            <param name="y2">右上角y</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.RemoveBorder(Dreamness.Ra3.Map.Parser.Asset.Impl.Terrain.BorderData)">
+            <summary>
+            移除边界
+            </summary>
+            <param name="border"></param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.RemoveByUniqueId(System.String)">
+            <summary>
+            移除指定 UniqueId 的物体/路径点/路径
+            </summary>
+            <param name="uniqueId"></param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.Remove(System.Object)">
+            <summary>
+            移除物体/路径点/路径/玩家/队伍
+            </summary>
+            <param name="o"></param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetUnitObjects">
+            <summary>
+            获取所有单位物体（不含路径点和路径节点）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddUnitObject(System.String,System.Single,System.Single,System.Single)">
+            <summary>
+            添加单位物体
+            </summary>
+            <param name="typeName">单位类型名称, 坐标使用世界坐标</param>
+            <param name="x">X 坐标</param>
+            <param name="y">Y 坐标</param>
+            <param name="z">Z 坐标</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetWaypoints">
+            <summary>
+            获取所有路径点
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddWaypoint(System.String,System.Single,System.Single,System.Single)">
+            <summary>
+            添加路径点, 指定名称, 坐标使用世界坐标
+            </summary>
+            <param name="name"></param>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="z"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddWaypoint(System.Single,System.Single,System.Single)">
+            <summary>
+            添加路径点, 坐标使用世界坐标
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="z"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddPlayerStartWaypoint(System.Int32,System.Single,System.Single,System.Single)">
+            <summary>
+            添加玩家起始点路径点, 坐标使用世界坐标
+            </summary>
+            <param name="playerIndex"></param>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="z"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetPlayers">
+            <summary>
+            获取所有玩家数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.ExportPlayersToJsonStr">
+            <summary>
+            将玩家数据导出为 JSON 字符串
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.ImportPlayersFromJsonStr(System.String)">
+            <summary>
+            从 JSON 字符串导入玩家数据
+            </summary>
+            <param name="jsonStr"></param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddPlayer(System.String)">
+            <summary>
+            添加玩家
+            </summary>
+            <param name="playerName">玩家名字</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddPlayer(Dreamness.Ra3.Map.Parser.Asset.Impl.Player.PlayerData)">
+            <summary>
+            添加玩家
+            </summary>
+            <param name="playerData">玩家数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetPlayer(System.String)">
+            <summary>
+            根据玩家名称获取玩家数据
+            </summary>
+            <param name="playerName">玩家名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetRoadObjects">
+            <summary>
+            获取路径工具节点。RoadOption 为 0 的静态道路场景仍作为普通单位/场景物体，
+            因为它们不参与 World Builder 的路径节点格式。
+            </summary>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddRoadObject(System.String,System.Single,System.Single,System.Single,System.Single,System.Int32)">
+            <summary>
+            添加 World Builder 路径节点。原始 road option 原样保留，各位含义尚未完全文档化。
+            </summary>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.RemoveRoadObject(Dreamness.Ra3.Map.Parser.Asset.Impl.GameObject.RoadObjectWrap)">
+            <summary>
+            移除指定路径节点。
+            </summary>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetTeams">
+            <summary>
+            获取所有队伍
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.ExportTeamsToJsonStr">
+            <summary>
+            将队伍数据导出为json字符串
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.ImportTeamsFromJsonStr(System.String)">
+            <summary>
+            从json字符串导入队伍数据
+            </summary>
+            <param name="jsonStr"></param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddTeam(System.String,System.String)">
+            <summary>
+            添加一个队伍
+            </summary>
+            <param name="teamName">队伍名(短名)</param>
+            <param name="owerPlayerName">所有者的玩家名</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddTeam(Dreamness.Ra3.Map.Parser.Asset.Impl.Team.TeamAsset)">
+            <summary>
+            添加一个队伍
+            </summary>
+            <param name="teamAsset">队伍数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetTileTexture(System.Int32,System.Int32)">
+            <summary>
+            获取指定坐标的地形纹理名称, 使用网格坐标
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <returns>枚举值参考TextureEnum</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.SetTileTexture(System.Int32,System.Int32,System.String)">
+            <summary>
+            设置指定坐标的地形纹理名称, 使用网格坐标
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="texture">枚举值参考TextureEnum</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.RegisterSupportedTexture(System.String,System.String,System.String)">
+            <summary>
+            注册支持的地形纹理
+            </summary>
+            <param name="textureName"></param>
+            <param name="tgaFileName"></param>
+            <param name="nrmFileName"></param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetSubTilePosition(System.Int32,System.Int32)">
+            <summary>
+            获取纹理在8x8子瓦片网格中的位置
+            </summary>
+            <param name="x">网格X坐标</param>
+            <param name="y">网格Y坐标</param>
+            <returns>子瓦片坐标(subX, subY), 范围0-7</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetBlendInfo(System.Int32,System.Int32)">
+            <summary>
+            获取指定坐标的纹理混合信息
+            </summary>
+            <param name="x">网格X坐标</param>
+            <param name="y">网格Y坐标</param>
+            <returns>混合信息对象, 如果不存在混合则返回null</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddBlend(System.Int32,System.Int32,System.Int32,Dreamness.Ra3.Map.Parser.Asset.Impl.Texture.BlendInfo.BlendDirectionEnum)">
+            <summary>
+            添加或更新纹理混合（使用纹理索引）
+            </summary>
+            <param name="x">网格X坐标</param>
+            <param name="y">网格Y坐标</param>
+            <param name="secondaryTextureIndex">次要纹理索引</param>
+            <param name="direction">混合方向</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AddBlend(System.Int32,System.Int32,System.String,Dreamness.Ra3.Map.Parser.Asset.Impl.Texture.BlendInfo.BlendDirectionEnum)">
+            <summary>
+            添加或更新纹理混合（使用纹理名称）
+            </summary>
+            <param name="x">网格X坐标</param>
+            <param name="y">网格Y坐标</param>
+            <param name="secondaryTextureName">次要纹理名称，参考TextureEnum</param>
+            <param name="direction">混合方向</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.RemoveBlend(System.Int32,System.Int32)">
+            <summary>
+            移除指定坐标的纹理混合
+            </summary>
+            <param name="x">网格X坐标</param>
+            <param name="y">网格Y坐标</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AutoDetectBlend(System.Int32,System.Int32)">
+            <summary>
+            自动检测并应用纹理混合（单个网格）
+            分析周围8个邻居，自动确定合适的混合方向
+            </summary>
+            <param name="x">网格X坐标</param>
+            <param name="y">网格Y坐标</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AutoDetectBlendsInRegion(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            自动检测并应用纹理混合（矩形区域）
+            </summary>
+            <param name="startX">起始X坐标（包含）</param>
+            <param name="startY">起始Y坐标（包含）</param>
+            <param name="endX">结束X坐标（不包含）</param>
+            <param name="endY">结束Y坐标（不包含）</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.AutoDetectBlendsEntireMap">
+            <summary>
+            自动检测并应用纹理混合（整个地图）
+            会跳过地图边缘的1格边界
+            </summary>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.SetPassability(System.Int32,System.Int32,System.String)">
+            <summary>
+            设置指定坐标的地形通行属性, 使用网格坐标
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="passability">枚举值参考Passability</param>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetPassability(System.Int32,System.Int32)">
+            <summary>
+            获取指定坐标的地形通行属性, 使用网格坐标
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <returns>枚举值参考Passability</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.UpdatePassabilityMap">
+            <summary>
+            根据高度信息, 更新地图的通行属性数据, 建议在修改完高度图后调用
+            </summary>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetBlendDetailInfo(System.Int32,System.Int32)">
+            <summary>
+            获取指定位置的详细混合信息
+            </summary>
+            <param name="x">网格X坐标</param>
+            <param name="y">网格Y坐标</param>
+            <returns>详细混合信息，如果不存在混合则返回null</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetBlendDirectionInfo(Dreamness.Ra3.Map.Parser.Asset.Impl.Texture.BlendInfo.BlendDirectionEnum)">
+            <summary>
+            获取混合方向的友好名称和描述
+            </summary>
+            <param name="direction">混合方向枚举</param>
+            <returns>(英文名称, 中文描述)</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetAllBlendPositions">
+            <summary>
+            获取所有有混合的位置列表
+            </summary>
+            <returns>混合位置列表</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetBlendsInRegion(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            获取指定区域内的混合位置列表
+            </summary>
+            <param name="startX">起始X坐标（包含）</param>
+            <param name="startY">起始Y坐标（包含）</param>
+            <param name="endX">结束X坐标（不包含）</param>
+            <param name="endY">结束Y坐标（不包含）</param>
+            <returns>混合位置列表</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetBlendStatistics">
+            <summary>
+            获取地图的混合统计信息
+            </summary>
+            <returns>混合统计信息</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetTexturesInvolved(System.Int32,System.Int32)">
+            <summary>
+            获取某个位置涉及的纹理名称
+            </summary>
+            <param name="x">网格X坐标</param>
+            <param name="y">网格Y坐标</param>
+            <returns>(主纹理名称, 次要纹理名称)，如果没有混合则次要纹理为null</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetBlendsByTexturePair(System.String,System.String)">
+            <summary>
+            获取使用特定纹理对的所有混合位置
+            </summary>
+            <param name="primaryTextureName">主纹理名称</param>
+            <param name="secondaryTextureName">次要纹理名称</param>
+            <returns>混合位置列表</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetBlendMapSnapshot">
+            <summary>
+            获取整个地图的混合数据快照（用于可视化）
+            </summary>
+            <returns>混合地图快照</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetTotalBlendCount">
+            <summary>
+            获取总混合数量（有混合的网格数）
+            </summary>
+            <returns>混合网格数量</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.GetUniqueBlendInfoCount">
+            <summary>
+            获取唯一BlendInfo对象的数量
+            </summary>
+            <returns>BlendInfo数量</returns>
+        </member>
+        <member name="M:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.HasBlendAt(System.Int32,System.Int32)">
+            <summary>
+            检查指定位置是否有混合
+            </summary>
+            <param name="x">网格X坐标</param>
+            <param name="y">网格Y坐标</param>
+            <returns>true表示有混合，false表示无混合</returns>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.CameraGroundMinHeight">
+            <summary>
+            摄像机距离地面的最小高度
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.CameraGroundMaxHeight">
+            <summary>
+            摄像机距离地面的最大高度
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.CameraMinHeight">
+            <summary>
+            摄像机的最小高度
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Core.Ra3MapFacade.CameraMaxHeight">
+            <summary>
+            摄像机的最大高度
+            </summary>
+        </member>
+        <member name="T:Dreamness.Ra3.Map.Facade.enums.TextureEnum">
+            <summary>
+            纹理枚举
+            </summary>
+        </member>
+        <member name="T:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo">
+            <summary>
+            纹理混合详细信息 - 用于地图编辑器展示
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.X">
+            <summary>
+            X坐标
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.Y">
+            <summary>
+            Y坐标
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.PrimaryTextureName">
+            <summary>
+            主纹理名称
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.SecondaryTextureName">
+            <summary>
+            次要纹理名称
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.PrimaryTextureIndex">
+            <summary>
+            主纹理索引
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.SecondaryTextureIndex">
+            <summary>
+            次要纹理索引
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.BlendDirection">
+            <summary>
+            混合方向
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.BlendDirectionName">
+            <summary>
+            混合方向名称（英文）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.BlendDirectionDescription">
+            <summary>
+            混合方向描述（中文）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.SecondaryTextureTile">
+            <summary>
+            次要纹理瓦片索引
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.SubTileX">
+            <summary>
+            子瓦片X坐标（0-7）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.SubTileY">
+            <summary>
+            子瓦片Y坐标（0-7）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.MagicI3">
+            <summary>
+            魔数字段I3（通常为0xFFFFFFFF）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendDetailInfo.MagicI4">
+            <summary>
+            魔数字段I4（通常为0x7ACDCD00）
+            </summary>
+        </member>
+        <member name="T:Dreamness.Ra3.Map.Facade.Models.BlendStatistics">
+            <summary>
+            纹理混合统计信息
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendStatistics.TotalBlendCount">
+            <summary>
+            总混合数量
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendStatistics.UniqueBlendInfoCount">
+            <summary>
+            唯一的BlendInfo对象数量
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendStatistics.BlendsByDirection">
+            <summary>
+            按混合方向分类的统计（方向名称 -> 数量）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendStatistics.BlendsByTexturePair">
+            <summary>
+            按纹理对分类的统计（"主纹理-次要纹理" -> 数量）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendStatistics.TexturesInvolved">
+            <summary>
+            涉及混合的纹理列表
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendStatistics.BlendCoveragePercentage">
+            <summary>
+            混合覆盖率（有混合的网格数/总网格数）
+            </summary>
+        </member>
+        <member name="T:Dreamness.Ra3.Map.Facade.Models.BlendPosition">
+            <summary>
+            混合位置信息（轻量级）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendPosition.X">
+            <summary>
+            X坐标
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendPosition.Y">
+            <summary>
+            Y坐标
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendPosition.Direction">
+            <summary>
+            混合方向
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendPosition.BlendInfoIndex">
+            <summary>
+            BlendInfo在列表中的索引（0-based）
+            </summary>
+        </member>
+        <member name="T:Dreamness.Ra3.Map.Facade.Models.BlendMapSnapshot">
+            <summary>
+            混合地图快照数据 - 用于可视化
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendMapSnapshot.Width">
+            <summary>
+            地图宽度
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendMapSnapshot.Height">
+            <summary>
+            地图高度
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendMapSnapshot.BlendIndices">
+            <summary>
+            混合索引数组（0表示无混合，非0表示BlendInfo索引+1）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendMapSnapshot.PrimaryTextureIndices">
+            <summary>
+            主纹理索引数组
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendMapSnapshot.BlendInfos">
+            <summary>
+            所有BlendInfo的快照
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendMapSnapshot.TextureNames">
+            <summary>
+            纹理名称列表（索引对应纹理索引）
+            </summary>
+        </member>
+        <member name="T:Dreamness.Ra3.Map.Facade.Models.BlendInfoSnapshot">
+            <summary>
+            BlendInfo快照（简化版本）
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendInfoSnapshot.SecondaryTextureIndex">
+            <summary>
+            次要纹理索引
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendInfoSnapshot.Direction">
+            <summary>
+            混合方向
+            </summary>
+        </member>
+        <member name="P:Dreamness.Ra3.Map.Facade.Models.BlendInfoSnapshot.SecondaryTextureTile">
+            <summary>
+            次要纹理瓦片索引
+            </summary>
+        </member>
+        <member name="T:Dreamness.Ra3.Map.Facade.Util.Ra3PathUtil">
+            <summary>
+            Ra3路径工具类
+            </summary>
+        </member>
+        <member name="F:Dreamness.Ra3.Map.Facade.Util.Ra3PathUtil.RA3MapFolder">
+            <summary>
+            RA3地图文件夹路径
+            </summary>
+        </member>
+    </members>
+</doc>

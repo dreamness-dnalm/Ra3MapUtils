@@ -1,0 +1,116 @@
+<Window x:Class="UI.Views.Tools.LuaExecutorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        xmlns:controls="clr-namespace:UI.Controls"
+        Title="{Binding WindowTitle}"
+        Height="720"
+        Width="960"
+        MinHeight="560"
+        MinWidth="760"
+        WindowStartupLocation="CenterOwner"
+        Topmost="{Binding IsTopmost}"
+        FontFamily="Segoe UI Variable Text, Segoe UI">
+  <shell:WindowChrome.WindowChrome>
+    <shell:WindowChrome CaptionHeight="40"
+                        ResizeBorderThickness="6"
+                        GlassFrameThickness="0"
+                        UseAeroCaptionButtons="False" />
+  </shell:WindowChrome.WindowChrome>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="40" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <controls:ToolWindowTitleBar Grid.Row="0" />
+
+    <Grid Grid.Row="1" Margin="16,8,16,16">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="2*" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+
+      <TextBlock Grid.Row="0"
+                 Text="{Binding StatusText}"
+                 TextWrapping="Wrap"
+                 Opacity="0.8"
+                 Margin="0,0,0,10" />
+
+      <DockPanel Grid.Row="1" Margin="0,0,0,10">
+        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,6">
+          <Button DockPanel.Dock="Right"
+                  Content="{Binding RunCodeLabel}"
+                  Padding="10,4"
+                  Command="{Binding RunCodeCommand}" />
+          <TextBlock Text="{Binding CodeLabel}" FontWeight="SemiBold" VerticalAlignment="Center" />
+        </DockPanel>
+        <TextBox Text="{Binding LuaCode, UpdateSourceTrigger=PropertyChanged}"
+                 AcceptsReturn="True"
+                 AcceptsTab="True"
+                 TextWrapping="NoWrap"
+                 FontFamily="Consolas"
+                 VerticalScrollBarVisibility="Auto"
+                 HorizontalScrollBarVisibility="Auto" />
+      </DockPanel>
+
+      <DockPanel Grid.Row="2" Margin="0,0,0,10">
+        <TextBlock DockPanel.Dock="Top" Text="{Binding FileLabel}" FontWeight="SemiBold" Margin="0,0,0,6" />
+        <StackPanel Orientation="Horizontal">
+          <TextBox Width="420"
+                   Text="{Binding LuaFilePath, UpdateSourceTrigger=PropertyChanged}"
+                   VerticalContentAlignment="Center"
+                   Margin="0,0,8,0" />
+          <Button Content="{Binding BrowseFileLabel}"
+                  Padding="10,4"
+                  Margin="0,0,8,0"
+                  Command="{Binding BrowseLuaFileCommand}" />
+          <Button Content="{Binding RunFileLabel}"
+                  Padding="10,4"
+                  Command="{Binding RunFileCommand}" />
+        </StackPanel>
+      </DockPanel>
+
+      <Grid Grid.Row="3" Margin="0,0,0,10">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="8" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Column="0">
+          <TextBlock DockPanel.Dock="Top" Text="{Binding ReturnsLabel}" FontWeight="SemiBold" Margin="0,0,0,6" />
+          <TextBox Text="{Binding ReturnsText, Mode=OneWay}"
+                   IsReadOnly="True"
+                   AcceptsReturn="True"
+                   TextWrapping="Wrap"
+                   FontFamily="Consolas"
+                   VerticalScrollBarVisibility="Auto" />
+        </DockPanel>
+        <GridSplitter Grid.Column="1" Width="8" HorizontalAlignment="Stretch" />
+        <DockPanel Grid.Column="2">
+          <TextBlock DockPanel.Dock="Top" Text="{Binding OutputLabel}" FontWeight="SemiBold" Margin="0,0,0,6" />
+          <TextBox Text="{Binding OutputText, Mode=OneWay}"
+                   IsReadOnly="True"
+                   AcceptsReturn="True"
+                   TextWrapping="Wrap"
+                   FontFamily="Consolas"
+                   VerticalScrollBarVisibility="Auto" />
+        </DockPanel>
+      </Grid>
+
+      <TextBox Grid.Row="4"
+               Height="120"
+               Text="{Binding ResponseText, Mode=OneWay}"
+               IsReadOnly="True"
+               AcceptsReturn="True"
+               TextWrapping="NoWrap"
+               FontFamily="Consolas"
+               VerticalScrollBarVisibility="Auto"
+               HorizontalScrollBarVisibility="Auto" />
+    </Grid>
+  </Grid>
+</Window>

@@ -1,0 +1,102 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>Ra3MapUtils</AssemblyName>
+    <RootNamespace>UI</RootNamespace>
+    <ApplicationTitle>RA3地编伴侣</ApplicationTitle>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <PlatformTarget>x64</PlatformTarget>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <Version>2.0.0</Version>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
+    <InformationalVersion>2.0.0</InformationalVersion>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <NoWarn>$(NoWarn);WPF0001;NU1701</NoWarn>
+  </PropertyGroup>
+
+  <Import Project="..\..\eng\assetcenter\AssetCenter.Sdk.props" />
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Antlr4.Runtime" Version="4.6.6" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Magick.NET-Q16-x64" Version="14.0.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.14.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="ModelContextProtocol" Version="0.4.0-preview.3" />
+    <PackageReference Include="ModelContextProtocol.AspNetCore" Version="0.4.0-preview.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Dreamness.RA3.Map.Facade">
+      <HintPath>..\lib\Dreamness.RA3.Map.Facade.dll</HintPath>
+    </Reference>
+    <Reference Include="Dreamness.RA3.Map.Lua">
+      <HintPath>..\lib\Dreamness.RA3.Map.Lua.dll</HintPath>
+    </Reference>
+    <Reference Include="Dreamness.RA3.Map.Parser">
+      <HintPath>..\lib\Dreamness.RA3.Map.Parser.dll</HintPath>
+    </Reference>
+    <Reference Include="Dreamness.RA3.Map.Transform">
+      <HintPath>..\lib\Dreamness.RA3.Map.Transform.dll</HintPath>
+    </Reference>
+    <Reference Include="Dreamness.Ra3.Map.Visualization">
+      <HintPath>..\lib\Dreamness.Ra3.Map.Visualization.dll</HintPath>
+    </Reference>
+    <Reference Include="Dreamness.ScriptExecutor">
+      <HintPath>..\lib\Dreamness.ScriptExecutor.dll</HintPath>
+    </Reference>
+    <Reference Include="Ra3Hacker.Sdk">
+      <HintPath>..\lib\Ra3Hacker.Sdk.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\app.ico"
+             CopyToOutputDirectory="PreserveNewest"
+             CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="Assets\icon.png"
+             CopyToOutputDirectory="PreserveNewest"
+             CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Official nano programs live under the UI project for IDE editing; do not compile Main.cs into the app -->
+    <Compile Remove="data\nano_programs\**\*.cs" />
+    <Content Include="data\nano_programs\**\*"
+             Exclude="data\nano_programs\**\*.cs"
+             CopyToOutputDirectory="PreserveNewest"
+             CopyToPublishDirectory="PreserveNewest" />
+    <None Include="data\nano_programs\**\*.cs"
+          CopyToOutputDirectory="PreserveNewest"
+          CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="data\Ra3Hacker\**\*"
+             CopyToOutputDirectory="PreserveNewest"
+             CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
+  </ItemGroup>
+
+</Project>

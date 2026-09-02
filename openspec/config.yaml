@@ -1,0 +1,17 @@
+schema: spec-driven
+
+# Project context (optional)
+# This is shown to AI when creating artifacts.
+context: |
+  Ra3MapUtils v2 lives under src/UI + src/Core (WPF net10.0-windows). Do not introduce
+  ProjectReferences to legacy SharedFunctionLib / UtilCoreLib / WBLegacy / legacy Ra3MapUtils.
+  Abandoned in v2 (do not migrate): NewWorldBuilder path binding, NWB plugin install/manage,
+  and features that only exist for that linkage (e.g. map log viewer against NWB game/logs).
+  Game debugging uses the bundled Ra3Hacker toolchain (Injector + setting.json + SDK API on
+  a separate local port from the companion's 30033 host).
+
+# Per-artifact rules (optional)
+# rules:
+
+# Per-operation guidance (optional)
+# operations:

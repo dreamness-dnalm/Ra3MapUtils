@@ -1,0 +1,406 @@
+<UserControl x:Class="UI.Views.Pages.MapManagePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:UI.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=vm:MapManagePageViewModel}"
+             Background="Transparent"
+             FontFamily="Segoe UI Variable Text, Segoe UI">
+  <Grid Margin="28,20,28,24">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <TextBlock Grid.Row="0"
+               Text="{DynamicResource Maps_Title}"
+               FontSize="28"
+               FontWeight="SemiBold"
+               Margin="0,0,0,4" />
+
+    <TextBlock Grid.Row="1"
+               Text="{Binding MapsRoot}"
+               Opacity="0.65"
+               FontSize="12"
+               TextWrapping="Wrap"
+               Margin="0,0,0,12" />
+
+    <!-- Session hint -->
+    <Border Grid.Row="2"
+            Margin="0,0,0,12"
+            Padding="12,10"
+            CornerRadius="8"
+            Background="#140067C0"
+            BorderBrush="#330067C0"
+            BorderThickness="1">
+      <Border.Style>
+        <Style TargetType="Border">
+          <Setter Property="Visibility" Value="Visible" />
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding IsHintVisible}" Value="False">
+              <Setter Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Border.Style>
+      <DockPanel LastChildFill="True">
+        <Button DockPanel.Dock="Right"
+                Content="&#xE711;"
+                FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                Width="32"
+                Height="28"
+                Padding="0"
+                Margin="8,0,0,0"
+                ToolTip="{DynamicResource Maps_DismissHint}"
+                Command="{Binding DismissHintCommand}" />
+        <TextBlock Text="{DynamicResource Maps_Hint}"
+                   TextWrapping="Wrap"
+                   VerticalAlignment="Center"
+                   Opacity="0.9" />
+      </DockPanel>
+    </Border>
+
+    <!-- Toolbar -->
+    <DockPanel Grid.Row="3" Margin="0,0,0,12" LastChildFill="False">
+      <Button DockPanel.Dock="Right"
+              Content="{DynamicResource Maps_Refresh}"
+              MinWidth="88"
+              Padding="14,8"
+              Command="{Binding RefreshCommand}"
+              Margin="8,0,0,0" />
+      <Button DockPanel.Dock="Right"
+              Content="{DynamicResource Maps_OpenFolder}"
+              MinWidth="96"
+              Padding="14,8"
+              Command="{Binding OpenMapsRootCommand}"
+              Margin="8,0,0,0"
+              ToolTip="{DynamicResource Maps_OpenRootTooltip}" />
+      <TextBox Width="280"
+               Padding="10,8"
+               Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+               VerticalContentAlignment="Center"
+               ToolTip="{DynamicResource Maps_SearchTooltip}" />
+      <TextBlock Margin="12,0,0,0"
+                 VerticalAlignment="Center"
+                 Text="{Binding StatusMessage}"
+                 Opacity="0.75">
+        <TextBlock.Style>
+          <Style TargetType="TextBlock">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding HasError}" Value="True">
+                <Setter Property="Foreground" Value="#C42B1C" />
+                <Setter Property="Opacity" Value="1" />
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </TextBlock.Style>
+      </TextBlock>
+    </DockPanel>
+
+    <Grid Grid.Row="4">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1.15*" MinWidth="280" />
+        <ColumnDefinition Width="16" />
+        <ColumnDefinition Width="*" MinWidth="260" />
+      </Grid.ColumnDefinitions>
+
+      <Border Grid.Column="0"
+              CornerRadius="8"
+              BorderThickness="1"
+              BorderBrush="#22000000"
+              Background="#66FFFFFF"
+              ClipToBounds="True">
+        <ListBox x:Name="MapList"
+                 ItemsSource="{Binding Maps}"
+                 SelectionMode="Extended"
+                 SelectionChanged="MapList_OnSelectionChanged"
+                 BorderThickness="0"
+                 Background="Transparent"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 HorizontalContentAlignment="Stretch">
+          <ListBox.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="{DynamicResource Maps_MenuOpenFolder}"
+                        Command="{Binding PlacementTarget.DataContext.OpenFolderCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+              <MenuItem Header="{DynamicResource Maps_Rename}"
+                        Command="{Binding PlacementTarget.DataContext.RenameCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+              <MenuItem Header="{DynamicResource Maps_SaveAs}"
+                        Command="{Binding PlacementTarget.DataContext.CloneCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+              <MenuItem Header="{DynamicResource Maps_Compress}"
+                        Command="{Binding PlacementTarget.DataContext.CompressCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+              <MenuItem Header="{DynamicResource Maps_EditDisplayName}"
+                        Command="{Binding PlacementTarget.DataContext.EditDisplayNameCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+              <Separator />
+              <MenuItem Header="{DynamicResource Maps_MenuDelete}"
+                        Command="{Binding PlacementTarget.DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+              <Separator />
+              <MenuItem Header="{DynamicResource Maps_MenuLuaImport}"
+                        Command="{Binding PlacementTarget.DataContext.OpenLuaImportCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+              <MenuItem Header="{DynamicResource Maps_MenuBorder}" IsEnabled="False" />
+              <MenuItem Header="{DynamicResource Maps_MenuTerrain}" IsEnabled="False" />
+              <MenuItem Header="{DynamicResource Maps_MenuMigrate}" IsEnabled="False" />
+            </ContextMenu>
+          </ListBox.ContextMenu>
+          <ListBox.ItemContainerStyle>
+            <Style TargetType="ListBoxItem">
+              <Setter Property="Padding" Value="0" />
+              <Setter Property="Margin" Value="8,6,8,0" />
+              <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+              <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+              <Setter Property="Template">
+                <Setter.Value>
+                  <ControlTemplate TargetType="ListBoxItem">
+                    <Border x:Name="Card"
+                            Background="#F9FFFFFF"
+                            BorderBrush="#18000000"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="14,12">
+                      <ContentPresenter />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                      <Trigger Property="IsMouseOver" Value="True">
+                        <Setter TargetName="Card" Property="Background" Value="#FFFFFFFF" />
+                        <Setter TargetName="Card" Property="BorderBrush" Value="#33000000" />
+                      </Trigger>
+                      <Trigger Property="IsSelected" Value="True">
+                        <Setter TargetName="Card" Property="Background" Value="#FFFFFFFF" />
+                        <Setter TargetName="Card" Property="BorderBrush" Value="#FF0067C0" />
+                      </Trigger>
+                    </ControlTemplate.Triggers>
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style>
+          </ListBox.ItemContainerStyle>
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0"
+                        Width="36"
+                        Height="36"
+                        CornerRadius="18"
+                        Background="#140067C0"
+                        Margin="0,0,12,0">
+                  <TextBlock Text="&#xE707;"
+                             FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                             FontSize="16"
+                             Foreground="#FF0067C0"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center" />
+                </Border>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                  <TextBlock Text="{Binding Name}"
+                             FontSize="14"
+                             FontWeight="SemiBold"
+                             TextTrimming="CharacterEllipsis" />
+                  <TextBlock Text="{Binding Summary}"
+                             Margin="0,2,0,0"
+                             FontSize="12"
+                             Opacity="0.65"
+                             TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+                <TextBlock Grid.Column="2"
+                           Text="&#xE76C;"
+                           FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                           FontSize="12"
+                           Opacity="0.45"
+                           VerticalAlignment="Center"
+                           Margin="8,0,0,0" />
+              </Grid>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </Border>
+
+      <!-- Preview pane (display-only) -->
+      <Border Grid.Column="2"
+              CornerRadius="8"
+              BorderThickness="1"
+              BorderBrush="#22000000"
+              Background="#66FFFFFF"
+              Padding="18">
+        <Grid>
+          <TextBlock Text="{Binding PreviewPlaceholder}"
+                     Opacity="0.65"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     TextWrapping="Wrap"
+                     TextAlignment="Center">
+            <TextBlock.Style>
+              <Style TargetType="TextBlock">
+                <Setter Property="Visibility" Value="Collapsed" />
+                <Style.Triggers>
+                  <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                      <Condition Binding="{Binding HasPreview}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Visibility" Value="Visible" />
+                  </MultiDataTrigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+
+          <!-- Multi-select summary -->
+          <TextBlock Text="{Binding MultiSelectSummary}"
+                     TextWrapping="Wrap"
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Center"
+                     TextAlignment="Center"
+                     Opacity="0.85">
+            <TextBlock.Style>
+              <Style TargetType="TextBlock">
+                <Setter Property="Visibility" Value="Collapsed" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding IsMultiSelectSummary}" Value="True">
+                    <Setter Property="Visibility" Value="Visible" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+
+          <ScrollViewer VerticalScrollBarVisibility="Auto"
+                        HorizontalScrollBarVisibility="Disabled">
+            <ScrollViewer.Style>
+              <Style TargetType="ScrollViewer">
+                <Setter Property="Visibility" Value="Collapsed" />
+                <Style.Triggers>
+                  <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                      <Condition Binding="{Binding HasPreview}" Value="True" />
+                      <Condition Binding="{Binding IsMultiSelectSummary}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Visibility" Value="Visible" />
+                  </MultiDataTrigger>
+                </Style.Triggers>
+              </Style>
+            </ScrollViewer.Style>
+            <StackPanel>
+              <TextBlock Text="{DynamicResource Maps_Preview}"
+                         FontSize="20"
+                         FontWeight="SemiBold"
+                         Margin="0,0,0,12" />
+
+              <TextBlock Text="{DynamicResource Maps_BasicInfo}"
+                         FontWeight="SemiBold"
+                         Margin="0,0,0,8" />
+              <Border CornerRadius="8"
+                      Background="#14000000"
+                      Padding="12"
+                      Margin="0,0,0,16">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                  </Grid.RowDefinitions>
+
+                  <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource Maps_Name}" Opacity="0.65" Margin="0,0,16,6" />
+                  <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Preview.Name}" TextWrapping="Wrap" Margin="0,0,0,6" />
+
+                  <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource Maps_Size}" Opacity="0.65" Margin="0,0,16,6" />
+                  <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Preview.SizeDisplay}" Margin="0,0,0,6" />
+
+                  <TextBlock Grid.Row="2" Grid.Column="0" Text="{DynamicResource Maps_FileCount}" Opacity="0.65" Margin="0,0,16,6" />
+                  <TextBlock Grid.Row="2" Grid.Column="1"
+                             Text="{Binding Preview.Files.Count}"
+                             Margin="0,0,0,6" />
+
+                  <TextBlock Grid.Row="3" Grid.Column="0" Text="{DynamicResource Maps_Path}" Opacity="0.65" Margin="0,0,16,0" />
+                  <TextBlock Grid.Row="3" Grid.Column="1"
+                             Text="{Binding Preview.DirectoryPath}"
+                             TextWrapping="Wrap"
+                             Opacity="0.85" />
+                </Grid>
+              </Border>
+
+              <TextBlock Text="{DynamicResource Maps_Thumbnail}"
+                         FontWeight="SemiBold"
+                         Margin="0,0,0,8" />
+              <Border CornerRadius="8"
+                      Background="#14000000"
+                      Padding="12"
+                      Margin="0,0,0,16"
+                      MinHeight="120">
+                <Grid>
+                  <Image Source="{Binding Thumbnail}"
+                         MaxWidth="220"
+                         MaxHeight="160"
+                         Stretch="Uniform"
+                         HorizontalAlignment="Left">
+                    <Image.Style>
+                      <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding Thumbnail}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </Image.Style>
+                  </Image>
+                  <TextBlock Text="{DynamicResource Maps_NoThumbnail}"
+                             Opacity="0.55"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center">
+                    <TextBlock.Style>
+                      <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding Thumbnail}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Visible" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </TextBlock.Style>
+                  </TextBlock>
+                </Grid>
+              </Border>
+
+              <TextBlock Text="{DynamicResource Maps_Files}"
+                         FontWeight="SemiBold"
+                         Margin="0,0,0,8" />
+              <Border CornerRadius="8"
+                      Background="#14000000"
+                      Padding="4,6"
+                      MaxHeight="280">
+                <ListBox ItemsSource="{Binding PreviewFiles}"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto">
+                  <ListBox.ItemTemplate>
+                    <DataTemplate>
+                      <TextBlock Text="{Binding}"
+                                 Margin="8,4"
+                                 FontSize="12"
+                                 Opacity="0.85"
+                                 TextTrimming="CharacterEllipsis" />
+                    </DataTemplate>
+                  </ListBox.ItemTemplate>
+                </ListBox>
+              </Border>
+            </StackPanel>
+          </ScrollViewer>
+        </Grid>
+      </Border>
+    </Grid>
+  </Grid>
+</UserControl>

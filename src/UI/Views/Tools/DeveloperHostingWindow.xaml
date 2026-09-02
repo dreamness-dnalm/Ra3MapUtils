@@ -1,0 +1,61 @@
+<Window x:Class="UI.Views.Tools.DeveloperHostingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        xmlns:controls="clr-namespace:UI.Controls"
+        Title="{Binding WindowTitle}"
+        Height="420"
+        Width="560"
+        MinHeight="360"
+        MinWidth="480"
+        WindowStartupLocation="CenterOwner"
+        Topmost="{Binding IsTopmost}"
+        FontFamily="Segoe UI Variable Text, Segoe UI">
+  <shell:WindowChrome.WindowChrome>
+    <shell:WindowChrome CaptionHeight="40"
+                        ResizeBorderThickness="6"
+                        GlassFrameThickness="0"
+                        UseAeroCaptionButtons="False" />
+  </shell:WindowChrome.WindowChrome>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="40" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <controls:ToolWindowTitleBar Grid.Row="0" />
+
+    <ScrollViewer Grid.Row="1" Padding="16" VerticalScrollBarVisibility="Auto">
+      <StackPanel>
+        <TextBlock Text="{Binding SingleInstanceNote}"
+                   TextWrapping="Wrap"
+                   Opacity="0.75"
+                   Margin="0,0,0,16" />
+
+        <Border Padding="12" Margin="0,0,0,12" BorderBrush="#33000000" BorderThickness="1" CornerRadius="6">
+          <StackPanel>
+            <TextBlock Text="{DynamicResource DevHost_McpSection}" FontWeight="SemiBold" Margin="0,0,0,8" />
+            <TextBlock Text="{Binding McpEndpointLabel}" Margin="0,0,0,4" />
+            <TextBlock Text="{Binding McpTransportLabel}" Margin="0,0,0,8" />
+            <StackPanel Orientation="Horizontal">
+              <Button Content="{DynamicResource DevHost_CopyEndpoint}" Padding="10,4" Margin="0,0,8,0" Command="{Binding CopyMcpEndpointCommand}" />
+              <Button Content="{DynamicResource DevHost_Docs}" Padding="10,4" Command="{Binding OpenDocsCommand}" />
+            </StackPanel>
+          </StackPanel>
+        </Border>
+
+        <Border Padding="12" BorderBrush="#33000000" BorderThickness="1" CornerRadius="6">
+          <StackPanel>
+            <TextBlock Text="{DynamicResource DevHost_HttpSection}" FontWeight="SemiBold" Margin="0,0,0,8" />
+            <TextBlock Text="{Binding SwaggerUrlLabel}" Margin="0,0,0,8" />
+            <Button Content="{DynamicResource DevHost_OpenSwagger}"
+                    HorizontalAlignment="Left"
+                    Padding="10,4"
+                    Command="{Binding OpenSwaggerCommand}" />
+          </StackPanel>
+        </Border>
+      </StackPanel>
+    </ScrollViewer>
+  </Grid>
+</Window>

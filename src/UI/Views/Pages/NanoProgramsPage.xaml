@@ -1,0 +1,167 @@
+<UserControl x:Class="UI.Views.Pages.NanoProgramsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:UI.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=vm:NanoProgramsPageViewModel}"
+             Background="Transparent"
+             FontFamily="Segoe UI Variable Text, Segoe UI">
+  <Grid Margin="28,20,28,24">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <TextBlock Grid.Row="0"
+               Text="{DynamicResource Nano_Title}"
+               FontSize="28"
+               FontWeight="SemiBold"
+               Margin="0,0,0,4" />
+
+    <TextBlock Grid.Row="1"
+               Text="{DynamicResource Nano_Subtitle}"
+               Opacity="0.65"
+               FontSize="12"
+               Margin="0,0,0,12" />
+
+    <DockPanel Grid.Row="2" Margin="0,0,0,12" LastChildFill="True">
+      <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+        <Button Content="{DynamicResource Nano_OpenUserFolder}"
+                MinWidth="120"
+                Padding="14,8"
+                Margin="0,0,8,0"
+                Command="{Binding OpenUserNanoProgramFolderCommand}" />
+        <Button Content="{DynamicResource Nano_Refresh}"
+                MinWidth="88"
+                Padding="14,8"
+                Command="{Binding RefreshCommand}" />
+      </StackPanel>
+
+      <StackPanel Orientation="Horizontal">
+        <TextBox Width="260"
+                 Padding="8,6"
+                 VerticalContentAlignment="Center"
+                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+        <CheckBox Content="{DynamicResource Nano_OnlyEnabled}"
+                  Margin="16,0,0,0"
+                  VerticalAlignment="Center"
+                  IsChecked="{Binding OnlyEnabled}" />
+        <CheckBox Content="{DynamicResource Nano_OnlyVisible}"
+                  Margin="12,0,0,0"
+                  VerticalAlignment="Center"
+                  IsChecked="{Binding OnlyWbVisible}" />
+      </StackPanel>
+    </DockPanel>
+
+    <Border Grid.Row="3"
+            CornerRadius="8"
+            BorderBrush="#22000000"
+            BorderThickness="1"
+            Background="#08FFFFFF"
+            Padding="4">
+      <ListBox x:Name="NanoProgramList"
+               ItemsSource="{Binding NanoProgramsView}"
+               SelectedItem="{Binding SelectedProgram}"
+               BorderThickness="0"
+               Background="Transparent"
+               AllowDrop="True"
+               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+               ScrollViewer.VerticalScrollBarVisibility="Auto"
+               PreviewMouseLeftButtonDown="NanoProgramList_OnPreviewMouseLeftButtonDown"
+               PreviewMouseMove="NanoProgramList_OnPreviewMouseMove"
+               Drop="NanoProgramList_OnDrop">
+        <ListBox.ItemContainerStyle>
+          <Style TargetType="ListBoxItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0,0,0,6" />
+            <Setter Property="AllowDrop" Value="True" />
+          </Style>
+        </ListBox.ItemContainerStyle>
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <Border Padding="12,10"
+                    CornerRadius="6"
+                    Background="#10000000">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="28" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Border x:Name="DragHandle"
+                        Grid.Column="0"
+                        Background="Transparent"
+                        Cursor="SizeAll"
+                        ToolTip="拖动调整顺序">
+                  <TextBlock Text="&#xE700;"
+                             FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                             FontSize="14"
+                             Opacity="0.45"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center"
+                             IsHitTestVisible="False" />
+                </Border>
+
+                <StackPanel Grid.Column="1" Margin="4,0,12,0">
+                  <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="14" />
+                    <Border Margin="8,0,0,0" Padding="6,2" CornerRadius="4" Background="#180067C0">
+                      <TextBlock Text="{Binding InstallTypeLabel}" FontSize="11" />
+                    </Border>
+                    <TextBlock Text="{Binding Id}"
+                               Margin="8,0,0,0"
+                               Opacity="0.55"
+                               FontSize="11"
+                               VerticalAlignment="Center" />
+                  </StackPanel>
+                  <TextBlock Text="{Binding Description}"
+                             Margin="0,4,0,0"
+                             Opacity="0.7"
+                             TextWrapping="Wrap" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="2"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            Margin="0,0,8,0">
+                  <CheckBox Content="{DynamicResource Nano_Enable}"
+                            IsChecked="{Binding IsEnabled, Mode=TwoWay}"
+                            Margin="0,0,10,0" />
+                  <CheckBox Content="{DynamicResource Nano_Visible}"
+                            IsChecked="{Binding IsWbVisible, Mode=TwoWay}" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="3"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                  <Button Content="{DynamicResource Nano_Run}"
+                          Margin="0,0,6,0"
+                          Padding="10,6"
+                          Command="{Binding DataContext.RunCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                          CommandParameter="{Binding}" />
+                  <Button Content="{DynamicResource Nano_Open}"
+                          Padding="10,6"
+                          Command="{Binding DataContext.OpenFolderCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                          CommandParameter="{Binding}" />
+                </StackPanel>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Border>
+
+    <TextBlock Grid.Row="4"
+               Margin="0,10,0,0"
+               Opacity="0.7"
+               Text="{Binding StatusText}" />
+  </Grid>
+</UserControl>

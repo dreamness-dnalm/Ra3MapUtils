@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "environment": "production",
+  "assetId": "cn.dreamness.ra3maputils",
+  "registeredAt": "2026-09-01T15:36:37.921Z",
+  "controlPlane": "https://assetcenter-control-plane.dnalm-dreamness.workers.dev",
+  "distributionEndpoint": "https://public-files.dreamness.cn",
+  "channels": ["beta", "stable"],
+  "keyId": "ed25519-sha256:QnOwhaW3do0UCg3Ri-x4sHwCGtGcgLIweQtxiiOFEEY",
+  "publisherPrincipal": "service:assetcenter-pilot-bootstrap",
+  "publisherRoles": ["publisher", "bi_viewer"],
+  "globalRoles": [],
+  "privateKeyLocationEnvironmentVariable": "RA3MAPUTILS_ASSETCENTER_PRIVATE_KEY_PATH",
+  "localPrivateKeyDefault": "%LOCALAPPDATA%\\AssetCenter\\Ra3MapUtils\\keys\\ra3maputils.private.json"
+}

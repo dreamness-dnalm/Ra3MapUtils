@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "assetId": "cn.dreamness.ra3maputils",
+  "distributionEndpoint": "https://public-files.dreamness.cn",
+  "trustedKeys": [
+    {
+      "keyId": "ed25519-sha256:QnOwhaW3do0UCg3Ri-x4sHwCGtGcgLIweQtxiiOFEEY",
+      "publicKey": "uW-ErOGm8tB5JrRopLgkr5emv_byQcuc94uCvlo2P2Y"
+    }
+  ],
+  "telemetryPreference": "disabled",
+  "telemetryEndpoint": null
+}

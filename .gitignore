@@ -9,3 +9,11 @@ Ra3MapUtils.sln.DotSettings.user
 .vs
 dev_tools/.cache
 dev_tools/publish
+
+# AssetCenter generated output and local secret material
+/.artifacts/assetcenter/
+/.assetcenter/
+/eng/assetcenter/private/
+/eng/assetcenter/**/*.private.json
+/eng/assetcenter/credentials.json
+/eng/assetcenter/*.local.json

@@ -1,0 +1,69 @@
+<Window x:Class="UI.Views.Tools.DebuggerMapSettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        xmlns:controls="clr-namespace:UI.Controls"
+        Title="{Binding WindowTitle}"
+        Height="420"
+        Width="640"
+        MinHeight="360"
+        MinWidth="520"
+        WindowStartupLocation="CenterOwner"
+        Topmost="{Binding IsTopmost}"
+        FontFamily="Segoe UI Variable Text, Segoe UI">
+  <shell:WindowChrome.WindowChrome>
+    <shell:WindowChrome CaptionHeight="40"
+                        ResizeBorderThickness="6"
+                        GlassFrameThickness="0"
+                        UseAeroCaptionButtons="False" />
+  </shell:WindowChrome.WindowChrome>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="40" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <controls:ToolWindowTitleBar Grid.Row="0" />
+
+    <ScrollViewer Grid.Row="1" Padding="16" VerticalScrollBarVisibility="Auto">
+      <StackPanel>
+        <TextBlock Text="{Binding RestartWarning}"
+                   TextWrapping="Wrap"
+                   Opacity="0.8"
+                   Margin="0,0,0,16" />
+
+        <TextBlock Text="{Binding MapFolderLabel}" FontWeight="SemiBold" Margin="0,0,0,6" />
+        <TextBox Text="{Binding MapFolder, UpdateSourceTrigger=PropertyChanged}"
+                 Margin="0,0,0,6"
+                 Padding="6,4" />
+        <TextBlock Text="{Binding MapFolderHint}"
+                   Opacity="0.65"
+                   TextWrapping="Wrap"
+                   Margin="0,0,0,10" />
+
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+          <Button Content="{Binding BrowseLabel}"
+                  Padding="10,4"
+                  Margin="0,0,8,0"
+                  Command="{Binding BrowseMapFolderCommand}" />
+          <Button Content="{Binding UseDefaultLabel}"
+                  Padding="10,4"
+                  Margin="0,0,8,0"
+                  Command="{Binding UseDefaultMapFolderCommand}" />
+          <Button Content="{Binding SaveLabel}"
+                  Padding="10,4"
+                  Command="{Binding SaveSettingsCommand}" />
+        </StackPanel>
+
+        <CheckBox Content="{Binding HideBuiltInLabel}"
+                  IsChecked="{Binding HideBuiltInMaps}"
+                  Margin="0,0,0,16" />
+
+        <TextBlock Text="{Binding StatusText}"
+                   TextWrapping="Wrap"
+                   Opacity="0.75" />
+      </StackPanel>
+    </ScrollViewer>
+  </Grid>
+</Window>

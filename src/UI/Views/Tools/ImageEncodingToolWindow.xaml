@@ -1,0 +1,218 @@
+<Window x:Class="UI.Views.Tools.ImageEncodingToolWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        xmlns:controls="clr-namespace:UI.Controls"
+        Title="{Binding WindowTitle}"
+        Height="820"
+        Width="1080"
+        MinHeight="640"
+        MinWidth="860"
+        WindowStartupLocation="CenterOwner"
+        Topmost="{Binding IsTopmost}"
+        AllowDrop="True"
+        PreviewDragOver="RootWindow_OnDragOver"
+        PreviewDrop="RootWindow_OnDrop"
+        FontFamily="Segoe UI Variable Text, Segoe UI">
+  <shell:WindowChrome.WindowChrome>
+    <shell:WindowChrome CaptionHeight="40"
+                        ResizeBorderThickness="6"
+                        GlassFrameThickness="0"
+                        UseAeroCaptionButtons="False" />
+  </shell:WindowChrome.WindowChrome>
+
+  <Window.Resources>
+    <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+  </Window.Resources>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="40" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <controls:ToolWindowTitleBar Grid.Row="0" />
+
+    <Grid Grid.Row="1" Margin="16,8,16,16">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+        <Button Content="{DynamicResource ImageEnc_Open}" Padding="12,6" Margin="0,0,12,0" Command="{Binding OpenImageCommand}" />
+        <TextBlock Text="{DynamicResource ImageEnc_Format}" VerticalAlignment="Center" Margin="0,0,6,0" />
+        <ComboBox Width="112"
+                  ItemsSource="{Binding OutputFormats}"
+                  SelectedItem="{Binding OutputFormat, Mode=TwoWay}"
+                  Margin="0,0,12,0" />
+        <Button Content="{DynamicResource ImageEnc_Download}"
+                Padding="12,6"
+                Command="{Binding SaveOutputImageCommand}"
+                IsEnabled="{Binding HasImage}"
+                Margin="0,0,12,0" />
+        <TextBlock Text="{Binding FileName}"
+                   ToolTip="{Binding FilePath}"
+                   VerticalAlignment="Center"
+                   TextTrimming="CharacterEllipsis" />
+      </StackPanel>
+
+      <WrapPanel Grid.Row="1" Margin="0,0,0,10">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,0">
+          <TextBlock Text="{DynamicResource ImageEnc_RatioLabel}" VerticalAlignment="Center" Margin="0,0,4,0" />
+          <TextBlock Text="{Binding CompressionRatio, StringFormat={}{0:0}%}" VerticalAlignment="Center" />
+        </StackPanel>
+        <Slider Width="200" Minimum="0" Maximum="95" TickFrequency="5" IsSnapToTickEnabled="True"
+                Value="{Binding CompressionRatio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                VerticalAlignment="Center" Margin="0,0,20,0" />
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,0">
+          <TextBlock Text="{DynamicResource ImageEnc_ScaleLabel}" VerticalAlignment="Center" Margin="0,0,4,0" />
+          <TextBlock Text="{Binding ResizeScale, StringFormat={}{0:0}%}" VerticalAlignment="Center" />
+        </StackPanel>
+        <Slider Width="200" Minimum="1" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True"
+                Value="{Binding ResizeScale, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                VerticalAlignment="Center" Margin="0,0,20,0" />
+        <CheckBox Content="{DynamicResource ImageEnc_Round}" IsChecked="{Binding IsRoundedCornersEnabled}" VerticalAlignment="Center" Margin="0,0,8,0" />
+        <TextBlock Text="{DynamicResource ImageEnc_Radius}" VerticalAlignment="Center" Margin="0,0,6,0" />
+        <TextBox Width="64"
+                 Text="{Binding CornerRadius, UpdateSourceTrigger=PropertyChanged}"
+                 IsEnabled="{Binding IsRoundedCornersEnabled}"
+                 VerticalAlignment="Center" />
+      </WrapPanel>
+
+      <Border Grid.Row="2" Padding="10,8" Margin="0,0,0,8" CornerRadius="6" BorderBrush="#33000000" BorderThickness="1">
+        <WrapPanel>
+          <TextBlock Text="{DynamicResource ImageEnc_Size}" FontWeight="SemiBold" />
+          <TextBlock Text="{Binding ImageSizeText}" Margin="0,0,16,0" />
+          <TextBlock Text="{DynamicResource ImageEnc_Disk}" FontWeight="SemiBold" />
+          <TextBlock Text="{Binding DiskSizeText}" Margin="0,0,16,0" />
+          <TextBlock Text="{Binding OutputSizeLabel}" FontWeight="SemiBold" />
+          <TextBlock Text="{Binding OutputImageSizeText}" Margin="0,0,16,0" />
+          <TextBlock Text="{DynamicResource ImageEnc_Base64}" FontWeight="SemiBold" />
+          <TextBlock Text="{Binding Base64SizeText}" Margin="0,0,16,0" />
+          <TextBlock Text="{DynamicResource ImageEnc_GameMemory}" FontWeight="SemiBold" />
+          <TextBlock Text="{Binding GameMemorySizeText}" />
+        </WrapPanel>
+      </Border>
+
+      <Border Grid.Row="3"
+              Padding="10,8"
+              Margin="0,0,0,8"
+              CornerRadius="6"
+              BorderThickness="1"
+              BorderBrush="{Binding Base64WarningBrush}"
+              Visibility="{Binding HasBase64Warning, Converter={StaticResource BoolToVisibilityConverter}}">
+        <TextBlock Text="{Binding Base64WarningText}"
+                   Foreground="{Binding Base64WarningBrush}"
+                   FontWeight="SemiBold"
+                   TextWrapping="Wrap" />
+      </Border>
+
+      <Grid Grid.Row="4">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="5*" />
+          <ColumnDefinition Width="8" />
+          <ColumnDefinition Width="6*" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" BorderBrush="#33000000" BorderThickness="1" CornerRadius="6">
+          <Grid>
+            <Grid Margin="10" Visibility="{Binding HasImage, Converter={StaticResource BoolToVisibilityConverter}}">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+              </Grid.RowDefinitions>
+              <TextBlock Grid.Row="0" Text="{DynamicResource ImageEnc_Original}" FontWeight="SemiBold" Margin="0,0,0,6" />
+              <Border Grid.Row="1" BorderBrush="#22000000" BorderThickness="1" CornerRadius="4" Margin="0,0,0,10">
+                <Image Source="{Binding OriginalPreviewImage}" Stretch="Uniform" Margin="8" />
+              </Border>
+              <TextBlock Grid.Row="2" Text="{Binding OutputPreviewLabel}" FontWeight="SemiBold" Margin="0,0,0,6" />
+              <Border Grid.Row="3" BorderBrush="#22000000" BorderThickness="1" CornerRadius="4">
+                <Image Source="{Binding OutputPreviewImage}" Stretch="Uniform" Margin="8" />
+              </Border>
+            </Grid>
+            <TextBlock Text="{DynamicResource ImageEnc_DropHint}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Opacity="0.55"
+                       FontSize="16">
+              <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                  <Setter Property="Visibility" Value="Visible" />
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding HasImage}" Value="True">
+                      <Setter Property="Visibility" Value="Collapsed" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </Grid>
+        </Border>
+
+        <GridSplitter Grid.Column="1" Width="8" HorizontalAlignment="Stretch" />
+
+        <Grid Grid.Column="2">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="3*" />
+          </Grid.RowDefinitions>
+
+          <DockPanel Grid.Row="0" Margin="0,0,0,6">
+            <Button DockPanel.Dock="Right"
+                    Content="{DynamicResource ImageEnc_Copy}"
+                    Padding="10,4"
+                    Command="{Binding CopyCommand}"
+                    CommandParameter="{Binding Base64Text}"
+                    IsEnabled="{Binding HasImage}" />
+            <TextBlock Text="{DynamicResource ImageEnc_Base64Title}" FontWeight="SemiBold" VerticalAlignment="Center" />
+          </DockPanel>
+          <TextBox Grid.Row="1"
+                   Text="{Binding Base64Text, Mode=OneWay}"
+                   IsReadOnly="True"
+                   AcceptsReturn="True"
+                   TextWrapping="NoWrap"
+                   FontFamily="Consolas"
+                   VerticalScrollBarVisibility="Auto"
+                   HorizontalScrollBarVisibility="Auto" />
+
+          <DockPanel Grid.Row="2" Margin="0,12,0,6">
+            <Button DockPanel.Dock="Right"
+                    Content="{DynamicResource ImageEnc_Copy}"
+                    Padding="10,4"
+                    Command="{Binding CopyCommand}"
+                    CommandParameter="{Binding LuaText}"
+                    IsEnabled="{Binding HasImage}" />
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+              <TextBlock Text="{DynamicResource ImageEnc_LuaSnippet}" FontWeight="SemiBold" Margin="0,0,12,0" VerticalAlignment="Center" />
+              <CheckBox Content="{DynamicResource ImageEnc_Base64Wrap}"
+                        IsChecked="{Binding IsLuaBase64AutoWrap}"
+                        Margin="0,0,10,0"
+                        VerticalAlignment="Center" />
+              <TextBlock Text="{DynamicResource ImageEnc_LineLength}" VerticalAlignment="Center" Margin="0,0,6,0" />
+              <TextBox Width="72"
+                       Text="{Binding LuaBase64LineLength, UpdateSourceTrigger=PropertyChanged}"
+                       IsEnabled="{Binding IsLuaBase64AutoWrap}"
+                       VerticalAlignment="Center" />
+            </StackPanel>
+          </DockPanel>
+          <TextBox Grid.Row="3"
+                   Text="{Binding LuaText, Mode=OneWay}"
+                   IsReadOnly="True"
+                   AcceptsReturn="True"
+                   TextWrapping="NoWrap"
+                   FontFamily="Consolas"
+                   VerticalScrollBarVisibility="Auto"
+                   HorizontalScrollBarVisibility="Auto" />
+        </Grid>
+      </Grid>
+    </Grid>
+  </Grid>
+</Window>

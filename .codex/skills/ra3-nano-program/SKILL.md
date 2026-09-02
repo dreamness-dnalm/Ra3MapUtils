@@ -1,6 +1,6 @@
 ---
 name: ra3-nano-program
-description: Ra3MapUtils nano program workflow. Use when Codex adds, updates, debugs, or packages C# nano programs under Ra3MapUtils/data/nano_programs, including info.json metadata, Main.cs scripts, MapFilePath handling, Ra3MapFacade usage, and Ra3MapUtils.csproj CopyToOutput rules.
+description: Ra3MapUtils nano program workflow. Use when Codex adds, updates, debugs, or packages C# nano programs under src/UI/data/nano_programs, including info.json metadata, Main.cs scripts, MapFilePath handling, Ra3MapFacade usage, and UI.csproj CopyToOutput rules.
 ---
 
 # RA3 Nano Program
@@ -14,15 +14,15 @@ Use this skill whenever a Ra3MapUtils nano program is added or changed.
    - `Ra3MapUtils/AGENTS.md`
 
 2. Inspect nearby examples before editing:
-   - Official nano programs: `Ra3MapUtils/data/nano_programs/*/info.json`
-   - Script bodies: `Ra3MapUtils/data/nano_programs/*/Main.cs`
-   - Runtime loader: `Ra3MapUtils/Services/Impl/NanoProgramService.cs`
-   - Output rules: `Ra3MapUtils/Ra3MapUtils.csproj`
+   - Official nano programs: `src/UI/data/nano_programs/*/info.json`
+   - Script bodies: `src/UI/data/nano_programs/*/Main.cs`
+   - Runtime loader: `src/UI/Services/NanoProgramService.cs`
+   - Output rules: `src/UI/UI.csproj`
 
 3. Create or update exactly one nano program directory unless the user asks for more:
 
 ```text
-Ra3MapUtils/data/nano_programs/YOUR_PROGRAM_ID/
+src/UI/data/nano_programs/YOUR_PROGRAM_ID/
 ├── info.json
 └── Main.cs
 ```
@@ -37,10 +37,14 @@ Use UTF-8 JSON with this shape:
 {
     "ID": "new-guid-here",
     "Name": "显示名称",
+    "NameEn": "English display name",
     "Description": "一句话说明这个微程序做什么。",
+    "DescriptionEn": "One-sentence English description of what this nano program does.",
     "Author": "dreamness"
 }
 ```
+
+`NameEn` and `DescriptionEn` are optional for user packages but recommended for official nano programs.
 
 Only change `Author` when the user gives a different value or an existing program already uses a different owner.
 
@@ -97,26 +101,25 @@ When facade behavior is unclear, inspect the C# library source at `N:\workspace\
 
 ## Project File Rules
 
-Update `Ra3MapUtils/Ra3MapUtils.csproj` so the script is copied but not compiled into the WPF app:
+Official packages live under `src/UI/data/nano_programs/`. `src/UI/UI.csproj` already excludes all `data\nano_programs\**\*.cs` from compilation and copies the tree to output via wildcards — usually no per-program csproj edits are needed for a new official package.
+
+If you must add explicit items (legacy-style), prefer `src/UI/UI.csproj`:
 
 ```xml
-<None Update="data\nano_programs\YOUR_PROGRAM_ID\info.json">
-  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-</None>
 <Compile Remove="data\nano_programs\YOUR_PROGRAM_ID\Main.cs" />
 <None Include="data\nano_programs\YOUR_PROGRAM_ID\Main.cs">
-  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 </None>
 ```
 
-Mirror existing item ordering when possible. Avoid reorganizing unrelated `ItemGroup` entries in a dirty worktree.
+Do not compile `Main.cs` into the WPF app assembly.
 
 ## Validation
 
-Run the main project build after changes:
+Run the v2 UI project build after changes:
 
 ```powershell
-dotnet build Ra3MapUtils\Ra3MapUtils.csproj --no-restore
+dotnet build src\UI\UI.csproj --no-restore
 ```
 
 Report whether warnings are pre-existing noise such as `NU190x`, `NU1701`, `NU1702`, or MVVM Toolkit warnings.
@@ -124,8 +127,8 @@ Report whether warnings are pre-existing noise such as `NU190x`, `NU1701`, `NU17
 Also verify output copying when relevant:
 
 ```powershell
-Test-Path Ra3MapUtils\bin\Debug\net8.0-windows\data\nano_programs\YOUR_PROGRAM_ID\Main.cs
-Test-Path Ra3MapUtils\bin\Debug\net8.0-windows\data\nano_programs\YOUR_PROGRAM_ID\info.json
+Test-Path src\UI\bin\Debug\net10.0-windows\data\nano_programs\YOUR_PROGRAM_ID\Main.cs
+Test-Path src\UI\bin\Debug\net10.0-windows\data\nano_programs\YOUR_PROGRAM_ID\info.json
 ```
 
 Remember: `dotnet build` does not compile nano program scripts. If the app reports a script compile error, fix the script usings/API calls and rebuild so the output copy is refreshed.

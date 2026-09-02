@@ -1,0 +1,45 @@
+<Project>
+  <!--
+    Vendored AssetCenter client assemblies live under src/lib (same pattern as Ra3Hacker.Sdk).
+    Rebuild/copy from the AssetCenter repo when upgrading:
+      AssetCenter.Protocol.dll, AssetCenter.Sdk.dll, AssetCenter.Installation.dll
+    Optional override: set ASSETCENTER_REPO to use live ProjectReferences instead of HintPath DLLs.
+  -->
+  <PropertyGroup>
+    <AssetCenterRepo Condition="'$(AssetCenterRepo)' == '' and '$(ASSETCENTER_REPO)' != ''">$(ASSETCENTER_REPO)</AssetCenterRepo>
+    <AssetCenterSdkProject Condition="'$(AssetCenterRepo)' != ''">$(AssetCenterRepo)\src\dotnet\Sdk\AssetCenter.Sdk.csproj</AssetCenterSdkProject>
+    <AssetCenterInstallationProject Condition="'$(AssetCenterRepo)' != ''">$(AssetCenterRepo)\src\dotnet\Installation\AssetCenter.Installation.csproj</AssetCenterInstallationProject>
+    <AssetCenterUseProjectReferences Condition="'$(AssetCenterSdkProject)' != '' and Exists('$(AssetCenterSdkProject)') and '$(AssetCenterInstallationProject)' != '' and Exists('$(AssetCenterInstallationProject)')">true</AssetCenterUseProjectReferences>
+    <_AssetCenterLibDir>$(MSBuildThisFileDirectory)..\..\src\lib</_AssetCenterLibDir>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(AssetCenterUseProjectReferences)' == 'true'">
+    <ProjectReference Include="$(AssetCenterSdkProject)">
+      <AdditionalProperties>TreatWarningsAsErrors=false;WarningsAsErrors=;RunAnalyzersDuringBuild=false;EnforceCodeStyleInBuild=false</AdditionalProperties>
+    </ProjectReference>
+    <ProjectReference Include="$(AssetCenterInstallationProject)">
+      <AdditionalProperties>TreatWarningsAsErrors=false;WarningsAsErrors=;RunAnalyzersDuringBuild=false;EnforceCodeStyleInBuild=false</AdditionalProperties>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(AssetCenterUseProjectReferences)' != 'true'">
+    <Reference Include="AssetCenter.Protocol">
+      <HintPath>$(_AssetCenterLibDir)\AssetCenter.Protocol.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="AssetCenter.Sdk">
+      <HintPath>$(_AssetCenterLibDir)\AssetCenter.Sdk.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="AssetCenter.Installation">
+      <HintPath>$(_AssetCenterLibDir)\AssetCenter.Installation.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="RequireAssetCenterAssemblies" BeforeTargets="ResolveAssemblyReferences;ResolveProjectReferences">
+    <Error
+      Condition="'$(AssetCenterUseProjectReferences)' != 'true' and (!Exists('$(_AssetCenterLibDir)\AssetCenter.Sdk.dll') or !Exists('$(_AssetCenterLibDir)\AssetCenter.Installation.dll') or !Exists('$(_AssetCenterLibDir)\AssetCenter.Protocol.dll'))"
+      Text="AssetCenter assemblies missing under src\lib (AssetCenter.Protocol.dll, AssetCenter.Sdk.dll, AssetCenter.Installation.dll). Copy them from a Release build of the AssetCenter repo, or set ASSETCENTER_REPO for ProjectReference mode." />
+  </Target>
+</Project>

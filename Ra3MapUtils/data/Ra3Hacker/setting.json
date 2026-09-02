@@ -9,7 +9,7 @@
     "folder": "data"
   },
   "maps": {
-    "folder": "",
-    "hideBuiltIn": false
+    "folder": "H:/sys/Downloads",
+    "hideBuiltIn": true
   }
 }
